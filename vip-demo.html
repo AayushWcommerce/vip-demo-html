@@ -65,6 +65,40 @@
   .two-up { display: grid; gap: 26px; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); align-items: start; }
   .phone { max-width: 400px; }
 
+  /* Section 6 — free-tier fashion counter and the blocked-selection message. */
+  .cap-counter {
+    display: inline-flex; align-items: center; gap: 6px;
+    border-radius: 9999px; padding: 3px 10px;
+    font-size: 11px; font-weight: 500; line-height: 1.5;
+    background: var(--menu-bg); color: var(--grey-text);
+    border: 1px solid rgba(31,33,46,0.06);
+  }
+  .cap-counter.at-cap { background: #FFF6E5; color: #8A5A00; border-color: #F0D9A8; }
+  .cap-toast {
+    display: flex; gap: 8px; align-items: flex-start;
+    border-radius: 12px; padding: 10px 12px;
+    background: #FFF6E5; border: 1px solid #F0D9A8;
+    font-size: 12px; line-height: 1.45; color: #6B4600;
+  }
+  .cap-toast svg { width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px; }
+  .prod-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 0; border-bottom: 1px solid var(--divider);
+    font-size: 12px; color: var(--body);
+  }
+  .prod-row:last-child { border-bottom: 0; }
+  .prod-row .tick {
+    width: 17px; height: 17px; border-radius: 4px; flex-shrink: 0;
+    border: 1.5px solid var(--grey-text); display: grid; place-items: center;
+  }
+  .prod-row .tick.on { background: var(--cta); border-color: var(--cta); }
+  .prod-row .tick.on svg { width: 11px; height: 11px; color: #fff; }
+  .prod-row .tick.blocked { border-color: #E0B978; background: #FFF6E5; }
+  .prod-row .cat { margin-left: auto; font-size: 10px; color: var(--grey-text); }
+  .prod-row.is-blocked { color: var(--muted); }
+  .cap-legend { font-size: 11px; color: var(--muted); line-height: 1.5; margin: 10px 0 0; }
+  .cap-legend b { color: var(--ink); font-weight: 500; }
+
   .state-label {
     font-size: 11px; font-weight: 600; color: var(--muted);
     text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;
@@ -267,6 +301,7 @@
       <a href="#locks">3. Lock badges</a>
       <a href="#account">4. My Account</a>
       <a href="#settings">5. Settings</a>
+      <a href="#cap">6. Product cap</a>
     </nav>
   </div>
 </div>
@@ -606,7 +641,7 @@
           <div class="cmp-row"><div class="c-label">ONDC listing</div><div class="c-free"><span class="cell"><svg class="ico-no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6 6 18M6 6l12 12"/></svg><span>Not included</span></span></div><div class="c-vip"><span class="cell"><svg class="ico-yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg><span>Included</span></span></div></div>
           <div class="cmp-row"><div class="c-label">Instagram Auto-DM</div><div class="c-free"><span class="cell"><svg class="ico-no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6 6 18M6 6l12 12"/></svg><span>Not included</span></span></div><div class="c-vip"><span class="cell"><svg class="ico-yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg><span>Included</span></span></div></div>
           <div class="cmp-row"><div class="c-label">Custom domain</div><div class="c-free"><span class="cell"><svg class="ico-no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6 6 18M6 6l12 12"/></svg><span>Not available</span></span></div><div class="c-vip"><span class="cell"><svg class="ico-yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg><span>Available</span></span></div></div>
-          <div class="cmp-row"><div class="c-label">Product catalog</div><div class="c-free"><span class="cell"><svg class="ico-grey" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg><span>Up to 25 products</span></span></div><div class="c-vip"><span class="cell"><svg class="ico-yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg><span>Unlimited products</span></span></div></div>
+          <div class="cmp-row"><div class="c-label">Product catalog</div><div class="c-free"><span class="cell"><svg class="ico-grey" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg><span>Up to 25 fashion products</span></span></div><div class="c-vip"><span class="cell"><svg class="ico-yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg><span>Unlimited products</span></span></div></div>
         </div>
       </div>
 
@@ -701,6 +736,89 @@
   </div>
   <p class="caption">Only Custom Domain is locked. The tier badge sits beside the store name above.</p>
 </div>
+
+<h2 class="section" id="cap">6. Product selection — the free-tier fashion cap</h2>
+<p class="section-note">
+  Revised 2026-08-25. A free store may hold <b>25 fashion products in total, in any mix of
+  categories</b> — 25 sarees is fine, so is 10 + 10 + 5. Beauty and Others are unlimited and
+  never counted. There is <b>no per-category limit</b>, and <b>nothing is hidden</b>: every
+  product is shown with its price, and the cap applies when the partner selects. VIP members
+  see no counter and hit no limit.
+</p>
+
+<div class="grid">
+
+  <div class="phone">
+    <div class="card">
+      <div class="card-head"><span class="eyebrow">Free — under the cap</span></div>
+      <p class="headline">Select products</p>
+      <p class="sub">The counter sits above the list and moves with every tick.</p>
+      <span class="cap-counter">18/25 fashion products selected</span>
+      <div style="margin-top:12px">
+      <div class="prod-row"><span class="tick on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span>Banarasi Silk Saree</span><span class="cat">Sarees</span></div>
+      <div class="prod-row"><span class="tick on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span>Cotton Kurti Set</span><span class="cat">Kurtis</span></div>
+      <div class="prod-row"><span class="tick on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span>Kundan Jhumka</span><span class="cat">Jewelry</span></div>
+      <div class="prod-row"><span class="tick on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span>Vitamin C Serum</span><span class="cat">Beauty</span></div>
+      <div class="prod-row"><span class="tick on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span>Steel Lunch Box</span><span class="cat">Others</span></div>
+      </div>
+      <p class="cap-legend">Beauty and Others are ticked too, but <b>do not count</b> toward
+        the 25 — only fashion does.</p>
+    </div>
+    <p class="caption">Grey counter. Everything on the page is selectable.</p>
+  </div>
+
+  <div class="phone">
+    <div class="card">
+      <div class="card-head"><span class="eyebrow">Free — at the cap</span></div>
+      <p class="headline">Select products</p>
+      <p class="sub">At 25 the counter turns amber and further fashion ticks are refused.</p>
+      <span class="cap-counter at-cap">25/25 fashion products selected</span>
+      <div style="margin-top:12px">
+      <div class="prod-row"><span class="tick on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span>Chanderi Saree</span><span class="cat">Sarees</span></div>
+      <div class="prod-row is-blocked"><span class="tick blocked"></span><span>Anarkali Dress</span><span class="cat">Dresses</span></div>
+      <div class="prod-row is-blocked"><span class="tick blocked"></span><span>Silver Anklet</span><span class="cat">Jewelry</span></div>
+      <div class="prod-row"><span class="tick on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span>Aloe Face Wash</span><span class="cat">Beauty</span></div>
+      <div class="prod-row"><span class="tick on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span>Ceramic Mug</span><span class="cat">Others</span></div>
+      </div>
+      <div class="cap-toast" style="margin-top:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="13"/><line x1="12" y1="16.5" x2="12" y2="16.5"/></svg>
+        <span>You can select up to 25 fashion products. Upgrade to VIP for unlimited
+          products.</span>
+      </div>
+      <p class="cap-legend">The two fashion rows are <b>still visible and still priced</b> —
+        they simply will not tick. Beauty and Others tick normally.</p>
+    </div>
+    <p class="caption">Amber counter plus the blocking message. Deselecting frees a slot.</p>
+  </div>
+
+  <div class="phone">
+    <div class="card unlocked">
+      <div class="card-head"><span class="eyebrow" style="color:var(--ok)">VIP member</span></div>
+      <p class="headline">Select products</p>
+      <p class="sub">No counter, no limit, nothing refused.</p>
+      <div style="margin-top:4px">
+      <div class="prod-row"><span class="tick on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span>Banarasi Silk Saree</span><span class="cat">Sarees</span></div>
+      <div class="prod-row"><span class="tick on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span>Anarkali Dress</span><span class="cat">Dresses</span></div>
+      <div class="prod-row"><span class="tick on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span>Silver Anklet</span><span class="cat">Jewelry</span></div>
+      <div class="prod-row"><span class="tick on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span>Kundan Jhumka</span><span class="cat">Jewelry</span></div>
+      <div class="prod-row"><span class="tick on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span>Vitamin C Serum</span><span class="cat">Beauty</span></div>
+      </div>
+      <p class="cap-legend">The counter is <b>not rendered at all</b> for a member — a number
+        that can never be reached would only be noise.</p>
+    </div>
+    <p class="caption">Unlimited. This is what the ₹1,499 buys on this screen.</p>
+  </div>
+
+</div>
+
+<p class="section-note" style="margin-top:22px">
+  <b>What changed, and why.</b> Until 2026-08-24 the rule was 5 per category <em>and</em> 25
+  total, with over-cap products removed from the list entirely. Both halves were reverted. The
+  per-category limit made the allowance depend on how a partner's interest happened to spread —
+  someone selling only sarees got 5 products while someone spread across five categories got 25,
+  for the same ₹0. Hiding kept pricing off screen but also made the catalog look smaller than it
+  is. Default selection is every non-fashion product plus fashion up to 25, so a partner opens
+  the screen at a valid 25/25 rather than already over the limit.
+</p>
 
 </div>
 </body>
