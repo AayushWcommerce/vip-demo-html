@@ -1,0 +1,707 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VIP Membership — UI Walkthrough</title>
+<style>
+  /* Every value below is copied from the real components so this matches the app:
+     VipChecklistCard, VipTierBadge, VipLockBadge, ONDCOnboardingCard,
+     VipMembershipSection, VipComparison, MenuCards, Header. */
+  :root {
+    --peach-bg:     #FEEFEB;
+    --peach-border: rgba(252,119,80,0.18);
+    --ondc-border:  rgba(252,119,80,0.22);
+    --green-bg:     #EEF9EE;
+    --green-border: rgba(85,199,81,0.28);
+    --wave:         #FC7750;
+    --accent:       #FF512A;
+    --ink:          #1F212E;
+    --body:         #2C2C2C;
+    --muted:        #545454;
+    --cta:          #4862EE;
+    --cta-hover:    #364FC7;
+    --chip-on:      #55C751;
+    --ok:           #2F9E44;
+    --hairline:     rgba(31,33,46,0.06);
+    --divider:      rgba(31,33,46,0.08);
+    --menu-bg:      #ECEFF2;
+    --text-color:   #192438;
+    --grey-text:    #668091;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0 0 80px;
+    background: #F6F7F9; color: var(--ink);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+                 "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+  /* page chrome */
+  .masthead {
+    background: #fff; border-bottom: 1px solid #E8EAF0;
+    padding: 22px 0 16px; margin-bottom: 34px;
+  }
+  .masthead h1 { margin: 0 0 4px; font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+  .masthead p  { margin: 0; font-size: 13px; color: var(--muted); }
+  .nav { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .nav a {
+    font-size: 12px; text-decoration: none; color: var(--ink);
+    background: var(--menu-bg); border: 1px solid #E8EAF0;
+    padding: 5px 11px; border-radius: 9999px;
+  }
+  .nav a:hover { background: #E2E6EB; }
+
+  h2.section {
+    font-size: 18px; font-weight: 600; margin: 46px 0 4px;
+    letter-spacing: -0.01em; scroll-margin-top: 20px;
+  }
+  .section-note { font-size: 13px; color: var(--muted); margin: 0 0 20px; max-width: 70ch; }
+  .caption { font-size: 11px; color: var(--muted); margin: 8px 0 0; }
+
+  .grid { display: grid; gap: 26px; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); align-items: start; }
+  .two-up { display: grid; gap: 26px; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); align-items: start; }
+  .phone { max-width: 400px; }
+
+  .state-label {
+    font-size: 11px; font-weight: 600; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;
+  }
+  .state-label code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    text-transform: none; letter-spacing: 0;
+    background: rgba(31,33,46,0.07); padding: 1px 5px; border-radius: 4px;
+  }
+
+  /* ---------- shared card shell (VipChecklistCard) ---------- */
+  .card {
+    position: relative; overflow: hidden; background: var(--peach-bg);
+    border: 1px solid var(--peach-border); border-radius: 16px; padding: 14px 14px 12px;
+  }
+  .card.unlocked { background: var(--green-bg); border-color: var(--green-border); }
+  svg.wave { position: absolute; top: -1px; left: 50%; transform: translateX(-50%); width: 110%; height: 18px; }
+  .card-head { display: flex; align-items: center; justify-content: space-between; margin: 6px 0 8px; position: relative; }
+  .eyebrow-wrap { display: flex; align-items: center; gap: 8px; }
+  .crown {
+    width: 26px; height: 26px; border-radius: 9999px;
+    background: radial-gradient(circle at 35% 30%, #F5C84A, #D89A1F);
+    display: grid; place-items: center; box-shadow: 0 1px 3px rgba(136,92,0,0.35);
+  }
+  .crown svg { width: 13px; height: 13px; color: #fff; }
+  .eyebrow { font-size: 10px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+  .timer { font-size: 10px; padding: 4px 10px; border-radius: 9999px; letter-spacing: 0.04em; background: var(--ink); color: var(--peach-bg); white-space: nowrap; }
+  .timer.expired { background: var(--muted); }
+  .headline { font-size: 18px; font-weight: 500; color: var(--ink); line-height: 1.15; margin: 0 0 4px; }
+  .headline .hl { color: var(--accent); }
+  .sub { font-size: 12px; color: var(--body); line-height: 1.45; margin: 0 0 10px; }
+  .sub em { font-style: italic; color: var(--muted); }
+  .progress-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 11px; color: var(--body); }
+  .progress-row strong { color: var(--ink); font-weight: 500; }
+  .track { height: 6px; background: #fff; border: 1px solid var(--hairline); border-radius: 9999px; overflow: hidden; margin-bottom: 10px; }
+  .fill { height: 100%; border-radius: 9999px; background: linear-gradient(90deg, #FC7750, #FF512A); }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 4px; padding: 4px 9px; border-radius: 9999px;
+    font-size: 10px; border: 1px solid var(--hairline); background: #fff; color: var(--muted); opacity: .7;
+  }
+  .chip svg { width: 12px; height: 12px; }
+  .chip.on { background: var(--chip-on); color: #fff; border-color: var(--chip-on); opacity: 1; }
+  .cta-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-top: 8px; border-top: 1px solid var(--divider); }
+  .hint { font-size: 11px; color: var(--body); line-height: 1.3; }
+  .btn {
+    background: var(--cta); color: #fff; font-size: 12px; font-weight: 300; padding: 5px 14px;
+    border-radius: 9999px; white-space: nowrap; cursor: pointer; border: 0; font-family: inherit;
+    box-shadow: 0 4px 12px rgba(72,98,238,0.22); display: inline-flex; align-items: center; gap: 2px;
+  }
+  .btn:hover { background: var(--cta-hover); }
+  .btn svg { width: 15px; height: 15px; }
+  .secondary { padding-top: 8px; text-align: center; }
+  .secondary a {
+    display: inline-flex; align-items: center; gap: 3px; font-size: 11px; color: var(--muted);
+    text-decoration: underline; text-underline-offset: 2px; text-decoration-color: rgba(84,84,84,0.4); cursor: pointer;
+  }
+  .secondary a:hover { color: var(--accent); }
+  .secondary svg { width: 14px; height: 14px; }
+
+  /* ---------- VipTierBadge ---------- */
+  .tier {
+    display: inline-flex; align-items: center; border-radius: 9999px; padding: 1px 6px;
+    font-size: 9px; font-weight: 500; line-height: 1.5; letter-spacing: 0.06em;
+    text-transform: uppercase; white-space: nowrap; border: 1px solid;
+  }
+  .tier.vip  { background: #D89A1F; color: #fff; border-color: #D89A1F; }
+  .tier.free { background: var(--menu-bg); color: var(--muted); border-color: #E8EAF0; }
+
+  /* ---------- Header ---------- */
+  .app-header {
+    background: #fff; border: 1px solid #E8EAF0; border-radius: 12px;
+    padding: 12px 14px; display: flex; align-items: center; justify-content: space-between;
+  }
+  .app-header .left { display: flex; align-items: center; min-width: 0; }
+  .avatar {
+    width: 44px; height: 44px; border-radius: 8px; flex-shrink: 0;
+    background: linear-gradient(135deg,#4862EE,#7C4DFF); display: grid; place-items: center;
+    color: #fff; font-size: 15px; font-weight: 600;
+  }
+  .app-header .names { display: flex; flex-direction: column; margin-left: 8px; min-width: 0; }
+  .name-row { display: flex; align-items: center; gap: 6px; min-width: 0; }
+  .store-name { font-size: 17px; font-weight: 400; color: var(--text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .by-line { font-size: 12px; font-weight: 300; color: var(--body); }
+  .header-icons { display: flex; gap: 6px; flex-shrink: 0; }
+  .icon-btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid #E8EAF0; display: grid; place-items: center; color: var(--grey-text); }
+  .icon-btn svg { width: 17px; height: 17px; }
+
+  /* ---------- VipLockBadge ---------- */
+  .lock-wrap { position: relative; display: inline-flex; }
+  .lock {
+    width: 22px; height: 22px; border-radius: 9999px; display: grid; place-items: center;
+    background: radial-gradient(circle at 35% 30%, #F5C84A, #D89A1F);
+    box-shadow: 0 1px 3px rgba(136,92,0,0.35); cursor: default;
+  }
+  .lock svg { width: 12px; height: 12px; color: #fff; }
+  .tip {
+    position: absolute; left: 50%; transform: translateX(-50%); z-index: 50;
+    white-space: nowrap; border-radius: 6px; background: var(--ink); color: var(--peach-bg);
+    font-size: 11px; padding: 5px 8px; top: calc(100% + 6px);
+    opacity: 0; pointer-events: none; transition: opacity .15s;
+  }
+  .tip.top { top: auto; bottom: calc(100% + 6px); }
+  .lock-wrap:hover .tip, .lock-wrap.is-open .tip { opacity: 1; }
+
+  /* ---------- ONDCOnboardingCard ---------- */
+  .ondc {
+    position: relative; overflow: hidden; background: var(--peach-bg);
+    border: 1px solid var(--ondc-border); border-radius: 16px; padding: 16px 14px 12px;
+  }
+  .ondc .eyebrow { display: block; margin: 6px 0 4px; }
+  .ondc h3 { font-size: 17px; font-weight: 500; color: var(--ink); line-height: 1.15; letter-spacing: -0.015em; margin: 0 0 4px; }
+  .ondc .desc { font-size: 11px; color: var(--body); line-height: 1.45; margin: 0 0 12px; font-weight: 300; }
+  .pan-row { display: flex; gap: 8px; margin-bottom: 6px; }
+  .pan-input {
+    flex: 1; border: 1.5px solid #E8EAF0; border-radius: 10px; padding: 11px 12px;
+    font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; min-width: 0;
+    background: #F1F2F5; color: #8A8A8A; cursor: not-allowed; font-family: inherit;
+  }
+  .pan-btn {
+    padding: 11px 16px; border-radius: 10px; font-size: 13px; color: #fff; min-width: 80px;
+    background: #D8DAE2; border: 0; cursor: not-allowed; font-family: inherit;
+  }
+  .locked-hint { display: flex; align-items: center; gap: 4px; font-size: 10px; padding: 0 2px 6px; color: var(--accent); }
+  .locked-hint svg { width: 10px; height: 10px; }
+  .ondc-lock { position: absolute; top: 12px; right: 12px; z-index: 10; }
+
+  /* ---------- Instagram connect ---------- */
+  .ig {
+    background: #fff; border: 1px solid #E8EAF0; border-radius: 12px; padding: 22px 18px; text-align: center;
+  }
+  .ig-icon {
+    width: 46px; height: 46px; border-radius: 12px; margin: 0 auto 12px; display: grid; place-items: center;
+    background: linear-gradient(135deg,#E1306C,#F77737);
+  }
+  .ig-icon svg { width: 24px; height: 24px; color: #fff; }
+  .ig h3 { font-size: 16px; font-weight: 400; color: var(--ink); margin: 0 0 6px; }
+  .ig p  { font-size: 13px; color: var(--grey-text); line-height: 1.5; margin: 0 0 6px; font-weight: 300; }
+  .ig .req { font-size: 11px; color: var(--muted); }
+  .ig-cta {
+    margin-top: 14px; width: 100%; background: var(--cta); color: #fff; border: 0; font-family: inherit;
+    padding: 11px; border-radius: 10px; font-size: 14px; cursor: pointer;
+  }
+  .ig-lock-row { display: flex; justify-content: center; margin-top: 20px; }
+
+  /* ---------- MenuCards / Settings ---------- */
+  .menu-list { display: flex; flex-direction: column; gap: 8px; }
+  .menu-row {
+    background: var(--menu-bg); border-radius: 8px; padding: 8px; display: flex; align-items: center; gap: 8px;
+  }
+  .menu-icon { width: 24px; height: 24px; display: grid; place-items: center; color: #21314a; flex-shrink: 0; }
+  .menu-icon svg { width: 18px; height: 18px; }
+  .menu-text { font-size: 14px; color: var(--text-color); }
+  .menu-row .lock-wrap { margin-left: auto; padding-left: 8px; }
+  .settings-title { font-size: 24px; font-weight: 500; color: var(--text-color); padding: 4px 0 14px; }
+
+  /* ---------- VipMembershipSection ---------- */
+  .vip-sec { border-radius: 16px; border: 1px solid var(--peach-border); background: var(--peach-bg); padding: 14px; }
+  .vip-sec.member { background: var(--green-bg); border-color: var(--green-border); }
+  .vip-sec-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .status-pill { font-size: 10px; font-weight: 500; padding: 4px 10px; border-radius: 9999px; }
+  .status-pill.on  { background: var(--ok); color: #fff; }
+  .status-pill.off { background: var(--muted); color: var(--peach-bg); }
+  .vip-sec h3 { font-size: 18px; font-weight: 500; color: var(--ink); line-height: 1.15; margin: 0 0 4px; display: flex; align-items: center; gap: 6px; }
+  .vip-sec .lead { font-size: 12px; color: var(--body); line-height: 1.45; margin: 0 0 12px; }
+  .benefits { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .benefits li { display: flex; align-items: flex-start; gap: 6px; font-size: 12px; color: var(--ink); }
+  .benefits svg { width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px; color: var(--ok); }
+  .benefits b { font-weight: 500; }
+
+  /* ---------- VipComparison ---------- */
+  .cmp { border: 1px solid rgba(31,33,46,0.10); border-radius: 12px; overflow: hidden; font-size: 11px; background: #fff; }
+  .cmp-row { display: grid; grid-template-columns: 1.15fr 1fr 1fr; }
+  .cmp-head { background: rgba(31,33,46,0.04); }
+  .cmp-head > div { padding: 7px 8px; font-weight: 500; color: var(--muted); }
+  .cmp-head .c-free { text-align: center; border-left: 1px solid var(--divider); }
+  .cmp-head .c-vip { text-align: center; font-weight: 600; color: var(--ink); background: rgba(245,200,74,0.18); border-left: 1px solid var(--divider); }
+  .cmp-body .cmp-row:nth-child(odd)  { background: rgba(31,33,46,0.015); }
+  .cmp-body .cmp-row:nth-child(even) { background: #fff; }
+  .cmp-body > .cmp-row > div { padding: 7px 8px; border-top: 1px solid var(--hairline); }
+  .c-label { color: var(--ink); font-weight: 500; }
+  .c-free { color: var(--muted); text-align: center; border-left: 1px solid var(--hairline); }
+  .c-vip  { color: var(--ink); text-align: center; background: rgba(245,200,74,0.10); border-left: 1px solid var(--hairline); }
+  .cell { display: inline-flex; align-items: flex-start; gap: 3px; justify-content: center; }
+  .cell span { text-align: left; }
+  .c-vip .cell span { font-weight: 500; }
+  .cell svg { flex-shrink: 0; margin-top: 1px; width: 13px; height: 13px; }
+  .ico-yes { color: var(--ok); } .ico-grey { color: #8A8A8A; } .ico-no { color: #C9553D; }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="page">
+    <h1>VIP Membership — UI Walkthrough</h1>
+    <p>Every screen built so far. Static HTML — no servers, no backend. Colours, copy and spacing copied from the live components.</p>
+    <nav class="nav">
+      <a href="#header">1. Store header</a>
+      <a href="#cards">2. Dashboard cards</a>
+      <a href="#locks">3. Lock badges</a>
+      <a href="#account">4. My Account</a>
+      <a href="#settings">5. Settings</a>
+    </nav>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ================= 1. STORE HEADER ================= -->
+<h2 class="section" id="header">1. Store header — tier badge</h2>
+<p class="section-note">
+  A small pill beside the store name, on every page with the header (Dashboard, Settings,
+  My Store) and in the My Account title row. It renders nothing while membership status is
+  still loading, so a paying member never sees “Free” flash.
+</p>
+
+<div class="two-up">
+  <div>
+    <div class="state-label">Free partner</div>
+    <div class="app-header">
+      <div class="left">
+        <div class="avatar">M</div>
+        <div class="names">
+          <div class="name-row">
+            <span class="store-name">Magicserve</span>
+            <span class="tier free">Free</span>
+          </div>
+          <span class="by-line">By Aayush Raj</span>
+        </div>
+      </div>
+      <div class="header-icons">
+        <span class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></span>
+        <span class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></span>
+      </div>
+    </div>
+    <p class="caption">Grey pill — <code>#ECEFF2</code> background, <code>#545454</code> text.</p>
+  </div>
+
+  <div>
+    <div class="state-label">VIP member</div>
+    <div class="app-header">
+      <div class="left">
+        <div class="avatar">M</div>
+        <div class="names">
+          <div class="name-row">
+            <span class="store-name">Magicserve</span>
+            <span class="tier vip">VIP</span>
+          </div>
+          <span class="by-line">By Aayush Raj</span>
+        </div>
+      </div>
+      <div class="header-icons">
+        <span class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></span>
+        <span class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></span>
+      </div>
+    </div>
+    <p class="caption">Gold pill — <code>#D89A1F</code> background, white text.</p>
+  </div>
+</div>
+
+<!-- ================= 2. DASHBOARD CARDS ================= -->
+<h2 class="section" id="cards">2. Dashboard cards — all 6 states</h2>
+<p class="section-note">
+  Cards 1–4 are the free earn-path (COD via prepaid orders) and each carries a quiet
+  “Or unlock instantly” link. Card 5 is the paid offer. Card 6 is the member state.
+  Only one card shows at a time, except that the paid offer can appear alongside a free card.
+</p>
+
+<div class="grid">
+
+  <!-- Card 1 -->
+  <div>
+    <div class="state-label">Card 1 — <code>d1</code></div>
+    <div class="card">
+      <svg class="wave" viewBox="0 0 600 18" preserveAspectRatio="none"><path d="M 0 18 L 0 12 Q 0 6 36 4 Q 70 0 100 6 Q 130 0 165 6 Q 200 0 234 6 Q 266 0 300 6 Q 334 0 366 6 Q 400 0 430 6 Q 462 0 494 4 Q 530 0 562 4 Q 600 6 600 12 L 600 18 Z" fill="#FC7750" opacity="0.32"/></svg>
+      <div class="card-head">
+        <div class="eyebrow-wrap">
+          <div class="crown"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 16L3 5l5.5 4L12 4l3.5 5L21 5l-2 11H5z"/></svg></div>
+          <span class="eyebrow">Unlock COD</span>
+        </div>
+        <span class="timer">14 days left</span>
+      </div>
+      <h3 class="headline">Your first prepaid order unlocks <span class="hl">VIP</span>.</h3>
+      <p class="sub">Get it in <strong>14 days</strong> - or complete <strong>3 orders</strong> anytime. <em>Same unlock, either way.</em></p>
+      <div class="progress-row"><span><strong>0</strong> of 1 prepaid orders</span></div>
+      <div class="track"><div class="fill" style="width:0%"></div></div>
+      <div class="chips">
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Phone Support</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>COD on your store</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>Special Margins</span>
+      </div>
+      <div class="cta-row">
+        <span class="hint">Share your store to get the first order.</span>
+        <button class="btn">Share store <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.01 11H4v2h12.01v3L20 12l-3.99-4z"/></svg></button>
+      </div>
+      <div class="secondary"><a>Or unlock instantly for ₹1499 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.01 11H4v2h12.01v3L20 12l-3.99-4z"/></svg></a></div>
+    </div>
+  </div>
+
+  <!-- Card 2 -->
+  <div>
+    <div class="state-label">Card 2 — <code>d8</code></div>
+    <div class="card">
+      <svg class="wave" viewBox="0 0 600 18" preserveAspectRatio="none"><path d="M 0 18 L 0 12 Q 0 6 36 4 Q 70 0 100 6 Q 130 0 165 6 Q 200 0 234 6 Q 266 0 300 6 Q 334 0 366 6 Q 400 0 430 6 Q 462 0 494 4 Q 530 0 562 4 Q 600 6 600 12 L 600 18 Z" fill="#FC7750" opacity="0.32"/></svg>
+      <div class="card-head">
+        <div class="eyebrow-wrap">
+          <div class="crown"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 16L3 5l5.5 4L12 4l3.5 5L21 5l-2 11H5z"/></svg></div>
+          <span class="eyebrow">Unlock COD</span>
+        </div>
+        <span class="timer">7 days left</span>
+      </div>
+      <h3 class="headline">Halfway there. <span class="hl">7 days left.</span></h3>
+      <p class="sub">Still 1 order away from the fast path - or <strong>3 orders</strong> anytime.</p>
+      <div class="progress-row"><span><strong>0</strong> of 1 prepaid orders</span></div>
+      <div class="track"><div class="fill" style="width:0%"></div></div>
+      <div class="chips">
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Phone Support</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>COD on your store</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>Special Margins</span>
+      </div>
+      <div class="cta-row">
+        <span class="hint">Your catalog is ready. Time to share.</span>
+        <button class="btn">Share store <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.01 11H4v2h12.01v3L20 12l-3.99-4z"/></svg></button>
+      </div>
+      <div class="secondary"><a>Or unlock instantly for ₹1499 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.01 11H4v2h12.01v3L20 12l-3.99-4z"/></svg></a></div>
+    </div>
+  </div>
+
+  <!-- Card 3 -->
+  <div>
+    <div class="state-label">Card 3 — <code>d14</code></div>
+    <div class="card">
+      <svg class="wave" viewBox="0 0 600 18" preserveAspectRatio="none"><path d="M 0 18 L 0 12 Q 0 6 36 4 Q 70 0 100 6 Q 130 0 165 6 Q 200 0 234 6 Q 266 0 300 6 Q 334 0 366 6 Q 400 0 430 6 Q 462 0 494 4 Q 530 0 562 4 Q 600 6 600 12 L 600 18 Z" fill="#FC7750" opacity="0.32"/></svg>
+      <div class="card-head">
+        <div class="eyebrow-wrap">
+          <div class="crown"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 16L3 5l5.5 4L12 4l3.5 5L21 5l-2 11H5z"/></svg></div>
+          <span class="eyebrow">Unlock COD</span>
+        </div>
+        <span class="timer expired">1 day left</span>
+      </div>
+      <h3 class="headline">Tomorrow the <span class="hl">fast path</span> closes.</h3>
+      <p class="sub">Get <strong>1 prepaid order</strong> today to unlock VIP instantly.</p>
+      <div class="progress-row"><span><strong>0</strong> of 1 prepaid orders</span></div>
+      <div class="track"><div class="fill" style="width:0%"></div></div>
+      <div class="chips">
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Phone Support</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>COD on your store</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>Special Margins</span>
+      </div>
+      <div class="cta-row">
+        <span class="hint">Push one DM today. One order unlocks it.</span>
+        <button class="btn">Share store <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.01 11H4v2h12.01v3L20 12l-3.99-4z"/></svg></button>
+      </div>
+      <div class="secondary"><a>Or unlock instantly for ₹1499 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.01 11H4v2h12.01v3L20 12l-3.99-4z"/></svg></a></div>
+    </div>
+  </div>
+
+  <!-- Card 4 -->
+  <div>
+    <div class="state-label">Card 4 — <code>d16-0</code></div>
+    <div class="card">
+      <svg class="wave" viewBox="0 0 600 18" preserveAspectRatio="none"><path d="M 0 18 L 0 12 Q 0 6 36 4 Q 70 0 100 6 Q 130 0 165 6 Q 200 0 234 6 Q 266 0 300 6 Q 334 0 366 6 Q 400 0 430 6 Q 462 0 494 4 Q 530 0 562 4 Q 600 6 600 12 L 600 18 Z" fill="#FC7750" opacity="0.32"/></svg>
+      <div class="card-head">
+        <div class="eyebrow-wrap">
+          <div class="crown"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 16L3 5l5.5 4L12 4l3.5 5L21 5l-2 11H5z"/></svg></div>
+          <span class="eyebrow">Unlock COD</span>
+        </div>
+        <span class="timer expired">Fast path ended</span>
+      </div>
+      <h3 class="headline">Steady path to <span class="hl">VIP</span>.</h3>
+      <p class="sub"><strong>3 prepaid orders</strong> anytime unlocks Phone Support + COD.</p>
+      <div class="progress-row"><span><strong>0</strong> of 3 prepaid orders</span></div>
+      <div class="track"><div class="fill" style="width:0%"></div></div>
+      <div class="chips">
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Phone Support</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>COD on your store</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>Special Margins</span>
+      </div>
+      <div class="cta-row">
+        <span class="hint">Keep posting. Each prepaid order counts.</span>
+        <button class="btn">Share store <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.01 11H4v2h12.01v3L20 12l-3.99-4z"/></svg></button>
+      </div>
+      <div class="secondary"><a>Or unlock instantly for ₹1499 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.01 11H4v2h12.01v3L20 12l-3.99-4z"/></svg></a></div>
+    </div>
+  </div>
+
+  <!-- Card 5 -->
+  <div>
+    <div class="state-label">Card 5 — <code>paidOffer</code></div>
+    <div class="card">
+      <svg class="wave" viewBox="0 0 600 18" preserveAspectRatio="none"><path d="M 0 18 L 0 12 Q 0 6 36 4 Q 70 0 100 6 Q 130 0 165 6 Q 200 0 234 6 Q 266 0 300 6 Q 334 0 366 6 Q 400 0 430 6 Q 462 0 494 4 Q 530 0 562 4 Q 600 6 600 12 L 600 18 Z" fill="#FC7750" opacity="0.32"/></svg>
+      <div class="card-head">
+        <div class="eyebrow-wrap">
+          <div class="crown"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 16L3 5l5.5 4L12 4l3.5 5L21 5l-2 11H5z"/></svg></div>
+          <span class="eyebrow">Unlock VIP</span>
+        </div>
+        <span class="timer">One-time</span>
+      </div>
+      <h3 class="headline">Skip the wait. Unlock <span class="hl">VIP</span> today.</h3>
+      <p class="sub">One-time <strong>₹1499</strong> - yours for life. <em>Nothing to renew.</em></p>
+      <div class="chips">
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Phone Support</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>COD on your store</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>Special Margins</span>
+      </div>
+      <div class="cta-row">
+        <span class="hint">Phone Support, COD and Special Margins, straight away.</span>
+        <button class="btn">Pay ₹1499 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.01 11H4v2h12.01v3L20 12l-3.99-4z"/></svg></button>
+      </div>
+    </div>
+    <p class="caption">Compact: no progress bar, no secondary link, no comparison table.</p>
+  </div>
+
+  <!-- Card 6 -->
+  <div>
+    <div class="state-label">Card 6 — <code>vipUnlocked</code></div>
+    <div class="card unlocked">
+      <svg class="wave" viewBox="0 0 600 18" preserveAspectRatio="none"><path d="M 0 18 L 0 12 Q 0 6 36 4 Q 70 0 100 6 Q 130 0 165 6 Q 200 0 234 6 Q 266 0 300 6 Q 334 0 366 6 Q 400 0 430 6 Q 462 0 494 4 Q 530 0 562 4 Q 600 6 600 12 L 600 18 Z" fill="#FC7750" opacity="0.32"/></svg>
+      <div class="card-head">
+        <div class="eyebrow-wrap">
+          <div class="crown"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 16L3 5l5.5 4L12 4l3.5 5L21 5l-2 11H5z"/></svg></div>
+          <span class="eyebrow">VIP member</span>
+        </div>
+        <span class="timer">Active</span>
+      </div>
+      <h3 class="headline">You unlocked <span class="hl">VIP</span>.</h3>
+      <p class="sub">Your membership is <strong>active for life</strong>. <em>Nothing to renew.</em></p>
+      <div class="chips">
+        <span class="chip on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Phone Support</span>
+        <span class="chip on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>COD on your store</span>
+        <span class="chip on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>Special Margins</span>
+      </div>
+      <div class="cta-row">
+        <span class="hint">Phone Support, COD and Special Margins are live on your store.</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ================= 3. LOCK BADGES ================= -->
+<h2 class="section" id="locks">3. Lock badges — where they appear</h2>
+<p class="section-note">
+  Informational only. Hover a lock to see its tooltip; clicking does nothing and never opens
+  payment. Each badge hides itself for VIP members and for grandfathered partners — an
+  existing ONDC listing, a connected Instagram account, a domain already set up.
+  <strong>VIP is purchasable from exactly two places: the dashboard offer card and My Account.</strong>
+</p>
+
+<div class="grid">
+
+  <div>
+    <div class="state-label">ONDC card — lock top-right</div>
+    <div class="ondc">
+      <svg class="wave" viewBox="0 0 600 16" preserveAspectRatio="none" style="height:16px"><path d="M 0 16 L 0 11 Q 0 6 36 4 Q 70 0 100 6 Q 130 0 165 6 Q 200 0 234 6 Q 266 0 300 6 Q 334 0 366 6 Q 400 0 430 6 Q 462 0 494 4 Q 530 0 562 4 Q 600 6 600 11 L 600 16 Z" fill="#FC7750" opacity="0.32"/></svg>
+      <span class="ondc-lock">
+        <span class="lock-wrap is-open">
+          <span class="lock"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17a2 2 0 0 0 2-2 2 2 0 0 0-4 0 2 2 0 0 0 2 2zm6-7h-1V7a5 5 0 0 0-10 0v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zM9 7a3 3 0 0 1 6 0v3H9V7z"/></svg></span>
+          <span class="tip">Unlock VIP to access ONDC listing</span>
+        </span>
+      </span>
+      <span class="eyebrow">One PAN - no paperwork</span>
+      <h3>Go live on <span style="color:var(--accent)">15+</span> ONDC shopping apps</h3>
+      <p class="desc">Reach buyers beyond Instagram. Listed across Grouponova, Hamaramall, Mystore, Order Bazaar, EasyPay and more.</p>
+      <div class="pan-row">
+        <input class="pan-input" value="" placeholder="ABCDE1234F" disabled>
+        <button class="pan-btn" disabled>Submit PAN</button>
+      </div>
+      <div class="locked-hint">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17a2 2 0 0 0 2-2 2 2 0 0 0-4 0 2 2 0 0 0 2 2zm6-7h-1V7a5 5 0 0 0-10 0v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zM9 7a3 3 0 0 1 6 0v3H9V7z"/></svg>
+        <span>Unlock VIP to access ONDC listing</span>
+      </div>
+    </div>
+    <p class="caption">Tooltip pinned open here for the demo. PAN input and Submit are disabled for non-VIP.</p>
+  </div>
+
+  <div>
+    <div class="state-label">Instagram Auto-DM — lock below</div>
+    <div class="ig">
+      <div class="ig-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
+      <h3>Turn comments into DMs, automatically</h3>
+      <p>When a shopper comments a keyword on your post or reel — like “price” — we instantly send them a DM with your product link. You set it up once.</p>
+      <p class="req">Needs an Instagram Professional account (Business or Creator).</p>
+      <button class="ig-cta">Connect Instagram</button>
+      <div class="ig-lock-row">
+        <span class="lock-wrap">
+          <span class="lock"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17a2 2 0 0 0 2-2 2 2 0 0 0-4 0 2 2 0 0 0 2 2zm6-7h-1V7a5 5 0 0 0-10 0v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zM9 7a3 3 0 0 1 6 0v3H9V7z"/></svg></span>
+          <span class="tip top">Unlock VIP to access Instagram Auto-DM</span>
+        </span>
+      </div>
+    </div>
+    <p class="caption">Hover the lock. The dashboard shortcut also refuses to navigate for non-VIP.</p>
+  </div>
+
+  <div>
+    <div class="state-label">Settings row — lock on the right</div>
+    <div class="menu-list">
+      <div class="menu-row">
+        <span class="menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+        <span class="menu-text">Custom Domain</span>
+        <span class="lock-wrap">
+          <span class="lock"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17a2 2 0 0 0 2-2 2 2 0 0 0-4 0 2 2 0 0 0 2 2zm6-7h-1V7a5 5 0 0 0-10 0v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zM9 7a3 3 0 0 1 6 0v3H9V7z"/></svg></span>
+          <span class="tip top">Unlock VIP to connect your custom domain</span>
+        </span>
+      </div>
+    </div>
+    <p class="caption">A locked row is inert — it neither navigates nor opens payment.</p>
+  </div>
+
+</div>
+
+<!-- ================= 4. MY ACCOUNT ================= -->
+<h2 class="section" id="account">4. My Account — the two states</h2>
+<p class="section-note">
+  Sits below the account details and above the Affiliate Store toggle. The two states are
+  strictly exclusive: a member sees the benefits list, a non-member sees the comparison and
+  the buy button. Never both.
+</p>
+
+<div class="two-up">
+
+  <div>
+    <div class="state-label">Not a member</div>
+    <div class="vip-sec">
+      <div class="vip-sec-head">
+        <span class="eyebrow">VIP Membership</span>
+        <span class="status-pill off">Not active</span>
+      </div>
+      <h3>Unlock VIP</h3>
+      <p class="lead">One-time ₹1499 — yours for life. Here is what changes:</p>
+
+      <div class="cmp">
+        <div class="cmp-row cmp-head"><div>Benefit</div><div class="c-free">Free</div><div class="c-vip">VIP</div></div>
+        <div class="cmp-body">
+          <div class="cmp-row"><div class="c-label">Cash on Delivery</div><div class="c-free"><span class="cell"><svg class="ico-grey" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg><span>Only after 3 prepaid orders</span></span></div><div class="c-vip"><span class="cell"><svg class="ico-yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg><span>From day 1</span></span></div></div>
+          <div class="cmp-row"><div class="c-label">Support</div><div class="c-free"><span class="cell"><svg class="ico-grey" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg><span>Live chat only</span></span></div><div class="c-vip"><span class="cell"><svg class="ico-yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg><span>Priority phone support</span></span></div></div>
+          <div class="cmp-row"><div class="c-label">Margin</div><div class="c-free"><span class="cell"><svg class="ico-grey" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg><span>Standard</span></span></div><div class="c-vip"><span class="cell"><svg class="ico-yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg><span>Extra margin on eligible products</span></span></div></div>
+          <div class="cmp-row"><div class="c-label">Customer engagement</div><div class="c-free"><span class="cell"><svg class="ico-no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6 6 18M6 6l12 12"/></svg><span>Not included</span></span></div><div class="c-vip"><span class="cell"><svg class="ico-yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg><span>Abandoned-cart &amp; WhatsApp flows</span></span></div></div>
+          <div class="cmp-row"><div class="c-label">ONDC listing</div><div class="c-free"><span class="cell"><svg class="ico-no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6 6 18M6 6l12 12"/></svg><span>Not included</span></span></div><div class="c-vip"><span class="cell"><svg class="ico-yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg><span>Included</span></span></div></div>
+          <div class="cmp-row"><div class="c-label">Instagram Auto-DM</div><div class="c-free"><span class="cell"><svg class="ico-no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6 6 18M6 6l12 12"/></svg><span>Not included</span></span></div><div class="c-vip"><span class="cell"><svg class="ico-yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg><span>Included</span></span></div></div>
+          <div class="cmp-row"><div class="c-label">Custom domain</div><div class="c-free"><span class="cell"><svg class="ico-no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6 6 18M6 6l12 12"/></svg><span>Not available</span></span></div><div class="c-vip"><span class="cell"><svg class="ico-yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg><span>Available</span></span></div></div>
+          <div class="cmp-row"><div class="c-label">Product catalog</div><div class="c-free"><span class="cell"><svg class="ico-grey" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg><span>Up to 25 products</span></span></div><div class="c-vip"><span class="cell"><svg class="ico-yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg><span>Unlimited products</span></span></div></div>
+        </div>
+      </div>
+
+      <div class="cta-row" style="margin-top:12px;border-top:0;padding-top:0">
+        <span class="hint">One-time payment. No renewals.</span>
+        <button class="btn" style="padding:7px 14px">Unlock VIP ₹1499 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.01 11H4v2h12.01v3L20 12l-3.99-4z"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="state-label">VIP member</div>
+    <div class="vip-sec member">
+      <div class="vip-sec-head">
+        <span class="eyebrow">VIP Membership</span>
+        <span class="status-pill on">Active</span>
+      </div>
+      <h3><svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;color:var(--ok)"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 15l-5-5 1.4-1.4L11 14.2l6.6-6.6L19 9l-8 8z"/></svg> VIP Member</h3>
+      <p class="lead">Your membership is active for life. Nothing to renew.</p>
+      <ul class="benefits">
+        <li><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 15l-5-5 1.4-1.4L11 14.2l6.6-6.6L19 9l-8 8z"/></svg><span><b>Cash on Delivery</b> — From day 1</span></li>
+        <li><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 15l-5-5 1.4-1.4L11 14.2l6.6-6.6L19 9l-8 8z"/></svg><span><b>Support</b> — Priority phone support</span></li>
+        <li><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 15l-5-5 1.4-1.4L11 14.2l6.6-6.6L19 9l-8 8z"/></svg><span><b>Margin</b> — Extra margin on eligible products</span></li>
+        <li><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 15l-5-5 1.4-1.4L11 14.2l6.6-6.6L19 9l-8 8z"/></svg><span><b>Customer engagement</b> — Abandoned-cart &amp; WhatsApp flows</span></li>
+        <li><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 15l-5-5 1.4-1.4L11 14.2l6.6-6.6L19 9l-8 8z"/></svg><span><b>ONDC listing</b> — Included</span></li>
+        <li><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 15l-5-5 1.4-1.4L11 14.2l6.6-6.6L19 9l-8 8z"/></svg><span><b>Instagram Auto-DM</b> — Included</span></li>
+        <li><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 15l-5-5 1.4-1.4L11 14.2l6.6-6.6L19 9l-8 8z"/></svg><span><b>Custom domain</b> — Available</span></li>
+        <li><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 15l-5-5 1.4-1.4L11 14.2l6.6-6.6L19 9l-8 8z"/></svg><span><b>Product catalog</b> — Unlimited products</span></li>
+      </ul>
+    </div>
+    <p class="caption">No comparison table in this state — the benefits list replaces it.</p>
+  </div>
+
+</div>
+
+<!-- ================= 5. SETTINGS ================= -->
+<h2 class="section" id="settings">5. Settings page</h2>
+<p class="section-note">
+  The membership section was removed from Settings — it lives on My Account now. Settings
+  keeps the plain menu, with a lock on Custom Domain and the tier badge in the header.
+</p>
+
+<div class="phone">
+  <div class="app-header" style="margin-bottom:16px">
+    <div class="left">
+      <div class="avatar">M</div>
+      <div class="names">
+        <div class="name-row">
+          <span class="store-name">Magicserve</span>
+          <span class="tier free">Free</span>
+        </div>
+        <span class="by-line">By Aayush Raj</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="settings-title">Settings</div>
+
+  <div class="menu-list">
+    <div class="menu-row">
+      <span class="menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+      <span class="menu-text">My Account</span>
+    </div>
+    <div class="menu-row">
+      <span class="menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+      <span class="menu-text">About You</span>
+    </div>
+    <div class="menu-row">
+      <span class="menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></span>
+      <span class="menu-text">Notification Preference</span>
+    </div>
+    <div class="menu-row">
+      <span class="menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+      <span class="menu-text">Custom Domain</span>
+      <span class="lock-wrap">
+        <span class="lock"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17a2 2 0 0 0 2-2 2 2 0 0 0-4 0 2 2 0 0 0 2 2zm6-7h-1V7a5 5 0 0 0-10 0v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zM9 7a3 3 0 0 1 6 0v3H9V7z"/></svg></span>
+        <span class="tip top">Unlock VIP to connect your custom domain</span>
+      </span>
+    </div>
+    <div class="menu-row">
+      <span class="menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></span>
+      <span class="menu-text">My Bank Account</span>
+    </div>
+    <div class="menu-row">
+      <span class="menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 1 1 4 2.8c-.8.3-1.1.9-1.1 1.7v.5"/><line x1="12" y1="17" x2="12" y2="17"/></svg></span>
+      <span class="menu-text">Your Questions Answered</span>
+    </div>
+    <div class="menu-row">
+      <span class="menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
+      <span class="menu-text">Logout</span>
+    </div>
+  </div>
+  <p class="caption">Only Custom Domain is locked. The tier badge sits beside the store name above.</p>
+</div>
+
+</div>
+</body>
+</html>
