@@ -347,6 +347,7 @@
       <a href="#account">4. My Account</a>
       <a href="#settings">5. Settings</a>
       <a href="#coupon">6. Coupon</a>
+      <a href="#domain">7. Custom Domain</a>
     </nav>
   </div>
 </div>
@@ -928,6 +929,49 @@
       </div>
     </div>
     <p class="caption">The price never moves until a code is confirmed by the server.</p>
+  </div>
+
+</div>
+
+<!-- ================= 7. CUSTOM DOMAIN ================= -->
+<h2 class="section" id="domain">7. Custom Domain — locked vs unlocked</h2>
+<p class="section-note">
+  The Settings row a partner reaches Custom Domain through, in both states. The rows are
+  deliberately identical apart from the lock — that is the whole gate, and it is the only
+  thing a partner sees change when they buy.
+  <br><br>
+  The locked row is <strong>inert</strong>: it neither navigates nor opens payment. The lock is
+  informational, and VIP is purchasable from exactly two places — the dashboard offer card and
+  My Account. A partner who <strong>already has a domain set up is grandfathered</strong>: they
+  keep it and see the unlocked row, whether or not they ever pay.
+</p>
+
+<div class="two-up">
+
+  <div>
+    <div class="state-label">Non-VIP — <code>hasVipMembership = false</code></div>
+    <div class="menu-list">
+      <div class="menu-row">
+        <span class="menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+        <span class="menu-text">Custom Domain</span>
+        <span class="lock-wrap is-open">
+          <span class="lock"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17a2 2 0 0 0 2-2 2 2 0 0 0-4 0 2 2 0 0 0 2 2zm6-7h-1V7a5 5 0 0 0-10 0v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zM9 7a3 3 0 0 1 6 0v3H9V7z"/></svg></span>
+          <span class="tip top">Unlock VIP to connect your custom domain</span>
+        </span>
+      </div>
+    </div>
+    <p class="caption">Tooltip pinned open for the demo; in the app it appears on hover. Tapping the row does nothing.</p>
+  </div>
+
+  <div>
+    <div class="state-label">VIP member — <code>hasVipMembership = true</code></div>
+    <div class="menu-list">
+      <div class="menu-row">
+        <span class="menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+        <span class="menu-text">Custom Domain</span>
+      </div>
+    </div>
+    <p class="caption">No lock, no tooltip. The row behaves like every other Settings row and opens the domain screen.</p>
   </div>
 
 </div>
