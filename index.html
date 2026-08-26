@@ -253,6 +253,85 @@
   .c-vip .cell span { font-weight: 500; }
   .cell svg { flex-shrink: 0; margin-top: 1px; width: 13px; height: 13px; }
   .ico-yes { color: var(--ok); } .ico-grey { color: #8A8A8A; } .ico-no { color: #C9553D; }
+
+  /* ---------- 6. coupon (Phase 5) ---------- */
+  .coupon-block { margin-top: 14px; padding-top: 13px; border-top: 1px solid var(--divider); }
+  .coupon-label {
+    font-size: 11px; font-weight: 600; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 7px;
+  }
+  .coupon-row { display: flex; gap: 8px; align-items: stretch; }
+  .coupon-input {
+    flex: 1; min-width: 0; font: inherit; font-size: 13px; color: var(--ink);
+    background: #fff; border: 1px solid rgba(31,33,46,0.16); border-radius: 9px;
+    padding: 8px 11px; letter-spacing: 0.02em;
+  }
+  .coupon-input::placeholder { color: #9AA3AD; letter-spacing: 0; }
+  .coupon-input.filled { border-color: rgba(47,158,68,0.45); font-weight: 600; }
+  .coupon-input.bad { border-color: rgba(201,85,61,0.5); }
+  .coupon-apply {
+    font: inherit; font-size: 13px; font-weight: 600; white-space: nowrap; cursor: default;
+    background: var(--cta); color: #fff; border: 0; border-radius: 9px; padding: 8px 15px;
+  }
+  .coupon-apply.ghost { background: #fff; color: var(--cta); border: 1px solid rgba(72,98,238,0.35); }
+
+  /* applied confirmation strip */
+  .coupon-applied {
+    display: flex; align-items: center; gap: 8px; margin-top: 9px;
+    background: var(--green-bg); border: 1px solid var(--green-border);
+    border-radius: 9px; padding: 8px 11px; font-size: 12.5px; color: #1E5B2A;
+  }
+  .coupon-applied svg { width: 15px; height: 15px; flex: none; color: var(--ok); }
+  .coupon-applied b { font-weight: 600; }
+  .coupon-error {
+    display: flex; align-items: center; gap: 8px; margin-top: 9px;
+    background: #FDF0ED; border: 1px solid rgba(201,85,61,0.24);
+    border-radius: 9px; padding: 8px 11px; font-size: 12.5px; color: #97402C;
+  }
+  .coupon-error svg { width: 15px; height: 15px; flex: none; color: #C9553D; }
+
+  /* price line: 1499 -> 999 */
+  .price-line { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .price-was { font-size: 15px; color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1.5px; }
+  .price-arrow { color: var(--muted); font-size: 13px; }
+  .price-now { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); }
+  .price-save {
+    font-size: 11px; font-weight: 700; color: #1E5B2A; background: var(--green-bg);
+    border: 1px solid var(--green-border); border-radius: 9999px; padding: 3px 9px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+
+  /* wallet credit (already-VIP path) */
+  .wallet-card {
+    margin-top: 12px; background: #fff; border: 1px solid var(--hairline);
+    border-radius: 12px; padding: 13px 14px;
+  }
+  .wallet-head { display: flex; align-items: center; gap: 9px; margin-bottom: 11px; }
+  .wallet-ico {
+    width: 30px; height: 30px; border-radius: 8px; flex: none; display: grid; place-items: center;
+    background: var(--green-bg); border: 1px solid var(--green-border); color: var(--ok);
+  }
+  .wallet-ico svg { width: 16px; height: 16px; }
+  .wallet-title { font-size: 13px; font-weight: 600; color: var(--ink); }
+  .wallet-sub { font-size: 11.5px; color: var(--muted); margin-top: 1px; }
+  .wallet-math { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .wallet-fig { display: flex; flex-direction: column; gap: 2px; }
+  .wallet-fig .k { font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .wallet-fig .v { font-size: 16px; font-weight: 600; color: var(--ink); }
+  .wallet-fig .v.up { color: var(--ok); }
+  .wallet-plus { font-size: 15px; color: var(--muted); align-self: end; padding-bottom: 2px; }
+
+  /* the two-outcome explainer */
+  .fork { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin: 4px 0 22px; }
+  .fork-card { background: #fff; border: 1px solid var(--hairline); border-radius: 12px; padding: 14px 15px; }
+  .fork-when {
+    font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em;
+    color: var(--muted); margin-bottom: 6px;
+  }
+  .fork-what { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 5px; }
+  .fork-why { font-size: 12.5px; color: var(--muted); line-height: 1.5; margin: 0; }
+  .fork-card.a { border-left: 3px solid var(--cta); }
+  .fork-card.b { border-left: 3px solid var(--ok); }
 </style>
 </head>
 <body>
@@ -260,13 +339,14 @@
 <div class="masthead">
   <div class="page">
     <h1>VIP Membership — UI Walkthrough</h1>
-    <p>Every screen built so far. Static HTML — no servers, no backend. Colours, copy and spacing copied from the live components.</p>
+    <p>Every screen built so far, plus the Phase 5 coupon flow. Static HTML — no servers, no backend. Colours, copy and spacing copied from the live components.</p>
     <nav class="nav">
       <a href="#header">1. Store header</a>
       <a href="#cards">2. Dashboard cards</a>
       <a href="#locks">3. Lock badges</a>
       <a href="#account">4. My Account</a>
       <a href="#settings">5. Settings</a>
+      <a href="#coupon">6. Coupon</a>
     </nav>
   </div>
 </div>
@@ -331,6 +411,10 @@
   Cards 1–4 are the free earn-path (COD via prepaid orders) and each carries a quiet
   “Or unlock instantly” link. Card 5 is the paid offer. Card 6 is the member state.
   Only one card shows at a time, except that the paid offer can appear alongside a free card.
+  <br><br>
+  <strong>The free path earns COD and nothing else.</strong> Phone Support and Special Margins
+  are paid-VIP perks, so they appear only on Cards 5 and 6 — the free cards used to show all
+  three badges, which promised more than the free tier delivers.
 </p>
 
 <div class="grid">
@@ -352,9 +436,7 @@
       <div class="progress-row"><span><strong>0</strong> of 1 prepaid orders</span></div>
       <div class="track"><div class="fill" style="width:0%"></div></div>
       <div class="chips">
-        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Phone Support</span>
         <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>COD on your store</span>
-        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>Special Margins</span>
       </div>
       <div class="cta-row">
         <span class="hint">Share your store to get the first order.</span>
@@ -381,9 +463,7 @@
       <div class="progress-row"><span><strong>0</strong> of 1 prepaid orders</span></div>
       <div class="track"><div class="fill" style="width:0%"></div></div>
       <div class="chips">
-        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Phone Support</span>
         <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>COD on your store</span>
-        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>Special Margins</span>
       </div>
       <div class="cta-row">
         <span class="hint">Your catalog is ready. Time to share.</span>
@@ -410,9 +490,7 @@
       <div class="progress-row"><span><strong>0</strong> of 1 prepaid orders</span></div>
       <div class="track"><div class="fill" style="width:0%"></div></div>
       <div class="chips">
-        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Phone Support</span>
         <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>COD on your store</span>
-        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>Special Margins</span>
       </div>
       <div class="cta-row">
         <span class="hint">Push one DM today. One order unlocks it.</span>
@@ -435,13 +513,11 @@
         <span class="timer expired">Fast path ended</span>
       </div>
       <h3 class="headline">Steady path to <span class="hl">VIP</span>.</h3>
-      <p class="sub"><strong>3 prepaid orders</strong> anytime unlocks Phone Support + COD.</p>
+      <p class="sub"><strong>3 prepaid orders</strong> anytime unlocks COD.</p>
       <div class="progress-row"><span><strong>0</strong> of 3 prepaid orders</span></div>
       <div class="track"><div class="fill" style="width:0%"></div></div>
       <div class="chips">
-        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Phone Support</span>
         <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>COD on your store</span>
-        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>Special Margins</span>
       </div>
       <div class="cta-row">
         <span class="hint">Keep posting. Each prepaid order counts.</span>
@@ -700,6 +776,160 @@
     </div>
   </div>
   <p class="caption">Only Custom Domain is locked. The tier badge sits beside the store name above.</p>
+</div>
+
+<!-- ================= 6. COUPON ================= -->
+<h2 class="section" id="coupon">6. Coupon — <code style="font-size:0.82em;background:rgba(31,33,46,0.07);padding:2px 7px;border-radius:5px">Training500</code></h2>
+<p class="section-note">
+  Partners who finish the training course get a ₹500 code. The same code does two different
+  things depending on whether they have already paid — which is the part worth agreeing on
+  before this ships.
+</p>
+
+<div class="fork">
+  <div class="fork-card a">
+    <div class="fork-when">If they have not paid yet</div>
+    <div class="fork-what">₹500 off the fee — they pay ₹999</div>
+    <p class="fork-why">
+      The discount is applied when the payment order is created, so the partner is only ever
+      charged ₹999. Nothing is paid out by us.
+    </p>
+  </div>
+  <div class="fork-card b">
+    <div class="fork-when">If they already paid ₹1499</div>
+    <div class="fork-what">₹500 credited to their wallet</div>
+    <p class="fork-why">
+      There is nothing left to sell them, so the value goes to their Wcommerce wallet as
+      withdrawable cash. Limited to once per partner, ever.
+    </p>
+  </div>
+</div>
+
+<div class="two-up">
+
+  <!-- ---- A. not a member: discount ---- -->
+  <div>
+    <div class="state-label">Not a member — code applied</div>
+    <div class="vip-sec">
+      <div class="vip-sec-head">
+        <span class="eyebrow">VIP Membership</span>
+        <span class="status-pill off">Not active</span>
+      </div>
+      <h3>Unlock VIP</h3>
+      <p class="lead">One-time payment — yours for life. No renewals.</p>
+
+      <div class="coupon-block">
+        <div class="coupon-label">Have a coupon?</div>
+        <div class="coupon-row">
+          <input class="coupon-input filled" value="Training500" readonly aria-label="Coupon code">
+          <button class="coupon-apply ghost" type="button">Applied</button>
+        </div>
+        <div class="coupon-applied">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 15l-5-5 1.4-1.4L11 14.2l6.6-6.6L19 9l-8 8z"/></svg>
+          <span><b>Training500</b> applied — ₹500 off</span>
+        </div>
+
+        <div class="price-line">
+          <span class="price-was">₹1,499</span>
+          <span class="price-arrow">→</span>
+          <span class="price-now">₹999</span>
+          <span class="price-save">You save ₹500</span>
+        </div>
+      </div>
+
+      <div class="cta-row" style="margin-top:13px;border-top:0;padding-top:0">
+        <span class="hint">One-time payment. No renewals.</span>
+        <button class="btn" style="padding:7px 14px">Pay ₹999 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.01 11H4v2h12.01v3L20 12l-3.99-4z"/></svg></button>
+      </div>
+    </div>
+    <p class="caption">The button follows the coupon — it reads ₹1499 until a code is applied.</p>
+  </div>
+
+  <!-- ---- B. already a member: wallet credit ---- -->
+  <div>
+    <div class="state-label">Already a VIP member — code applied</div>
+    <div class="vip-sec member">
+      <div class="vip-sec-head">
+        <span class="eyebrow">VIP Membership</span>
+        <span class="status-pill on">Active</span>
+      </div>
+      <h3><svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;color:var(--ok)"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 15l-5-5 1.4-1.4L11 14.2l6.6-6.6L19 9l-8 8z"/></svg> VIP Member</h3>
+      <p class="lead">You already paid ₹1,499, so your coupon becomes wallet cash instead.</p>
+
+      <div class="coupon-block">
+        <div class="coupon-label">Have a coupon?</div>
+        <div class="coupon-row">
+          <input class="coupon-input filled" value="Training500" readonly aria-label="Coupon code">
+          <button class="coupon-apply ghost" type="button">Applied</button>
+        </div>
+
+        <div class="wallet-card">
+          <div class="wallet-head">
+            <span class="wallet-ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>
+            </span>
+            <div>
+              <div class="wallet-title">₹500 credited to your wallet</div>
+              <div class="wallet-sub">Withdrawable, same as your earnings</div>
+            </div>
+          </div>
+          <div class="wallet-math">
+            <span class="wallet-fig"><span class="k">Before</span><span class="v">₹2,150</span></span>
+            <span class="wallet-plus">+</span>
+            <span class="wallet-fig"><span class="k">Coupon</span><span class="v up">₹500</span></span>
+            <span class="wallet-plus">=</span>
+            <span class="wallet-fig"><span class="k">Balance</span><span class="v up">₹2,650</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">No payment screen on this path — nothing is charged, the balance just goes up.</p>
+  </div>
+
+</div>
+
+<div class="two-up" style="margin-top:26px">
+
+  <div>
+    <div class="state-label">Before a code is entered</div>
+    <div class="vip-sec">
+      <div class="coupon-block" style="border-top:0;margin-top:0;padding-top:0">
+        <div class="coupon-label">Have a coupon?</div>
+        <div class="coupon-row">
+          <input class="coupon-input" placeholder="Enter coupon code" readonly aria-label="Coupon code">
+          <button class="coupon-apply" type="button">Apply</button>
+        </div>
+        <div class="price-line">
+          <span class="price-now">₹1,499</span>
+          <span class="price-arrow">one-time</span>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Optional field — leaving it empty is the normal path and charges ₹1,499.</p>
+  </div>
+
+  <div>
+    <div class="state-label">Code not recognised</div>
+    <div class="vip-sec">
+      <div class="coupon-block" style="border-top:0;margin-top:0;padding-top:0">
+        <div class="coupon-label">Have a coupon?</div>
+        <div class="coupon-row">
+          <input class="coupon-input bad" value="TRAINING499" readonly aria-label="Coupon code">
+          <button class="coupon-apply" type="button">Apply</button>
+        </div>
+        <div class="coupon-error">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-2h2zm0-4h-2V7h2z"/></svg>
+          <span>This coupon code is not valid.</span>
+        </div>
+        <div class="price-line">
+          <span class="price-now">₹1,499</span>
+          <span class="price-arrow">unchanged</span>
+        </div>
+      </div>
+    </div>
+    <p class="caption">The price never moves until a code is confirmed by the server.</p>
+  </div>
+
 </div>
 
 </div>
