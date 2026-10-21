@@ -1,0 +1,804 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Crafts Archive · Password Login Prototype</title>
+<style>
+@font-face{font-family:"Geomanist";src:url("Geomanist-Light.woff2") format("woff2");font-weight:300}
+@font-face{font-family:"Geomanist";src:url("Geomanist-Regular.woff2") format("woff2");font-weight:400}
+@font-face{font-family:"Geomanist";src:url("Geomanist-Medium.woff2") format("woff2");font-weight:500}
+*{box-sizing:border-box}
+body{margin:0;background:#ECEFF2;font-family:Geomanist,Manrope,system-ui,"Segoe UI",sans-serif;color:#1F212E}
+button{font-family:inherit;cursor:pointer}
+button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.hot{position:absolute;width:44px;height:44px;border:0;background:transparent}
+
+.stage{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;justify-content:center;padding:28px 16px}
+.phone{position:relative;width:375px;height:812px;flex-shrink:0;background:#fff;overflow:hidden;border-radius:28px;box-shadow:0 10px 40px rgba(31,33,46,.18)}
+.page{position:absolute;inset:0;overflow:hidden}
+.shot{display:block;width:375px;height:auto}
+
+/* cart bottom bar (CartPage.jsx) */
+.cartbar{position:absolute;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #E8EAF0;padding:10px 16px 10px}
+.cartrow{display:flex;align-items:center;gap:12px}
+.total{display:flex;flex-direction:column}
+.total span{font-size:11px;color:#545454}
+.total b{font-size:19px;font-weight:500}
+.proceed{flex:1;max-width:220px;margin-left:auto;border:0;border-radius:6px;background:#4862EE;color:#fff;font-size:14px;font-weight:500;padding:14px 0;box-shadow:0 8px 22px rgba(72,98,238,.28)}
+.guestline{display:block;text-align:center;font-size:11px;color:#545454;margin-top:8px}
+.guestline button{border:0;background:transparent;padding:0;color:#4862EE;font-weight:500;font-size:11px}
+
+/* drawer (NavDrawer + DrawerLogin) */
+.overlay{position:absolute;inset:0;z-index:3}
+.scrim{position:absolute;inset:0;border:0;background:rgba(31,33,46,.45)}
+.drawer{position:absolute;left:0;top:0;bottom:0;width:338px;background:#fff;overflow-y:auto;box-shadow:10px 0 30px rgba(31,33,46,.18)}
+.dhead{display:flex;justify-content:space-between;align-items:center;padding:16px 16px 14px}
+.dbrand{display:flex;gap:12px;align-items:center;min-width:0}
+.logo{border-radius:50%;flex:none;background-color:#1B1E33;background-image:url("home.jpg");background-repeat:no-repeat}
+.logo48{width:48px;height:48px;background-size:450px auto;background-position:-55px -68px}
+.logo24{width:24px;height:24px;background-size:225px auto;background-position:-27.5px -34px}
+.sname{font-size:17px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ssub{font-size:12px;color:#545454;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.xbtn{width:36px;height:36px;border:0;background:transparent;color:#2C2C2C;display:grid;place-items:center;flex:none}
+.dslot{padding:2px 14px 12px}
+
+/* checkout bottom sheet (CheckoutSheet + LoginSheet) */
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:20px 20px 0 0;padding:8px 0 16px;box-shadow:0 -10px 30px rgba(31,33,46,.18);max-height:85%;overflow-y:auto}
+.grip{width:40px;height:4px;border-radius:4px;background:#D7DAE6;margin:8px auto 6px}
+.sclose{position:absolute;top:12px;right:14px;width:26px;height:26px;border:0;border-radius:50%;background:#F4F5FF;color:#545454;display:grid;place-items:center}
+.sbrand{display:flex;align-items:center;gap:8px;margin:8px 16px 4px}
+.sbrand span{font-size:13px;font-weight:500}
+.sslot{margin:0 16px;min-height:360px;display:flex;flex-direction:column}
+
+/* shared login form; drawer sizes are the default, .in-sheet scales up */
+.login section{display:flex;flex-direction:column}
+.only-sheet{display:none}
+.in-sheet .only-sheet{display:block}
+.in-sheet .only-drawer{display:none}
+.title{font-size:13px;font-weight:500;margin-bottom:8px}
+.title span{font-weight:400;color:#545454}
+.stitle{font-size:19px;font-weight:500;margin-top:8px}
+.ssubt{font-size:12px;color:#545454;line-height:1.5;margin:6px 0 16px}
+.flabel{display:none;font-size:10.5px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:#707078;margin-bottom:6px}
+.in-sheet .flabel{display:block}
+.in-sheet .flabel + .field{margin-top:0}
+.in-sheet .field + .flabel{margin-top:12px}
+.field{display:flex;align-items:center;gap:8px;border:1.5px solid #E8EAF0;border-radius:10px;padding:10px 11px}
+.field + .field{margin-top:8px}
+.field:focus-within{border-color:#4862EE;box-shadow:0 0 0 3px rgba(72,98,238,.12)}
+.field input{flex:1;min-width:0;border:0;outline:none;background:transparent;font:400 13px Geomanist,system-ui,sans-serif;color:#1F212E}
+.field input::placeholder{color:#707078}
+.in-sheet .field{border-radius:6px;padding:12px}
+.in-sheet .field input{font-size:14px}
+.cc{display:flex;align-items:center;gap:3px;font-size:13px;font-weight:500;padding-right:8px;border-right:1px solid #E8EAF0}
+.in-sheet .cc{font-size:14px}
+.show{border:0;background:transparent;padding:0;color:#4862EE;font-size:12px;font-weight:500}
+.err{font-size:10.5px;color:#C73F21;font-weight:500;margin-top:8px;display:flex;flex-wrap:wrap;gap:4px 8px}
+.in-sheet .err{font-size:11.5px}
+.err button{border:0;background:transparent;padding:0;color:#4862EE;font-size:inherit;font-weight:500;text-decoration:underline}
+.btn{width:100%;margin-top:9px;padding:11px 0;border:0;border-radius:10px;background:#4862EE;color:#fff;font-size:13px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:7px}
+.in-sheet .btn{margin-top:14px;padding:12px 0;border-radius:6px;font-size:14px}
+.btn.wa{background:#25D366}
+.btn.dim{opacity:.5}
+.links{display:flex;justify-content:space-between;align-items:center;margin-top:4px}
+.link{min-height:32px;border:0;background:transparent;padding:0;color:#4862EE;font-size:11px;font-weight:500}
+.in-sheet .link{font-size:12px}
+.link.muted{color:#707078;font-weight:400}
+.link.muted b{color:#4862EE;font-weight:500}
+.center{align-self:center}
+.guestnote{font-size:10.5px;color:#545454;line-height:1.5;text-align:center;margin-top:12px;padding-top:12px;border-top:1px solid #F1F2F6}
+.guestnote b{font-weight:400;color:#1F212E}
+.info{display:flex;gap:8px;align-items:flex-start;margin-top:9px;background:#F4F5FF;border-radius:10px;padding:10px 11px;font-size:11px;line-height:1.45;color:#545454}
+.in-sheet .info{font-size:12px;border-radius:6px;margin-top:12px}
+.info b{font-weight:500;color:#1F212E}
+.boxes{position:relative;display:flex;gap:8px;justify-content:center;margin:4px 0}
+.box{width:42px;height:48px;display:grid;place-items:center;font-size:19px;font-weight:500;border-radius:10px;border:1.5px solid #E8EAF0;background:#F3F4F6}
+.in-sheet .boxes{gap:10px;margin:6px 0}
+.in-sheet .box{width:48px;height:56px;font-size:22px;border-radius:6px;background:#F4F5FF}
+.box.filled{border-color:#707078;background:#fff}
+.box.active{border-color:#4862EE;background:#fff}
+.boxes input{position:absolute;inset:0;width:100%;height:100%;opacity:0;border:0;font-size:16px}
+.resend{font-size:10px;color:#707078;text-align:center;margin-top:7px}
+.in-sheet .resend{font-size:11.5px;margin-top:12px}
+.resend button{border:0;background:transparent;padding:0;color:#4862EE;font-size:inherit;font-weight:500}
+.done{display:flex;align-items:center;gap:10px;background:#E8F6EC;border-radius:10px;padding:10px 12px}
+.done .tick{width:28px;height:28px;border-radius:50%;background:#fff;color:#1E863B;display:grid;place-items:center;flex:none}
+.done .txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.done .txt b{font-size:13px;font-weight:500}
+.done .txt span{font-size:11px;color:#545454}
+.sdone{text-align:center;padding:40px 4px 8px}
+.sdone .big{width:58px;height:58px;border-radius:50%;background:#E8F6EC;color:#1E863B;display:grid;place-items:center;margin:0 auto 12px}
+.sdone h2{font-size:18px;font-weight:500;margin:0}
+.sdone p{font-size:12px;color:#545454;margin:6px 0 0;line-height:1.5}
+
+.menu{padding:0 8px 24px;display:flex;flex-direction:column;gap:8px}
+.mhome{display:flex;align-items:center;gap:12px;background:#EEF0FE;border-radius:18px;padding:12px 14px;color:#4862EE;font-size:15px}
+.mver{display:flex;align-items:center;gap:12px;background:#FEEFEB;border-radius:10px;padding:12px 14px;font-size:15px}
+.mver small{font-size:11px;color:#545454}
+.mlabel{font-size:10.5px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#545454;padding:10px 6px 2px}
+.mrow{display:flex;align-items:center;gap:12px;padding:10px 6px;font-size:15px}
+.mthumb{width:26px;height:26px;border-radius:6px;background:#F3F2F8;flex:none}
+.ic{width:26px;display:grid;place-items:center}
+.grow{flex:1}
+
+.toast{position:absolute;top:10px;left:10px;right:10px;z-index:9;background:#1F212E;color:#fff;border-radius:16px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;box-shadow:0 8px 24px rgba(20,27,52,.3)}
+.toast .wa{width:30px;height:30px;border-radius:8px;background:#25D366;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.toast .body{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+.toast .meta{font-size:12px;color:#B8BFCC}
+.toast .from{font-weight:500;font-size:14px}
+.toast .msg{font-size:14px;line-height:1.4}
+.toast button{width:32px;height:32px;border:0;background:transparent;color:#B8BFCC;flex-shrink:0}
+.note{position:absolute;left:16px;right:16px;bottom:120px;z-index:8;background:#1F212E;color:#fff;border-radius:10px;padding:10px 12px;font-size:12px;line-height:1.4;text-align:center}
+
+/* payment page + COD verification sheet (PaymentPage + CodOtpSheet) */
+.codsub{position:absolute;left:74px;top:606px;width:228px;height:22px;background:#F4F6FF;font-size:11px;color:#545454;display:flex;align-items:center;white-space:nowrap;overflow:hidden}
+.codsub.ok{color:#1E863B}
+/* covers the sample address baked into the payment screenshot with clearly fake details */
+.fakeaddr{position:absolute;left:17px;top:170px;width:341px;height:64px;background:#fff;padding:4px 12px;display:flex;flex-direction:column;gap:2px;font-size:11px;color:#545454;line-height:1.45}
+.fakeaddr b{font-size:11.5px;font-weight:500;color:#1F212E}
+.fakeaddr i{font-style:normal;color:#1E863B}
+.ctitle{font-size:14px;font-weight:500;margin:4px 16px 10px}
+.csub{font-size:11.5px;color:#545454;line-height:1.45;margin:0 16px}
+.cphone{font-size:12.5px;color:#545454;margin:2px 16px 8px}
+.cphone b{font-weight:500;color:#1F212E}
+.cphone button{border:0;background:transparent;padding:0;color:#4862EE;font-weight:500;font-size:12.5px}
+.cboxes{position:relative;display:flex;gap:8px;justify-content:center;margin:14px 16px 6px}
+.cbox{width:40px;height:48px;display:grid;place-items:center;font-size:20px;font-weight:500;border-radius:6px;border:1.5px solid #E8EAF0;background:#fff}
+.cbox.filled{border-color:#4862EE;background:#F4F5FF}
+.cbox.active{border-color:#4862EE;box-shadow:0 0 0 3px rgba(72,98,238,.12)}
+.cboxes input{position:absolute;inset:0;width:100%;height:100%;opacity:0;border:0;font-size:16px}
+.cwa{display:flex;align-items:center;justify-content:center;gap:6px;width:calc(100% - 32px);margin:8px 16px 2px;padding:10px 0;border:1px solid #25D366;border-radius:6px;background:#fff;color:#1E9E50;font-size:12px;font-weight:500}
+.cinfo{display:flex;gap:8px;align-items:flex-start;margin:10px 16px 0;background:#F4F5FF;border-radius:6px;padding:9px 11px;font-size:11px;line-height:1.45;color:#545454}
+.cinfo b{font-weight:500;color:#1F212E}
+.cerr{text-align:center;font-size:11.5px;color:#C73F21;font-weight:500;margin:8px 16px 0}
+.cresend{text-align:center;font-size:11px;color:#707078;margin:8px 16px 0}
+.cresend button{border:0;background:transparent;padding:0;color:#4862EE;font-weight:500;font-size:11px}
+.cverify{display:block;width:calc(100% - 32px);margin:10px 16px 4px;border:0;border-radius:6px;background:#4862EE;color:#fff;font-size:13px;font-weight:500;padding:12px 0}
+.cverify.dim{opacity:.5}
+.cwhy{text-align:center;font-size:10px;color:#707078;line-height:1.4;margin:8px 16px 0}
+
+/* guest address step (AddressPage LoginBar + form fields) */
+.loginbar{position:absolute;left:16px;top:101px;width:343px;min-height:51px;display:flex;align-items:center;gap:10px;padding:8px 12px;background:#F4F5FF;border:1px solid #D7DEFF;border-radius:8px;font-size:11px;line-height:1.35;color:#2C2C2C}
+.loginbar b{font-weight:400;color:#4862EE}
+.loginbar button{border:0;background:transparent;padding:0;color:#4862EE;font-weight:500;font-size:11px}
+.ginput{position:absolute;left:16px;width:343px;height:44px;border:1px solid #E1E5EE;border-radius:12px;background:#fff;padding:0 13px;font:400 15px Geomanist,system-ui,sans-serif;color:#1F212E;outline:none}
+.ginput:focus{border-color:#4862EE;box-shadow:0 0 0 3px rgba(72,98,238,.12)}
+.ginput::placeholder{color:#9AA0AC}
+
+.panel{width:340px;max-width:100%;display:flex;flex-direction:column;gap:16px}
+.card{background:#fff;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:1.45}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#707078;font-weight:500}
+.flow{font-size:20px;font-weight:500}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.stat{background:#F5F5F5;border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:2px}
+.stat span{font-size:12px;color:#707078}
+.stat b{font-size:22px;font-weight:500;font-variant-numeric:tabular-nums}
+.card ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.card b{font-weight:500}
+.jump{display:flex;gap:8px;flex-wrap:wrap}
+.jump button,.reset{min-height:40px;padding:0 14px;border:1px solid #D5DDE2;border-radius:10px;background:#fff;color:#1F212E;font-size:14px}
+.jump button.on{border-color:#4862EE;color:#4862EE;background:#F4F5FF}
+.reset{align-self:flex-start}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15l-1.4 5 5.1-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7s-3.8-3.2-3.9-3.4c-.1-.2-1-1.3-1-2.5s.6-1.8.9-2c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.4.5c-.2.2-.3.4-.1.6.1.3.7 1.1 1.4 1.7.9.8 1.6 1 1.9 1.2.2.1.4.1.5-.1l.7-.9c.2-.2.3-.2.6-.1l1.9.9c.3.1.4.2.5.3.1.2.1.6-.1 1.1z"/></symbol>
+  <symbol id="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="#707078" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="#707078" stroke-width="2.5"/></symbol>
+  <symbol id="x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+  <symbol id="tick" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<div class="stage">
+  <div class="phone">
+
+    <div class="page" id="page-home">
+      <img class="shot" src="home.jpg" alt="The Crafts Archive home page">
+      <button class="hot" style="left:5px;top:54px" data-act="openDrawer" aria-label="Open menu"></button>
+      <button class="hot" style="left:321px;top:54px" data-act="goCart" aria-label="Open cart"></button>
+      <button class="hot" style="left:16px;top:684px;width:166px;height:128px" data-act="openProduct" aria-label="Open Magenta Bandhani saree"></button>
+    </div>
+
+    <div class="page" id="page-pdp" hidden>
+      <img class="shot" src="pdp.jpg" alt="Magenta Bandhani handwork saree product page">
+      <button class="hot" style="left:5px;top:45px" data-act="openDrawer" aria-label="Open menu"></button>
+      <button class="hot" style="left:44px;top:45px" data-act="goHome" aria-label="Go to home page"></button>
+      <button class="hot" style="left:322px;top:45px" data-act="goCart" aria-label="Open cart"></button>
+      <button class="hot" style="left:106px;top:643px;width:253px;height:52px" data-act="addToCart" aria-label="Add to cart"></button>
+      <button class="hot" style="left:16px;top:706px;width:343px;height:49px" data-act="buyNow" aria-label="Buy now"></button>
+    </div>
+
+    <div class="page" id="page-cart" hidden>
+      <img class="shot" src="cart.jpg" alt="The Crafts Archive cart">
+      <button class="hot" style="left:5px;top:9px" data-act="openDrawer" aria-label="Open menu"></button>
+      <button class="hot" style="left:45px;top:9px" data-act="goHome" aria-label="Go to home page"></button>
+      <div class="cartbar">
+        <div class="cartrow">
+          <div class="total"><span>Total</span><b>₹2,600</b></div>
+          <button class="proceed" data-act="proceed">Proceed to checkout →</button>
+        </div>
+        <span class="guestline" id="guestline">Shopped here before? <button data-act="openSheet">Log in</button> · New here? <button data-act="openSheetSignup">Create account</button></span>
+        <span class="guestline" id="userline" hidden>Logged in as <b style="font-weight:500;color:#1F212E" class="phone-pretty"></b></span>
+      </div>
+    </div>
+
+    <div class="page" id="page-address" hidden>
+      <img class="shot" src="address.jpg" alt="The Crafts Archive address step">
+      <button class="hot" style="left:8px;top:6px" data-act="goCart" aria-label="Back to cart"></button>
+      <div class="loginbar" id="loginbar-guest">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4862EE" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+        <span>Checking out as <b>guest</b> — fast &amp; secure. <button data-act="openSheet">Log in</button> or <button data-act="openSheetSignup">create an account</button> to use saved addresses.</span>
+      </div>
+      <div class="loginbar" id="loginbar-user" hidden>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1E863B" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+        <span>Logged in as <b style="font-weight:500;color:#1F212E" class="phone-pretty"></b>. This address will be saved to your account.</span>
+      </div>
+      <label class="sr" for="guest-name">Full name</label>
+      <input class="ginput" id="guest-name" style="top:216px" placeholder="Name for delivery" autocomplete="name">
+      <label class="sr" for="guest-phone">Mobile number</label>
+      <input class="ginput" id="guest-phone" style="top:294px" type="tel" inputmode="numeric" placeholder="10-digit mobile number" autocomplete="tel-national">
+      <button class="hot" style="left:14px;top:752px;width:347px;height:48px" data-act="continuePay" aria-label="Continue to payment"></button>
+    </div>
+
+    <div class="page" id="page-pay" hidden>
+      <img class="shot" src="pay.jpg" alt="The Crafts Archive payment page">
+      <button class="hot" style="left:8px;top:6px" data-act="goAddress" aria-label="Back to address"></button>
+      <div class="fakeaddr"><b>Asha · 500032</b><span>Flat 12, Sample Residency, Gachibowli, Hyderabad, Telangana 500032 · <i>3–7 days</i></span></div>
+      <span class="codsub" id="codsub">Pay at your door · we verify your number by OTP</span>
+      <div class="cartbar">
+        <div class="cartrow">
+          <div class="total"><span>Total</span><b>₹2,645</b></div>
+          <button class="proceed" data-act="placeCod">Place COD order →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="overlay" id="drawer" hidden>
+      <button class="scrim" data-act="closeAll" aria-label="Close menu"></button>
+      <div class="drawer">
+        <div class="dhead">
+          <div class="dbrand">
+            <div class="logo logo48" role="img" aria-label="The Crafts Archive logo"></div>
+            <div style="min-width:0">
+              <div class="sname">The Crafts Archive</div>
+              <div class="ssub">A store by Satish Madiraju · Hyderabad</div>
+            </div>
+          </div>
+          <button class="xbtn" data-act="closeAll" aria-label="Close"><svg width="18" height="18"><use href="#x"/></svg></button>
+        </div>
+        <div class="dslot" id="drawer-slot"></div>
+        <div class="menu">
+          <div class="mhome"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg></span>Home</div>
+          <div class="mver"><span class="ic" style="color:#FF512A"><svg width="18" height="18"><use href="#tick"/></svg></span><span class="grow">Verified Handloom <small>· authentic, no powerloom</small></span><svg width="16" height="16"><use href="#chev"/></svg></div>
+          <div class="mlabel">Shop</div>
+          <div id="cats"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="overlay" id="sheetwrap" hidden>
+      <button class="scrim" data-act="closeAll" aria-label="Close"></button>
+      <div class="sheet">
+        <div class="grip"></div>
+        <button class="sclose" data-act="closeAll" aria-label="Close"><svg width="13" height="13"><use href="#x"/></svg></button>
+        <div class="sbrand"><div class="logo logo24"></div><span>The Crafts Archive</span></div>
+        <div class="sslot in-sheet" id="sheet-slot"></div>
+      </div>
+    </div>
+
+    <div class="overlay" id="codwrap" hidden>
+      <button class="scrim" data-act="closeAll" aria-label="Close"></button>
+      <div class="sheet">
+        <div class="grip"></div>
+        <div class="ctitle">Confirm your number</div>
+        <p class="csub">Enter the 4-digit code sent on WhatsApp to</p>
+        <div class="cphone"><b id="cod-phone"></b> · <button data-act="codChange">Change</button></div>
+        <div class="cinfo">
+          <svg width="14" height="14" style="color:#25D366;flex:none;margin-top:1px"><use href="#wa"/></svg>
+          <span>The code comes from <b>Wcommerce</b>, which runs secure checkout for The Crafts Archive.</span>
+        </div>
+        <label class="sr" for="cod-otp">4-digit code</label>
+        <div class="cboxes">
+          <div class="cbox"></div><div class="cbox"></div><div class="cbox"></div><div class="cbox"></div>
+          <input id="cod-otp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="4">
+        </div>
+        <button class="cwa" data-act="resend"><svg width="15" height="15"><use href="#wa"/></svg> Open WhatsApp to copy your code</button>
+        <p class="cerr" id="cod-err" hidden></p>
+        <div class="cresend">Didn't get it? <button data-act="resend">Resend on WhatsApp</button></div>
+        <button class="cverify" id="cod-verify" data-act="verifyCod">Verify &amp; place COD order →</button>
+        <p class="cwhy">We verify the number on COD orders to prevent fake orders — it protects the maker.</p>
+      </div>
+    </div>
+
+    <div class="overlay" id="placed" hidden>
+      <div class="scrim" style="cursor:default"></div>
+      <div class="sheet">
+        <div class="grip"></div>
+        <div class="sdone">
+          <div class="big"><svg width="30" height="30"><use href="#tick"/></svg></div>
+          <h2>COD order placed</h2>
+          <p>Pay <b style="font-weight:500;color:#1F212E">₹2,645</b> at your door. Updates will come on WhatsApp to <span id="placed-phone"></span>.</p>
+          <p id="placed-otp" style="margin-top:10px"></p>
+          <button class="btn" style="width:calc(100% - 32px);margin:16px auto 0" data-act="afterOrder">Back to the store</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="login" id="login">
+      <section data-screen="login">
+        <div class="title only-drawer">Log in <span>· orders, wishlist &amp; faster checkout</span></div>
+        <div class="only-sheet"><div class="stitle">Shopped here before?</div><p class="ssubt">Log in to see your <b style="font-weight:400;color:#1F212E">orders &amp; saved addresses</b>.</p></div>
+        <div class="flabel">Mobile number</div>
+        <div class="field">
+          <span class="cc">+91 <svg width="10" height="10"><use href="#down"/></svg></span>
+          <label class="sr" for="login-phone">Mobile number</label>
+          <input id="login-phone" class="phone-in" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="98765 43210">
+        </div>
+        <div class="flabel">Password</div>
+        <div class="field">
+          <label class="sr" for="login-password">Password</label>
+          <input id="login-password" class="pw-in" type="password" autocomplete="current-password" placeholder="Password">
+          <button class="show" data-act="toggleShow">Show</button>
+        </div>
+        <div class="err" role="alert" hidden>
+          <span class="err-text"></span>
+          <button data-act="openSignup" data-kind="noaccount" hidden>Create account</button>
+          <button data-act="openForgot" data-kind="wrongpw" hidden>Forgot password?</button>
+          <button data-act="openSetPassword" data-kind="nopw" hidden>Set a password</button>
+        </div>
+        <button class="btn" data-act="doLogin" data-need="phone,pw">Log in</button>
+        <div class="links">
+          <button class="link" data-act="openForgot">Forgot password?</button>
+          <button class="link muted" data-act="openSignup">New here? <b>Create account</b></button>
+        </div>
+        <p class="guestnote only-sheet"><b>You don't need to log in to check out.</b> Tap away to keep going as guest. Logging in just saves typing.</p>
+      </section>
+
+      <section data-screen="signup" hidden>
+        <div class="title only-drawer">Create account <span>· just your number and a password</span></div>
+        <div class="only-sheet"><div class="stitle">Create your account</div><p class="ssubt">Just your mobile number and a password. Next time, checkout is faster.</p></div>
+        <div class="flabel">Mobile number</div>
+        <div class="field">
+          <span class="cc">+91 <svg width="10" height="10"><use href="#down"/></svg></span>
+          <label class="sr" for="signup-phone">Mobile number</label>
+          <input id="signup-phone" class="phone-in" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="98765 43210">
+        </div>
+        <div class="flabel">Create a password</div>
+        <div class="field">
+          <label class="sr" for="signup-password">Create a password</label>
+          <input id="signup-password" class="pw-in" type="password" autocomplete="new-password" placeholder="Create a password (8+ characters)">
+          <button class="show" data-act="toggleShow">Show</button>
+        </div>
+        <div class="err" role="alert" hidden>
+          <span class="err-text"></span>
+          <button data-act="backToLogin" data-kind="exists" hidden>Log in</button>
+          <button data-act="openForgot" data-kind="exists" hidden>Reset password</button>
+          <button data-act="openSetPassword" data-kind="nopw" hidden>Set a password</button>
+        </div>
+        <button class="btn" data-act="doSignup" data-need="phone,pw8">Create account</button>
+        <button class="link muted center" data-act="backToLogin">Already have an account? <b>Log in</b></button>
+      </section>
+
+      <section data-screen="forgotPhone" hidden>
+        <div class="title only-drawer"><span class="reset-word" style="font-weight:500;color:#1F212E">Reset password</span> <span>· we'll check it's you on WhatsApp</span></div>
+        <div class="only-sheet"><div class="stitle reset-word">Reset your password</div><p class="ssubt">We'll send a code on WhatsApp to check it's you.</p></div>
+        <div class="flabel">Mobile number</div>
+        <div class="field">
+          <span class="cc">+91 <svg width="10" height="10"><use href="#down"/></svg></span>
+          <label class="sr" for="forgot-phone">Mobile number</label>
+          <input id="forgot-phone" class="phone-in" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="98765 43210">
+        </div>
+        <div class="info">
+          <svg width="15" height="15" style="color:#25D366;flex:none;margin-top:1px"><use href="#wa"/></svg>
+          <span><b>Wcommerce</b> will send your code on WhatsApp. Wcommerce runs secure login for The Crafts Archive, so look for a message from Wcommerce and verify it here.</span>
+        </div>
+        <div class="err" role="alert" hidden><span class="err-text"></span></div>
+        <button class="btn wa" data-act="sendCode" data-need="phone"><svg width="15" height="15"><use href="#wa"/></svg> Send code on WhatsApp</button>
+        <button class="link center" data-act="backToLogin">Back to log in</button>
+      </section>
+
+      <section data-screen="forgotOtp" hidden>
+        <div class="title only-drawer">Enter code <span>· sent by Wcommerce to <span class="phone-pretty"></span></span></div>
+        <div class="only-sheet"><div class="stitle">Enter the code</div><p class="ssubt">Sent on WhatsApp by <b style="font-weight:500;color:#1F212E">Wcommerce</b> to <span class="phone-pretty"></span></p></div>
+        <label class="sr" for="forgot-otp">4-digit code</label>
+        <div class="boxes">
+          <div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div>
+          <input id="forgot-otp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="4">
+        </div>
+        <div class="err" role="alert" hidden style="justify-content:center"><span class="err-text"></span></div>
+        <button class="btn wa" data-act="resend"><svg width="15" height="15"><use href="#wa"/></svg> Open WhatsApp</button>
+        <div class="resend">Didn't get it? <button data-act="resend">Resend</button> · <button data-act="changeNumber">Change number</button></div>
+      </section>
+
+      <section data-screen="forgotNew" hidden>
+        <div class="title only-drawer">Set a new password <span>· for <span class="phone-pretty"></span></span></div>
+        <div class="only-sheet"><div class="stitle">Set a new password</div><p class="ssubt">For <span class="phone-pretty"></span></p></div>
+        <div class="flabel">New password</div>
+        <div class="field">
+          <label class="sr" for="new-password">New password</label>
+          <input id="new-password" class="pw-in" type="password" autocomplete="new-password" placeholder="New password (8+ characters)">
+          <button class="show" data-act="toggleShow">Show</button>
+        </div>
+        <div class="err" role="alert" hidden><span class="err-text"></span></div>
+        <button class="btn" data-act="saveNew" data-need="pw8">Save &amp; log in</button>
+      </section>
+
+      <section data-screen="done" hidden>
+        <div class="done only-drawer">
+          <span class="tick"><svg width="16" height="16"><use href="#tick"/></svg></span>
+          <div class="txt"><b class="done-msg"></b><span>Logged in as <span class="phone-pretty"></span></span></div>
+          <button class="link" data-act="logout">Log out</button>
+        </div>
+        <div class="sdone only-sheet">
+          <div class="big"><svg width="30" height="30"><use href="#tick"/></svg></div>
+          <h2 class="done-msg"></h2>
+          <p>Logged in as <span class="phone-pretty"></span>. Your saved details are ready for checkout.</p>
+          <button class="btn" data-act="closeAll">Back to checkout</button>
+        </div>
+      </section>
+    </div>
+
+    <div class="toast" id="toast" hidden>
+      <div class="wa"><svg width="18" height="18" style="color:#fff"><use href="#wa"/></svg></div>
+      <div class="body">
+        <div class="meta">WhatsApp · now</div>
+        <div class="from">Wcommerce</div>
+        <div class="msg">4821 is your verification code. For your security, do not share this code.</div>
+      </div>
+      <button data-act="dismissToast" aria-label="Dismiss message"><svg width="16" height="16"><use href="#x"/></svg></button>
+    </div>
+    <div class="note" id="note" hidden></div>
+  </div>
+
+  <div class="panel" id="panel">
+    <div class="card">
+      <div class="eyebrow">This attempt</div>
+      <div class="flow" id="p-flow">Log in</div>
+      <div class="stats">
+        <div class="stat"><span>Screens</span><b id="p-screens">1</b></div>
+        <div class="stat"><span>Taps</span><b id="p-taps">0</b></div>
+        <div class="stat"><span>Time</span><b id="p-time">0:00</b></div>
+      </div>
+      <span id="p-status" style="font-size:13px;color:#545454">In progress…</span>
+    </div>
+    <div class="card">
+      <div class="eyebrow">Start from</div>
+      <div class="jump">
+        <button data-act="jumpHome" id="j-home">Home page menu</button>
+        <button data-act="jumpCart" id="j-cart">Cart checkout</button>
+        <button data-act="jumpGuest" id="j-guest">Guest shopping</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="eyebrow">Tasks for the tester</div>
+      <ol>
+        <li>Open the menu (☰) and create an account with your own number.</li>
+        <li>Log out, then log in again.</li>
+        <li>Pretend you forgot your password and reset it.</li>
+        <li>Open the cart (🛒) and log in from “Shopped here before?”.</li>
+        <li>Proceed to checkout and place a Cash on Delivery order.</li>
+        <li>As a guest: tap the first saree on the home page, Buy now, and check out with Cash on Delivery using your own number.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <div class="eyebrow">Demo details</div>
+      <span>Existing account: <b>98765 43210</b> · current password <b id="demo-pw">handloom1</b> (number already verified, so COD needs no code). A password reset changes it until you press Reset prototype.</span>
+      <span>WhatsApp code for reset and COD: <b>4821</b> (shown in the fake WhatsApp message)</span>
+      <span>COD asks for a WhatsApp code from Wcommerce when the number was never verified: guests and accounts created with just a password. A verified number skips it.</span>
+      <span style="color:#707078">Nothing is sent or saved. Accounts you create last until the page reloads. Add <b>?hidepanel</b> to the URL to hide this panel for testers.</span>
+    </div>
+    <button class="reset" data-act="resetAll">Reset prototype</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  // verified = the number was confirmed by a WhatsApp code at some point (old OTP login,
+  // password reset or an earlier COD order); only then does COD skip the code.
+  var DEMO = { '9876543210': { pw: 'handloom1', verified: true } };
+  var GUEST_PHONE = '9000000001';
+  var CODE = '4821';
+  var st;
+  var noteTimer;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  ['Blouses', 'Co-ord Sets', 'Dresses', 'Dress Materials', 'Dupattas', 'Kurtis', 'Sarees'].forEach(function (n) {
+    var row = document.createElement('div');
+    row.className = 'mrow';
+    row.innerHTML = '<span class="mthumb"></span><span class="grow"></span><svg width="16" height="16"><use href="#chev"/></svg>';
+    row.querySelector('.grow').textContent = n;
+    $('#cats').appendChild(row);
+  });
+  if (/hidepanel/.test(location.search)) $('#panel').hidden = true;
+
+  function fresh(keep) {
+    st = {
+      accounts: keep ? st.accounts : JSON.parse(JSON.stringify(DEMO)),
+      codOtp: '', codUsedOtp: false, guestName: '', guestPhone: '',
+      phone: keep ? st.phone : '',
+      page: keep ? st.page : 'home',
+      overlay: null, screen: 'login', loggedIn: false, showPw: false, otp: '', toast: false,
+      flow: 'Log in', taps: 0, screens: 1, startedAt: Date.now(), doneAt: null, doneMsg: ''
+    };
+    clearPasswords();
+  }
+
+  function clearPasswords() { $$('.pw-in').forEach(function (i) { i.value = ''; }); }
+  function pw() { var s = $('section[data-screen="' + st.screen + '"] .pw-in'); return s ? s.value : ''; }
+  function pretty(p) { return p.length === 10 ? '+91 ' + p.slice(0, 5) + ' ' + p.slice(5) : '+91 ' + p; }
+  function clock(ms) { var s = Math.max(0, Math.floor(ms / 1000)); return Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2); }
+
+  function note(msg) {
+    var n = $('#note');
+    n.textContent = msg; n.hidden = false;
+    clearTimeout(noteTimer);
+    noteTimer = setTimeout(function () { n.hidden = true; }, 2600);
+  }
+
+  function go(screen, extra) {
+    st.screen = screen; st.showPw = false; st.screens++;
+    Object.assign(st, extra || {});
+    clearError();
+    render();
+    var first = $('section[data-screen="' + screen + '"] input');
+    if (first) setTimeout(function () { first.focus(); }, 30);
+  }
+
+  function open(overlay, screen, flow) {
+    st.overlay = overlay; st.screens++;
+    if (!st.loggedIn) { st.screen = screen || 'login'; st.flow = flow || st.flow; }
+    clearPasswords(); clearError();
+    render();
+  }
+
+  function fail(msg, kind) {
+    var sec = $('section[data-screen="' + st.screen + '"]');
+    var box = $('.err', sec);
+    $('.err-text', box).textContent = msg;
+    $$('[data-kind]', box).forEach(function (b) { b.hidden = b.getAttribute('data-kind') !== kind; });
+    box.hidden = false;
+  }
+  function clearError() { $$('.err').forEach(function (e) { e.hidden = true; }); }
+
+  function finish(msg) {
+    clearPasswords();
+    go('done', { doneMsg: msg, doneAt: Date.now(), toast: false, otp: '', loggedIn: true });
+  }
+
+  function validPhone() {
+    if (st.phone.length !== 10) { fail('Enter your 10-digit mobile number.'); return false; }
+    return true;
+  }
+
+  function render() {
+    $('#page-home').hidden = st.page !== 'home';
+    $('#page-cart').hidden = st.page !== 'cart';
+    $('#page-pay').hidden = st.page !== 'pay';
+    $('#page-pdp').hidden = st.page !== 'pdp';
+    $('#page-address').hidden = st.page !== 'address';
+    $('#loginbar-guest').hidden = st.loggedIn;
+    $('#loginbar-user').hidden = !st.loggedIn;
+    var gp = $('#guest-phone');
+    var shownPhone = st.loggedIn ? st.phone : st.guestPhone;
+    if (gp.value !== shownPhone) gp.value = shownPhone;
+    if ($('#guest-name').value !== st.guestName) $('#guest-name').value = st.guestName;
+    $('#drawer').hidden = st.overlay !== 'drawer';
+    $('#sheetwrap').hidden = st.overlay !== 'sheet';
+    $('#codwrap').hidden = st.overlay !== 'cod';
+    $('#placed').hidden = st.overlay !== 'placed';
+    var verified = numberVerified();
+    var sub = $('#codsub');
+    sub.textContent = verified ? pretty(codPhone()) + ' verified · no OTP needed' : 'Pay at your door · we verify your number by OTP';
+    sub.classList.toggle('ok', verified);
+    $('#cod-phone').textContent = pretty(codPhone());
+    $('#placed-phone').textContent = pretty(codPhone());
+    $('#placed-otp').textContent = st.codUsedOtp ? 'Your number is now verified, so your next COD order needs no code.' : 'No code was needed: this number was already verified.';
+    var cIn = $('#cod-otp');
+    if (cIn.value !== st.codOtp) cIn.value = st.codOtp;
+    $$('.cbox').forEach(function (b, i) {
+      b.textContent = st.codOtp[i] || '';
+      b.classList.toggle('filled', !!st.codOtp[i]);
+      b.classList.toggle('active', i === st.codOtp.length);
+    });
+    $('#cod-verify').classList.toggle('dim', st.codOtp.length !== 4);
+    var slot = st.overlay === 'sheet' ? $('#sheet-slot') : $('#drawer-slot');
+    if ($('#login').parentNode !== slot) slot.appendChild($('#login'));
+    $('#toast').hidden = !st.toast;
+    $('#guestline').hidden = st.loggedIn;
+    $('#userline').hidden = !st.loggedIn;
+    $$('section[data-screen]').forEach(function (s) { s.hidden = s.getAttribute('data-screen') !== st.screen; });
+    $$('.phone-in').forEach(function (i) { if (i.value !== st.phone) i.value = st.phone; });
+    $$('.phone-pretty').forEach(function (e) { e.textContent = pretty(st.phone); });
+    $$('.pw-in').forEach(function (i) { i.type = st.showPw ? 'text' : 'password'; });
+    $$('.show').forEach(function (b) { b.textContent = st.showPw ? 'Hide' : 'Show'; });
+    $$('.done-msg').forEach(function (e) { e.textContent = st.doneMsg; });
+    var p = pw();
+    $$('[data-need]').forEach(function (b) {
+      var ok = b.getAttribute('data-need').split(',').every(function (n) {
+        if (n === 'phone') return st.phone.length === 10;
+        if (n === 'pw') return p.length > 0;
+        if (n === 'pw8') return p.length >= 8;
+        return true;
+      });
+      b.classList.toggle('dim', !ok);
+    });
+    var otpIn = $('#forgot-otp');
+    if (otpIn.value !== st.otp) otpIn.value = st.otp;
+    $$('.box').forEach(function (b, i) {
+      b.textContent = st.otp[i] || '';
+      b.classList.toggle('filled', !!st.otp[i]);
+      b.classList.toggle('active', i === st.otp.length);
+    });
+    $('#j-home').classList.toggle('on', st.page === 'home');
+    $('#j-cart').classList.toggle('on', st.page === 'cart' && st.flow !== 'Guest shopping');
+    $('#j-guest').classList.toggle('on', st.flow === 'Guest shopping');
+    $('#p-flow').textContent = st.flow + (st.flow === 'COD order' || st.flow === 'Guest shopping' ? '' : (st.overlay === 'sheet' || (st.page !== 'home' && st.overlay !== 'drawer') ? ' · checkout' : ' · menu'));
+    $('#demo-pw').textContent = st.accounts['9876543210'].pw;
+    $$('.reset-word').forEach(function (e) {
+      var sheet = e.classList.contains('stitle');
+      e.textContent = st.flow === 'Set password' ? (sheet ? 'Set your password' : 'Set a password') : (sheet ? 'Reset your password' : 'Reset password');
+    });
+    $('#p-screens').textContent = st.screens;
+    $('#p-taps').textContent = st.taps;
+    $('#p-status').textContent = st.doneAt ? 'Finished. Log out from the menu to try another flow.' : 'In progress…';
+    tick();
+  }
+
+  function tick() { $('#p-time').textContent = clock((st.doneAt || Date.now()) - st.startedAt); }
+
+  // COD goes to the logged-in number, or for a guest to the phone on the delivery address.
+  function codPhone() { return st.loggedIn ? st.phone : (st.guestPhone.length === 10 ? st.guestPhone : GUEST_PHONE); }
+  function numberVerified() { var a = st.loggedIn && st.accounts[st.phone]; return !!(a && a.verified); }
+
+  function codError(msg) { var e = $('#cod-err'); e.textContent = msg || ''; e.hidden = !msg; }
+
+  // A guest order creates an account for the phone on the address, but with no password
+  // (the real backend resolves/creates a user at address save). Logging in later must go
+  // through a WhatsApp code first, or anyone could claim that number's order history.
+  function rememberGuestAccount(verified) {
+    var p = codPhone();
+    if (st.loggedIn || st.accounts[p]) return;
+    st.accounts[p] = { pw: null, verified: !!verified };
+  }
+  var NOPW_MSG = 'You have ordered with this number as a guest but have not set a password yet.';
+
+  var acts = {
+    openDrawer: function () { open('drawer'); },
+    openSheet: function () { open('sheet', 'login', 'Log in'); },
+    openSheetSignup: function () { open('sheet', 'signup', 'Create account'); },
+    closeAll: function () { st.overlay = null; st.toast = false; render(); },
+    goCart: function () { st.page = 'cart'; st.overlay = null; st.screens++; render(); },
+    goHome: function () { st.page = 'home'; st.overlay = null; st.screens++; render(); },
+    openProduct: function () {
+      if (!st.loggedIn && st.flow !== 'Guest shopping') { st.flow = 'Guest shopping'; st.startedAt = Date.now(); st.taps = 1; st.screens = 1; st.doneAt = null; }
+      st.page = 'pdp'; st.overlay = null; st.screens++; render();
+    },
+    addToCart: function () { note('Added to cart. No login needed: guests can shop and check out.'); },
+    buyNow: function () {
+      st.page = 'cart'; st.overlay = null; st.screens++; render();
+      note('The cart shows the storefront’s sample items in this prototype.');
+    },
+    proceed: function () { st.page = 'address'; st.overlay = null; st.screens++; render(); },
+    goAddress: function () { st.page = 'address'; st.overlay = null; st.screens++; render(); },
+    continuePay: function () {
+      if (!st.loggedIn && st.guestPhone.length !== 10) { note('Enter a 10-digit mobile number for delivery updates.'); $('#guest-phone').focus(); return; }
+      st.page = 'pay'; st.overlay = null; st.screens++;
+      render();
+      note('Pincode and address are skipped in this prototype. Cash on Delivery is selected.');
+    },
+    jumpGuest: function () { fresh(false); st.page = 'home'; st.flow = 'Guest shopping'; render(); },
+    placeCod: function () {
+      if (st.flow !== 'COD order' && st.flow !== 'Guest shopping') { st.flow = 'COD order'; st.startedAt = Date.now(); st.taps = 1; st.screens = 1; }
+      st.doneAt = null;
+      if (numberVerified()) { st.codUsedOtp = false; st.overlay = 'placed'; st.doneAt = Date.now(); st.screens++; render(); return; }
+      st.overlay = 'cod'; st.codOtp = ''; st.toast = true; st.screens++;
+      codError('');
+      render();
+      setTimeout(function () { $('#cod-otp').focus(); }, 30);
+    },
+    codChange: function () { note('Changing the number sends a fresh WhatsApp code (not part of this prototype).'); },
+    verifyCod: function () {
+      if (st.codOtp.length !== 4) return;
+      if (st.codOtp !== CODE) { st.codOtp = ''; render(); codError("That code didn't match. Try again."); return; }
+      if (st.loggedIn && st.accounts[st.phone]) st.accounts[st.phone].verified = true;
+      rememberGuestAccount(true);
+      st.codUsedOtp = true; st.toast = false; st.overlay = 'placed'; st.doneAt = Date.now(); st.screens++;
+      render();
+    },
+    afterOrder: function () { st.overlay = null; st.page = 'home'; st.screens++; render(); },
+    jumpHome: function () { fresh(false); st.page = 'home'; render(); },
+    jumpCart: function () { fresh(false); st.page = 'cart'; render(); },
+    toggleShow: function () { st.showPw = !st.showPw; render(); },
+    dismissToast: function () { st.toast = false; render(); },
+    backToLogin: function () { clearPasswords(); go('login', { flow: 'Log in' }); },
+    openSignup: function () { clearPasswords(); go('signup', { flow: 'Create account' }); },
+    openForgot: function () { clearPasswords(); go('forgotPhone', { flow: 'Forgot password' }); },
+    openSetPassword: function () { clearPasswords(); go('forgotPhone', { flow: 'Set password' }); },
+    changeNumber: function () { go('forgotPhone', { otp: '', toast: false }); },
+    doLogin: function () {
+      if (!validPhone()) return;
+      var saved = st.accounts[st.phone];
+      if (!saved) return fail('No account with this number yet.', 'noaccount');
+      if (!saved.pw) return fail(NOPW_MSG, 'nopw');
+      if (saved.pw !== pw()) return fail('Wrong mobile number or password.', 'wrongpw');
+      finish('Welcome back');
+    },
+    doSignup: function () {
+      if (!validPhone()) return;
+      if (st.accounts[st.phone] && !st.accounts[st.phone].pw) return fail(NOPW_MSG + ' Confirm it on WhatsApp to set one.', 'nopw');
+      if (st.accounts[st.phone]) return fail('This number already has an account.', 'exists');
+      if (pw().length < 8) return fail('Use at least 8 characters for your password.');
+      st.accounts[st.phone] = { pw: pw(), verified: false };
+      finish('Account created');
+    },
+    sendCode: function () {
+      if (!validPhone()) return;
+      if (!st.accounts[st.phone]) return fail('No account with this number. Go back and create one.');
+      go('forgotOtp', { otp: '', toast: true });
+    },
+    resend: function () { st.toast = true; clearError(); render(); },
+    saveNew: function () {
+      if (pw().length < 8) return fail('Use at least 8 characters for your password.');
+      var wasSet = !!st.accounts[st.phone].pw;
+      st.accounts[st.phone].pw = pw();
+      st.accounts[st.phone].verified = true;
+      finish(wasSet ? 'Password updated' : 'Password set');
+    },
+    logout: function () { var o = st.overlay; fresh(true); st.overlay = o; render(); },
+    resetAll: function () { fresh(false); render(); }
+  };
+  var untracked = { toggleShow: 1, dismissToast: 1, logout: 1, resetAll: 1, jumpHome: 1, jumpCart: 1, jumpGuest: 1 };
+
+  document.addEventListener('click', function (e) {
+    var el = e.target.closest('[data-act]');
+    if (!el) return;
+    var name = el.getAttribute('data-act');
+    if (!untracked[name]) st.taps++;
+    acts[name]();
+    $('#p-taps').textContent = st.taps;
+  });
+
+  document.addEventListener('input', function (e) {
+    var t = e.target;
+    if (t.classList.contains('phone-in')) {
+      st.phone = t.value.replace(/\D/g, '').slice(0, 10);
+      clearError(); render();
+    } else if (t.classList.contains('pw-in')) {
+      clearError(); render();
+    } else if (t.id === 'guest-phone') {
+      var digits = t.value.replace(/\D/g, '').slice(0, 10);
+      if (st.loggedIn) st.phone = digits; else st.guestPhone = digits;
+      render();
+    } else if (t.id === 'guest-name') {
+      st.guestName = t.value;
+    } else if (t.id === 'cod-otp') {
+      st.codOtp = t.value.replace(/\D/g, '').slice(0, 4);
+      codError(''); render();
+    } else if (t.id === 'forgot-otp') {
+      st.otp = t.value.replace(/\D/g, '').slice(0, 4);
+      clearError(); render();
+      if (st.otp.length === 4) {
+        if (st.otp === CODE) { go('forgotNew', { toast: false, otp: '' }); }
+        else { st.otp = ''; render(); fail("That code didn't match. Check the WhatsApp message from Wcommerce."); }
+      }
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' || !e.target.matches('#login input')) return;
+    var btn = $('section[data-screen="' + st.screen + '"] .btn');
+    if (btn) btn.click();
+  });
+
+  fresh(false);
+  render();
+  setInterval(function () { if (!st.doneAt) tick(); }, 1000);
+})();
+</script>
+</body>
+</html>
