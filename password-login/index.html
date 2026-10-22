@@ -141,7 +141,7 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
 .fakeaddr b{font-size:11.5px;font-weight:500;color:#1F212E}
 .fakeaddr i{font-style:normal;color:#1E863B}
 /* WhatsApp COD confirmation message (cod_order_confirmation_customer, confirmed via SmartFlowService) */
-.tbtn{display:block;width:100%;margin-top:8px;padding:9px 0;border:0;border-top:1px solid rgba(255,255,255,.18);background:transparent;color:#53BDEB;font-size:14px;font-weight:500}
+.toast .tbtn{display:block;width:100%;height:auto;margin-top:8px;padding:9px 0;border:0;border-top:1px solid rgba(255,255,255,.18);background:transparent;color:#53BDEB;font-size:14px;font-weight:500;text-align:center}
 
 /* Razorpay Magic Checkout mock: one sheet for contact, OTP, address and payment */
 .msheet{position:absolute;left:0;right:0;bottom:0;top:56px;background:#fff;border-radius:16px 16px 0 0;display:flex;flex-direction:column;box-shadow:0 -10px 30px rgba(31,33,46,.2)}
@@ -512,6 +512,7 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
         <div class="msg" id="codmsg-text"></div>
         <button class="tbtn" data-act="confirmCod">Confirm order</button>
       </div>
+      <button data-act="dismissCodMsg" aria-label="Dismiss message"><svg width="16" height="16"><use href="#x"/></svg></button>
     </div>
     <div class="note" id="note" hidden></div>
   </div>
@@ -559,7 +560,7 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
       <span>Existing account: <b>98765 43210</b> · current password <b id="demo-pw">handloom1</b>. A password reset changes it until you press Reset prototype.</span>
       <span>WhatsApp code for password reset: <b>4821</b>. Razorpay OTP for the saved address: <b>123456</b> (only 98765 43210 has a saved address).</span>
       <span>COD has no OTP: the order is placed straight away and the shopper confirms it from the WhatsApp message, as the live COD confirmation already works.</span>
-      <span style="color:#707078">Nothing is sent or saved. Accounts you create last until the page reloads. Add <b>?hidepanel</b> to the URL to hide this panel for testers.</span>
+      <span style="color:#707078">Nothing is sent. Accounts you create stay in this browser, even after a refresh, until you press Reset prototype. Add <b>?hidepanel</b> to the URL to hide this panel for testers.</span>
     </div>
     <button class="reset" data-act="resetAll">Reset prototype</button>
   </div>
@@ -576,6 +577,9 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
   // Numbers with an address already saved on the Razorpay Magic network (mock).
   var MAGIC_SAVED = { '9876543210': true };
   var checkoutMode = 'store';
+  // Accounts and the checkout toggle survive a page refresh (this browser only) until
+  // Reset prototype, so a tester can reload mid-test without losing a guest order.
+  var STORE_KEY = 'password-login-prototype-v1';
   var st;
   var noteTimer;
   var $ = function (s, r) { return (r || document).querySelector(s); };
@@ -602,6 +606,24 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
       flow: 'Log in', taps: 0, screens: 1, startedAt: Date.now(), doneAt: null, doneMsg: ''
     };
     clearPasswords();
+  }
+
+  function loadSaved() {
+    try {
+      var s = JSON.parse(localStorage.getItem(STORE_KEY));
+      if (s && s.accounts) { checkoutMode = s.checkoutMode || 'store'; return s.accounts; }
+    } catch (e) { /* storage blocked or empty: start fresh */ }
+    return null;
+  }
+  function save() {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify({ accounts: st.accounts, checkoutMode: checkoutMode })); } catch (e) { /* ignore */ }
+  }
+  // Start a new attempt but keep the accounts created so far.
+  function restart(page, flow) {
+    var acc = st.accounts;
+    fresh(false);
+    st.accounts = acc; st.page = page; if (flow) st.flow = flow;
+    render();
   }
 
   function clearPasswords() { $$('.pw-in').forEach(function (i) { i.value = ''; }); }
@@ -720,6 +742,7 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
     $('#p-taps').textContent = st.taps;
     $('#p-status').textContent = st.doneAt ? 'Finished. Log out from the menu to try another flow.' : 'In progress…';
     tick();
+    save();
   }
 
   function tick() { $('#p-time').textContent = clock((st.doneAt || Date.now()) - st.startedAt); }
@@ -851,14 +874,17 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
       render();
       note('Pincode and address are skipped in this prototype. Cash on Delivery is selected.');
     },
-    jumpGuest: function () { fresh(false); st.page = 'home'; st.flow = 'Guest shopping'; render(); },
+    jumpGuest: function () { restart('home', 'Guest shopping'); },
     placeCod: function () {
       if (st.flow !== 'COD order' && st.flow !== 'Guest shopping') { st.flow = 'COD order'; st.startedAt = Date.now(); st.taps = 1; st.screens = 1; }
       placeOrder('cod', orderPhone());
     },
-    afterOrder: function () { st.overlay = null; st.page = 'home'; st.screens++; render(); },
-    jumpHome: function () { fresh(false); st.page = 'home'; render(); },
-    jumpCart: function () { fresh(false); st.page = 'cart'; render(); },
+    // Leaving the order screen puts the WhatsApp message away (as a real notification would),
+    // so it never covers the store header; the order simply stays unconfirmed.
+    afterOrder: function () { st.overlay = null; st.page = 'home'; st.codMsg = false; st.screens++; render(); },
+    dismissCodMsg: function () { st.codMsg = false; render(); },
+    jumpHome: function () { restart('home'); },
+    jumpCart: function () { restart('cart'); },
     toggleShow: function () { st.showPw = !st.showPw; render(); },
     dismissToast: function () { st.toast = false; render(); },
     backToLogin: function () { clearPasswords(); go('login', { flow: 'Log in' }); },
@@ -896,9 +922,12 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
       finish(wasSet ? 'Password updated' : 'Password set');
     },
     logout: function () { var o = st.overlay; fresh(true); st.overlay = o; render(); },
-    resetAll: function () { fresh(false); render(); }
+    resetAll: function () {
+      try { localStorage.removeItem(STORE_KEY); } catch (e) { /* ignore */ }
+      checkoutMode = 'store'; fresh(false); render();
+    }
   };
-  var untracked = { toggleShow: 1, dismissToast: 1, logout: 1, resetAll: 1, jumpHome: 1, jumpCart: 1, jumpGuest: 1, modeStore: 1, modeMagic: 1 };
+  var untracked = { toggleShow: 1, dismissToast: 1, dismissCodMsg: 1, logout: 1, resetAll: 1, jumpHome: 1, jumpCart: 1, jumpGuest: 1, modeStore: 1, modeMagic: 1 };
 
   document.addEventListener('click', function (e) {
     var el = e.target.closest('[data-act]');
@@ -951,6 +980,8 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
   });
 
   fresh(false);
+  var savedAccounts = loadSaved();
+  if (savedAccounts) st.accounts = savedAccounts;
   render();
   setInterval(function () { if (!st.doneAt) tick(); }, 1000);
 })();
