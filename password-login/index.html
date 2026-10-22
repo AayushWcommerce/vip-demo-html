@@ -140,25 +140,41 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
 .fakeaddr{position:absolute;left:17px;top:170px;width:341px;height:64px;background:#fff;padding:4px 12px;display:flex;flex-direction:column;gap:2px;font-size:11px;color:#545454;line-height:1.45}
 .fakeaddr b{font-size:11.5px;font-weight:500;color:#1F212E}
 .fakeaddr i{font-style:normal;color:#1E863B}
-.ctitle{font-size:14px;font-weight:500;margin:4px 16px 10px}
-.csub{font-size:11.5px;color:#545454;line-height:1.45;margin:0 16px}
-.cphone{font-size:12.5px;color:#545454;margin:2px 16px 8px}
-.cphone b{font-weight:500;color:#1F212E}
-.cphone button{border:0;background:transparent;padding:0;color:#4862EE;font-weight:500;font-size:12.5px}
-.cboxes{position:relative;display:flex;gap:8px;justify-content:center;margin:14px 16px 6px}
-.cbox{width:40px;height:48px;display:grid;place-items:center;font-size:20px;font-weight:500;border-radius:6px;border:1.5px solid #E8EAF0;background:#fff}
-.cbox.filled{border-color:#4862EE;background:#F4F5FF}
-.cbox.active{border-color:#4862EE;box-shadow:0 0 0 3px rgba(72,98,238,.12)}
-.cboxes input{position:absolute;inset:0;width:100%;height:100%;opacity:0;border:0;font-size:16px}
-.cwa{display:flex;align-items:center;justify-content:center;gap:6px;width:calc(100% - 32px);margin:8px 16px 2px;padding:10px 0;border:1px solid #25D366;border-radius:6px;background:#fff;color:#1E9E50;font-size:12px;font-weight:500}
-.cinfo{display:flex;gap:8px;align-items:flex-start;margin:10px 16px 0;background:#F4F5FF;border-radius:6px;padding:9px 11px;font-size:11px;line-height:1.45;color:#545454}
-.cinfo b{font-weight:500;color:#1F212E}
-.cerr{text-align:center;font-size:11.5px;color:#C73F21;font-weight:500;margin:8px 16px 0}
-.cresend{text-align:center;font-size:11px;color:#707078;margin:8px 16px 0}
-.cresend button{border:0;background:transparent;padding:0;color:#4862EE;font-weight:500;font-size:11px}
-.cverify{display:block;width:calc(100% - 32px);margin:10px 16px 4px;border:0;border-radius:6px;background:#4862EE;color:#fff;font-size:13px;font-weight:500;padding:12px 0}
-.cverify.dim{opacity:.5}
-.cwhy{text-align:center;font-size:10px;color:#707078;line-height:1.4;margin:8px 16px 0}
+/* WhatsApp COD confirmation message (cod_order_confirmation_customer, confirmed via SmartFlowService) */
+.tbtn{display:block;width:100%;margin-top:8px;padding:9px 0;border:0;border-top:1px solid rgba(255,255,255,.18);background:transparent;color:#53BDEB;font-size:14px;font-weight:500}
+
+/* Razorpay Magic Checkout mock: one sheet for contact, OTP, address and payment */
+.msheet{position:absolute;left:0;right:0;bottom:0;top:56px;background:#fff;border-radius:16px 16px 0 0;display:flex;flex-direction:column;box-shadow:0 -10px 30px rgba(31,33,46,.2)}
+.mhead{display:flex;align-items:center;gap:8px;padding:14px 16px;border-bottom:1px solid #EEF0F4}
+.mhead .mname{flex:1;font-size:13px;font-weight:500}
+.mhead .mamt{font-size:13px;font-weight:500}
+.msteps{display:flex;gap:6px;padding:10px 16px 0}
+.mstep{flex:1;height:3px;border-radius:3px;background:#E8EAF0}
+.mstep.on{background:#4862EE}
+.mbody{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column}
+.mbody section{display:flex;flex-direction:column;gap:10px}
+.mh{font-size:16px;font-weight:500}
+.msub{font-size:12px;color:#545454;line-height:1.45}
+.minput{width:100%;height:44px;border:1.5px solid #E8EAF0;border-radius:8px;padding:0 12px;font:400 14px Geomanist,system-ui,sans-serif;color:#1F212E;outline:none}
+.minput:focus{border-color:#4862EE;box-shadow:0 0 0 3px rgba(72,98,238,.12)}
+.mphone{display:flex;align-items:center;border:1.5px solid #E8EAF0;border-radius:8px;padding:0 12px;height:44px}
+.mphone:focus-within{border-color:#4862EE;box-shadow:0 0 0 3px rgba(72,98,238,.12)}
+.mphone span{font-size:14px;font-weight:500;padding-right:10px;margin-right:10px;border-right:1px solid #E8EAF0}
+.mphone input{flex:1;min-width:0;border:0;outline:none;font:400 14px Geomanist,system-ui,sans-serif}
+.motp{letter-spacing:12px;text-align:center;font-size:20px}
+.mbtn{width:100%;padding:13px 0;border:0;border-radius:8px;background:#4862EE;color:#fff;font-size:14px;font-weight:500}
+.mlink{align-self:flex-start;border:0;background:transparent;padding:0;color:#4862EE;font-size:12px;font-weight:500;min-height:28px}
+.mcard{border:1.5px solid #4862EE;background:#F4F5FF;border-radius:8px;padding:10px 12px;font-size:12px;line-height:1.45;color:#545454}
+.mcard b{display:block;font-size:13px;font-weight:500;color:#1F212E}
+.msum{display:flex;justify-content:space-between;font-size:12.5px;color:#545454}
+.msum.total{font-size:14px;font-weight:500;color:#1F212E;border-top:1px dashed #E1E5EE;padding-top:8px}
+.mmethod{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:1.5px solid #E8EAF0;border-radius:8px;background:#fff;padding:11px 12px;font-size:13px;color:#1F212E}
+.mmethod small{display:block;font-size:11px;color:#707078}
+.mmethod .dot{width:16px;height:16px;border-radius:50%;border:1.5px solid #B8BFCC;flex:none}
+.mmethod.on{border-color:#4862EE;background:#F4F5FF}
+.mmethod.on .dot{border:5px solid #4862EE}
+.mfoot{padding:10px 16px 14px;border-top:1px solid #EEF0F4;font-size:10.5px;color:#707078;text-align:center}
+.merr{font-size:11.5px;color:#C73F21;font-weight:500}
 
 /* guest address step (AddressPage LoginBar + form fields) */
 .loginbar{position:absolute;left:16px;top:101px;width:343px;min-height:51px;display:flex;align-items:center;gap:10px;padding:8px 12px;background:#F4F5FF;border:1px solid #D7DEFF;border-radius:8px;font-size:11px;line-height:1.35;color:#2C2C2C}
@@ -248,7 +264,7 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
       <img class="shot" src="pay.jpg" alt="The Crafts Archive payment page">
       <button class="hot" style="left:8px;top:6px" data-act="goAddress" aria-label="Back to address"></button>
       <div class="fakeaddr"><b>Asha · 500032</b><span>Flat 12, Sample Residency, Gachibowli, Hyderabad, Telangana 500032 · <i>3–7 days</i></span></div>
-      <span class="codsub" id="codsub">Pay at your door · we verify your number by OTP</span>
+      <span class="codsub" id="codsub">Pay at your door · confirm the order on WhatsApp</span>
       <div class="cartbar">
         <div class="cartrow">
           <div class="total"><span>Total</span><b>₹2,645</b></div>
@@ -290,27 +306,65 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
       </div>
     </div>
 
-    <div class="overlay" id="codwrap" hidden>
-      <button class="scrim" data-act="closeAll" aria-label="Close"></button>
-      <div class="sheet">
-        <div class="grip"></div>
-        <div class="ctitle">Confirm your number</div>
-        <p class="csub">Enter the 4-digit code sent on WhatsApp to</p>
-        <div class="cphone"><b id="cod-phone"></b> · <button data-act="codChange">Change</button></div>
-        <div class="cinfo">
-          <svg width="14" height="14" style="color:#25D366;flex:none;margin-top:1px"><use href="#wa"/></svg>
-          <span>The code comes from <b>Wcommerce</b>, which runs secure checkout for The Crafts Archive.</span>
+    <div class="overlay" id="magic" hidden>
+      <div class="scrim" style="cursor:default"></div>
+      <div class="msheet" role="dialog" aria-label="Checkout">
+        <div class="mhead">
+          <div class="logo logo24"></div>
+          <span class="mname">The Crafts Archive</span>
+          <span class="mamt" id="m-amt">₹2,600</span>
+          <button class="xbtn" style="width:32px;height:32px" data-act="closeAll" aria-label="Close checkout"><svg width="16" height="16"><use href="#x"/></svg></button>
         </div>
-        <label class="sr" for="cod-otp">4-digit code</label>
-        <div class="cboxes">
-          <div class="cbox"></div><div class="cbox"></div><div class="cbox"></div><div class="cbox"></div>
-          <input id="cod-otp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="4">
+        <div class="msteps"><span class="mstep" data-step="contact"></span><span class="mstep" data-step="address"></span><span class="mstep" data-step="pay"></span></div>
+        <div class="mbody">
+          <section data-mstep="contact">
+            <div class="mh">Contact details</div>
+            <p class="msub">We'll use this number for order updates on WhatsApp.</p>
+            <label class="sr" for="m-phone">Mobile number</label>
+            <div class="mphone"><span>+91</span><input id="m-phone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="Mobile number"></div>
+            <p class="merr" id="m-contact-err" hidden></p>
+            <button class="mbtn" data-act="magicContinue">Continue</button>
+          </section>
+          <section data-mstep="otp" hidden>
+            <div class="mh">Use your saved address?</div>
+            <p class="msub">This number has an address saved with Razorpay. Enter the OTP sent by SMS to <b id="m-otp-phone" style="font-weight:500;color:#1F212E"></b> to use it.</p>
+            <label class="sr" for="m-otp">6-digit OTP</label>
+            <input class="minput motp" id="m-otp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••">
+            <p class="merr" id="m-otp-err" hidden></p>
+            <button class="mlink" data-act="magicSkipOtp">Skip and enter a new address</button>
+            <button class="mlink" data-act="magicBack">Change number</button>
+          </section>
+          <section data-mstep="address" hidden>
+            <div class="mh">Delivery address</div>
+            <div id="m-saved">
+              <div class="mcard"><b>Asha · Home</b>Flat 12, Sample Residency, Gachibowli, Hyderabad 500032</div>
+            </div>
+            <div id="m-form" style="display:flex;flex-direction:column;gap:10px">
+              <label class="sr" for="m-name">Full name</label>
+              <input class="minput" id="m-name" placeholder="Full name" autocomplete="name">
+              <label class="sr" for="m-pin">Pincode</label>
+              <input class="minput" id="m-pin" inputmode="numeric" maxlength="6" placeholder="Pincode" autocomplete="postal-code">
+              <label class="sr" for="m-line">Flat, street, area</label>
+              <input class="minput" id="m-line" placeholder="Flat, street, area" autocomplete="street-address">
+            </div>
+            <p class="merr" id="m-addr-err" hidden></p>
+            <button class="mbtn" data-act="magicAddressNext">Continue to payment</button>
+            <button class="mlink" data-act="magicBack">Back</button>
+          </section>
+          <section data-mstep="pay" hidden>
+            <div class="mh">Payment</div>
+            <div class="msum"><span>Items (2)</span><span>₹2,600</span></div>
+            <div class="msum"><span>Delivery</span><span style="color:#1E863B">Free</span></div>
+            <div class="msum" id="m-codfee" hidden><span>COD charge</span><span>₹45</span></div>
+            <div class="msum total"><span>Total</span><span id="m-total">₹2,600</span></div>
+            <button class="mmethod" data-act="mUpi" data-m="upi"><span class="dot"></span><span>UPI<small>Google Pay, PhonePe, Paytm or any UPI app</small></span></button>
+            <button class="mmethod" data-act="mCard" data-m="card"><span class="dot"></span><span>Cards<small>Debit and credit cards</small></span></button>
+            <button class="mmethod" data-act="mCod" data-m="cod"><span class="dot"></span><span>Cash on Delivery<small>+₹45 · confirm the order on WhatsApp</small></span></button>
+            <button class="mbtn" id="m-pay" data-act="magicPay">Pay ₹2,600</button>
+            <button class="mlink" data-act="magicBack">Back</button>
+          </section>
         </div>
-        <button class="cwa" data-act="resend"><svg width="15" height="15"><use href="#wa"/></svg> Open WhatsApp to copy your code</button>
-        <p class="cerr" id="cod-err" hidden></p>
-        <div class="cresend">Didn't get it? <button data-act="resend">Resend on WhatsApp</button></div>
-        <button class="cverify" id="cod-verify" data-act="verifyCod">Verify &amp; place COD order →</button>
-        <p class="cwhy">We verify the number on COD orders to prevent fake orders — it protects the maker.</p>
+        <div class="mfoot">Secured by Razorpay · Magic Checkout (prototype mock, no real payment)</div>
       </div>
     </div>
 
@@ -320,9 +374,8 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
         <div class="grip"></div>
         <div class="sdone">
           <div class="big"><svg width="30" height="30"><use href="#tick"/></svg></div>
-          <h2>COD order placed</h2>
-          <p>Pay <b style="font-weight:500;color:#1F212E">₹2,645</b> at your door. Updates will come on WhatsApp to <span id="placed-phone"></span>.</p>
-          <p id="placed-otp" style="margin-top:10px"></p>
+          <h2 id="placed-title"></h2>
+          <p id="placed-text"></p>
           <button class="btn" style="width:calc(100% - 32px);margin:16px auto 0" data-act="afterOrder">Back to the store</button>
         </div>
       </div>
@@ -394,7 +447,7 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
         </div>
         <div class="info">
           <svg width="15" height="15" style="color:#25D366;flex:none;margin-top:1px"><use href="#wa"/></svg>
-          <span><b>Wcommerce</b> will send your code on WhatsApp. Wcommerce runs secure login for The Crafts Archive, so look for a message from Wcommerce and verify it here.</span>
+          <span>You'll get a 4-digit code on WhatsApp from <b>Wcommerce</b>, our delivery partner.</span>
         </div>
         <div class="err" role="alert" hidden><span class="err-text"></span></div>
         <button class="btn wa" data-act="sendCode" data-need="phone"><svg width="15" height="15"><use href="#wa"/></svg> Send code on WhatsApp</button>
@@ -402,8 +455,8 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
       </section>
 
       <section data-screen="forgotOtp" hidden>
-        <div class="title only-drawer">Enter code <span>· sent by Wcommerce to <span class="phone-pretty"></span></span></div>
-        <div class="only-sheet"><div class="stitle">Enter the code</div><p class="ssubt">Sent on WhatsApp by <b style="font-weight:500;color:#1F212E">Wcommerce</b> to <span class="phone-pretty"></span></p></div>
+        <div class="title only-drawer">Enter code <span>· sent on WhatsApp to <span class="phone-pretty"></span></span></div>
+        <div class="only-sheet"><div class="stitle">Enter the code</div><p class="ssubt">Sent on WhatsApp to <span class="phone-pretty"></span></p></div>
         <label class="sr" for="forgot-otp">4-digit code</label>
         <div class="boxes">
           <div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div>
@@ -443,13 +496,22 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
     </div>
 
     <div class="toast" id="toast" hidden>
+      <div class="wa" id="t-icon"><svg width="18" height="18" style="color:#fff"><use href="#wa"/></svg></div>
+      <div class="body">
+        <div class="meta" id="t-meta">WhatsApp · now</div>
+        <div class="from" id="t-from">Wcommerce</div>
+        <div class="msg" id="t-msg">4821 is your verification code. For your security, do not share this code.</div>
+      </div>
+      <button data-act="dismissToast" aria-label="Dismiss message"><svg width="16" height="16"><use href="#x"/></svg></button>
+    </div>
+    <div class="toast" id="codmsg" hidden>
       <div class="wa"><svg width="18" height="18" style="color:#fff"><use href="#wa"/></svg></div>
       <div class="body">
         <div class="meta">WhatsApp · now</div>
         <div class="from">Wcommerce</div>
-        <div class="msg">4821 is your verification code. For your security, do not share this code.</div>
+        <div class="msg" id="codmsg-text"></div>
+        <button class="tbtn" data-act="confirmCod">Confirm order</button>
       </div>
-      <button data-act="dismissToast" aria-label="Dismiss message"><svg width="16" height="16"><use href="#x"/></svg></button>
     </div>
     <div class="note" id="note" hidden></div>
   </div>
@@ -474,6 +536,13 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
       </div>
     </div>
     <div class="card">
+      <div class="eyebrow">Checkout after the cart</div>
+      <div class="jump">
+        <button data-act="modeStore" id="m-store">Store checkout (today)</button>
+        <button data-act="modeMagic" id="m-magic">Razorpay Magic Checkout</button>
+      </div>
+    </div>
+    <div class="card">
       <div class="eyebrow">Tasks for the tester</div>
       <ol>
         <li>Open the menu (☰) and create an account with your own number.</li>
@@ -482,13 +551,14 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
         <li>Open the cart (🛒) and log in from “Shopped here before?”.</li>
         <li>Proceed to checkout and place a Cash on Delivery order.</li>
         <li>As a guest: tap the first saree on the home page, Buy now, and check out with Cash on Delivery using your own number.</li>
+        <li>Switch to Razorpay Magic Checkout and buy again from the cart.</li>
       </ol>
     </div>
     <div class="card">
       <div class="eyebrow">Demo details</div>
-      <span>Existing account: <b>98765 43210</b> · current password <b id="demo-pw">handloom1</b> (number already verified, so COD needs no code). A password reset changes it until you press Reset prototype.</span>
-      <span>WhatsApp code for reset and COD: <b>4821</b> (shown in the fake WhatsApp message)</span>
-      <span>COD asks for a WhatsApp code from Wcommerce when the number was never verified: guests and accounts created with just a password. A verified number skips it.</span>
+      <span>Existing account: <b>98765 43210</b> · current password <b id="demo-pw">handloom1</b>. A password reset changes it until you press Reset prototype.</span>
+      <span>WhatsApp code for password reset: <b>4821</b>. Razorpay OTP for the saved address: <b>123456</b> (only 98765 43210 has a saved address).</span>
+      <span>COD has no OTP: the order is placed straight away and the shopper confirms it from the WhatsApp message, as the live COD confirmation already works.</span>
       <span style="color:#707078">Nothing is sent or saved. Accounts you create last until the page reloads. Add <b>?hidepanel</b> to the URL to hide this panel for testers.</span>
     </div>
     <button class="reset" data-act="resetAll">Reset prototype</button>
@@ -502,6 +572,10 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
   var DEMO = { '9876543210': { pw: 'handloom1', verified: true } };
   var GUEST_PHONE = '9000000001';
   var CODE = '4821';
+  var MAGIC_OTP = '123456';
+  // Numbers with an address already saved on the Razorpay Magic network (mock).
+  var MAGIC_SAVED = { '9876543210': true };
+  var checkoutMode = 'store';
   var st;
   var noteTimer;
   var $ = function (s, r) { return (r || document).querySelector(s); };
@@ -519,7 +593,9 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
   function fresh(keep) {
     st = {
       accounts: keep ? st.accounts : JSON.parse(JSON.stringify(DEMO)),
-      codOtp: '', codUsedOtp: false, guestName: '', guestPhone: '',
+      guestName: '', guestPhone: '', toastKind: 'wa',
+      orderKind: '', orderPhone: '', codMsg: false, codConfirmed: false,
+      magicStep: 'contact', magicPhone: '', magicSaved: false, magicMethod: 'upi',
       phone: keep ? st.phone : '',
       page: keep ? st.page : 'home',
       overlay: null, screen: 'login', loggedIn: false, showPw: false, otp: '', toast: false,
@@ -589,23 +665,18 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
     if ($('#guest-name').value !== st.guestName) $('#guest-name').value = st.guestName;
     $('#drawer').hidden = st.overlay !== 'drawer';
     $('#sheetwrap').hidden = st.overlay !== 'sheet';
-    $('#codwrap').hidden = st.overlay !== 'cod';
+    $('#magic').hidden = st.overlay !== 'magic';
     $('#placed').hidden = st.overlay !== 'placed';
-    var verified = numberVerified();
-    var sub = $('#codsub');
-    sub.textContent = verified ? pretty(codPhone()) + ' verified · no OTP needed' : 'Pay at your door · we verify your number by OTP';
-    sub.classList.toggle('ok', verified);
-    $('#cod-phone').textContent = pretty(codPhone());
-    $('#placed-phone').textContent = pretty(codPhone());
-    $('#placed-otp').textContent = st.codUsedOtp ? 'Your number is now verified, so your next COD order needs no code.' : 'No code was needed: this number was already verified.';
-    var cIn = $('#cod-otp');
-    if (cIn.value !== st.codOtp) cIn.value = st.codOtp;
-    $$('.cbox').forEach(function (b, i) {
-      b.textContent = st.codOtp[i] || '';
-      b.classList.toggle('filled', !!st.codOtp[i]);
-      b.classList.toggle('active', i === st.codOtp.length);
-    });
-    $('#cod-verify').classList.toggle('dim', st.codOtp.length !== 4);
+    renderMagic();
+    renderOrder();
+    // The live toast is either the WhatsApp reset code or Razorpay's SMS OTP.
+    var sms = st.toastKind === 'sms';
+    $('#t-icon').style.background = sms ? '#707078' : '#25D366';
+    $('#t-meta').textContent = sms ? 'Messages · now' : 'WhatsApp · now';
+    $('#t-from').textContent = sms ? 'Razorpay' : 'Wcommerce';
+    $('#t-msg').textContent = sms
+      ? MAGIC_OTP + ' is your OTP to use your saved address at checkout. Do not share it.'
+      : CODE + ' is your verification code. For your security, do not share this code.';
     var slot = st.overlay === 'sheet' ? $('#sheet-slot') : $('#drawer-slot');
     if ($('#login').parentNode !== slot) slot.appendChild($('#login'));
     $('#toast').hidden = !st.toast;
@@ -637,7 +708,9 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
     $('#j-home').classList.toggle('on', st.page === 'home');
     $('#j-cart').classList.toggle('on', st.page === 'cart' && st.flow !== 'Guest shopping');
     $('#j-guest').classList.toggle('on', st.flow === 'Guest shopping');
-    $('#p-flow').textContent = st.flow + (st.flow === 'COD order' || st.flow === 'Guest shopping' ? '' : (st.overlay === 'sheet' || (st.page !== 'home' && st.overlay !== 'drawer') ? ' · checkout' : ' · menu'));
+    $('#m-store').classList.toggle('on', checkoutMode === 'store');
+    $('#m-magic').classList.toggle('on', checkoutMode === 'magic');
+    $('#p-flow').textContent = st.flow + (st.flow === 'COD order' || st.flow === 'Guest shopping' || st.flow === 'Magic checkout' ? '' : (st.overlay === 'sheet' || (st.page !== 'home' && st.overlay !== 'drawer') ? ' · checkout' : ' · menu'));
     $('#demo-pw').textContent = st.accounts['9876543210'].pw;
     $$('.reset-word').forEach(function (e) {
       var sheet = e.classList.contains('stitle');
@@ -651,20 +724,68 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
 
   function tick() { $('#p-time').textContent = clock((st.doneAt || Date.now()) - st.startedAt); }
 
-  // COD goes to the logged-in number, or for a guest to the phone on the delivery address.
-  function codPhone() { return st.loggedIn ? st.phone : (st.guestPhone.length === 10 ? st.guestPhone : GUEST_PHONE); }
-  function numberVerified() { var a = st.loggedIn && st.accounts[st.phone]; return !!(a && a.verified); }
+  // Order updates go to the logged-in number, or for a guest to the phone on the delivery address.
+  function orderPhone() { return st.loggedIn ? st.phone : (st.guestPhone.length === 10 ? st.guestPhone : GUEST_PHONE); }
 
-  function codError(msg) { var e = $('#cod-err'); e.textContent = msg || ''; e.hidden = !msg; }
+  function showErr(id, msg) { var e = $(id); e.textContent = msg || ''; e.hidden = !msg; }
 
   // A guest order creates an account for the phone on the address, but with no password
   // (the real backend resolves/creates a user at address save). Logging in later must go
   // through a WhatsApp code first, or anyone could claim that number's order history.
-  function rememberGuestAccount(verified) {
-    var p = codPhone();
+  function rememberGuestAccount(p) {
     if (st.loggedIn || st.accounts[p]) return;
-    st.accounts[p] = { pw: null, verified: !!verified };
+    st.accounts[p] = { pw: null, verified: false };
   }
+
+  // COD has no OTP: the order is placed as pending and the shopper confirms it from the
+  // WhatsApp message (live: cod_order_confirmation_customer -> SmartFlowService.confirmOrder).
+  function placeOrder(kind, phone) {
+    rememberGuestAccount(phone);
+    st.orderKind = kind; st.orderPhone = phone;
+    st.codMsg = kind === 'cod'; st.codConfirmed = false; st.toast = false;
+    st.overlay = 'placed'; st.doneAt = Date.now(); st.screens++;
+    render();
+  }
+
+  function renderOrder() {
+    var name = st.guestName || $('#m-name').value || 'there';
+    var title, text;
+    if (st.orderKind === 'paid') {
+      title = 'Payment successful';
+      text = '₹2,600 paid. Order updates will come on WhatsApp to ' + pretty(st.orderPhone) + '.';
+    } else if (st.codConfirmed) {
+      title = 'Order confirmed';
+      text = 'Thanks for confirming. Pay ₹2,645 at your door.';
+    } else {
+      title = 'Order placed';
+      text = 'Pay ₹2,645 at your door. We’ve sent a WhatsApp message to ' + pretty(st.orderPhone) + ': tap Confirm order there to confirm it.';
+    }
+    $('#placed-title').textContent = title;
+    $('#placed-text').textContent = text;
+    $('#codmsg').hidden = !st.codMsg;
+    $('#codmsg-text').textContent = 'Hi ' + name.split(' ')[0] + ', please confirm your Cash on Delivery order #TCA-1042 from The Crafts Archive. Total ₹2,645.';
+  }
+
+  function renderMagic() {
+    var step = st.magicStep;
+    $$('[data-mstep]').forEach(function (s) { s.hidden = s.getAttribute('data-mstep') !== step; });
+    var order = ['contact', 'address', 'pay'];
+    var at = order.indexOf(step === 'otp' ? 'contact' : step);
+    $$('.mstep').forEach(function (s) { s.classList.toggle('on', order.indexOf(s.getAttribute('data-step')) <= at); });
+    var mp = $('#m-phone');
+    if (mp.value !== st.magicPhone) mp.value = st.magicPhone;
+    $('#m-otp-phone').textContent = pretty(st.magicPhone);
+    $('#m-saved').hidden = !st.magicSaved;
+    $('#m-form').style.display = st.magicSaved ? 'none' : 'flex';
+    $$('.mmethod').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-m') === st.magicMethod); });
+    var cod = st.magicMethod === 'cod';
+    $('#m-codfee').hidden = !cod;
+    $('#m-total').textContent = cod ? '₹2,645' : '₹2,600';
+    $('#m-amt').textContent = cod ? '₹2,645' : '₹2,600';
+    $('#m-pay').textContent = cod ? 'Place COD order · ₹2,645' : 'Pay ₹2,600';
+  }
+
+  function magicGo(step) { st.magicStep = step; st.screens++; render(); var f = $('[data-mstep="' + step + '"] input'); if (f) setTimeout(function () { f.focus(); }, 30); }
   var NOPW_MSG = 'You have ordered with this number as a guest but have not set a password yet.';
 
   var acts = {
@@ -683,7 +804,46 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
       st.page = 'cart'; st.overlay = null; st.screens++; render();
       note('The cart shows the storefront’s sample items in this prototype.');
     },
-    proceed: function () { st.page = 'address'; st.overlay = null; st.screens++; render(); },
+    proceed: function () {
+      if (checkoutMode !== 'magic') { st.page = 'address'; st.overlay = null; st.screens++; render(); return; }
+      if (st.flow !== 'Guest shopping') { st.flow = 'Magic checkout'; st.startedAt = Date.now(); st.taps = 1; st.screens = 1; st.doneAt = null; }
+      st.overlay = 'magic'; st.magicSaved = false; st.magicMethod = 'upi';
+      st.magicPhone = st.loggedIn ? st.phone : '';
+      ['#m-otp', '#m-name', '#m-pin', '#m-line'].forEach(function (s) { $(s).value = ''; });
+      ['#m-contact-err', '#m-otp-err', '#m-addr-err'].forEach(function (s) { showErr(s, ''); });
+      magicGo('contact');
+    },
+    modeStore: function () { checkoutMode = 'store'; render(); },
+    modeMagic: function () { checkoutMode = 'magic'; render(); note('Cart → Proceed to checkout now opens Razorpay Magic Checkout.'); },
+    magicContinue: function () {
+      if (st.magicPhone.length !== 10) return showErr('#m-contact-err', 'Enter a 10-digit mobile number.');
+      showErr('#m-contact-err', '');
+      if (MAGIC_SAVED[st.magicPhone]) { st.toastKind = 'sms'; st.toast = true; magicGo('otp'); }
+      else { st.magicSaved = false; magicGo('address'); }
+    },
+    magicSkipOtp: function () { st.toast = false; st.magicSaved = false; magicGo('address'); },
+    magicBack: function () {
+      var back = { otp: 'contact', address: MAGIC_SAVED[st.magicPhone] && st.magicSaved ? 'contact' : 'contact', pay: 'address' }[st.magicStep] || 'contact';
+      st.toast = false; magicGo(back);
+    },
+    magicAddressNext: function () {
+      if (!st.magicSaved) {
+        if (!$('#m-name').value.trim()) return showErr('#m-addr-err', 'Enter the name for delivery.');
+        if (!/^\d{6}$/.test($('#m-pin').value)) return showErr('#m-addr-err', 'Enter a 6-digit pincode.');
+        if (!$('#m-line').value.trim()) return showErr('#m-addr-err', 'Enter the flat, street and area.');
+      }
+      showErr('#m-addr-err', '');
+      magicGo('pay');
+    },
+    mUpi: function () { st.magicMethod = 'upi'; render(); },
+    mCard: function () { st.magicMethod = 'card'; render(); },
+    mCod: function () { st.magicMethod = 'cod'; render(); },
+    magicPay: function () { placeOrder(st.magicMethod === 'cod' ? 'cod' : 'paid', st.magicPhone); },
+    confirmCod: function () {
+      st.codConfirmed = true; st.codMsg = false;
+      if (st.accounts[st.orderPhone]) st.accounts[st.orderPhone].verified = true;
+      render();
+    },
     goAddress: function () { st.page = 'address'; st.overlay = null; st.screens++; render(); },
     continuePay: function () {
       if (!st.loggedIn && st.guestPhone.length !== 10) { note('Enter a 10-digit mobile number for delivery updates.'); $('#guest-phone').focus(); return; }
@@ -694,21 +854,7 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
     jumpGuest: function () { fresh(false); st.page = 'home'; st.flow = 'Guest shopping'; render(); },
     placeCod: function () {
       if (st.flow !== 'COD order' && st.flow !== 'Guest shopping') { st.flow = 'COD order'; st.startedAt = Date.now(); st.taps = 1; st.screens = 1; }
-      st.doneAt = null;
-      if (numberVerified()) { st.codUsedOtp = false; st.overlay = 'placed'; st.doneAt = Date.now(); st.screens++; render(); return; }
-      st.overlay = 'cod'; st.codOtp = ''; st.toast = true; st.screens++;
-      codError('');
-      render();
-      setTimeout(function () { $('#cod-otp').focus(); }, 30);
-    },
-    codChange: function () { note('Changing the number sends a fresh WhatsApp code (not part of this prototype).'); },
-    verifyCod: function () {
-      if (st.codOtp.length !== 4) return;
-      if (st.codOtp !== CODE) { st.codOtp = ''; render(); codError("That code didn't match. Try again."); return; }
-      if (st.loggedIn && st.accounts[st.phone]) st.accounts[st.phone].verified = true;
-      rememberGuestAccount(true);
-      st.codUsedOtp = true; st.toast = false; st.overlay = 'placed'; st.doneAt = Date.now(); st.screens++;
-      render();
+      placeOrder('cod', orderPhone());
     },
     afterOrder: function () { st.overlay = null; st.page = 'home'; st.screens++; render(); },
     jumpHome: function () { fresh(false); st.page = 'home'; render(); },
@@ -739,9 +885,9 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
     sendCode: function () {
       if (!validPhone()) return;
       if (!st.accounts[st.phone]) return fail('No account with this number. Go back and create one.');
-      go('forgotOtp', { otp: '', toast: true });
+      go('forgotOtp', { otp: '', toast: true, toastKind: 'wa' });
     },
-    resend: function () { st.toast = true; clearError(); render(); },
+    resend: function () { st.toast = true; st.toastKind = 'wa'; clearError(); render(); },
     saveNew: function () {
       if (pw().length < 8) return fail('Use at least 8 characters for your password.');
       var wasSet = !!st.accounts[st.phone].pw;
@@ -752,7 +898,7 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
     logout: function () { var o = st.overlay; fresh(true); st.overlay = o; render(); },
     resetAll: function () { fresh(false); render(); }
   };
-  var untracked = { toggleShow: 1, dismissToast: 1, logout: 1, resetAll: 1, jumpHome: 1, jumpCart: 1, jumpGuest: 1 };
+  var untracked = { toggleShow: 1, dismissToast: 1, logout: 1, resetAll: 1, jumpHome: 1, jumpCart: 1, jumpGuest: 1, modeStore: 1, modeMagic: 1 };
 
   document.addEventListener('click', function (e) {
     var el = e.target.closest('[data-act]');
@@ -776,15 +922,24 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
       render();
     } else if (t.id === 'guest-name') {
       st.guestName = t.value;
-    } else if (t.id === 'cod-otp') {
-      st.codOtp = t.value.replace(/\D/g, '').slice(0, 4);
-      codError(''); render();
+    } else if (t.id === 'm-phone') {
+      st.magicPhone = t.value.replace(/\D/g, '').slice(0, 10);
+      showErr('#m-contact-err', ''); render();
+    } else if (t.id === 'm-pin') {
+      t.value = t.value.replace(/\D/g, '').slice(0, 6);
+    } else if (t.id === 'm-otp') {
+      t.value = t.value.replace(/\D/g, '').slice(0, 6);
+      showErr('#m-otp-err', '');
+      if (t.value.length === 6) {
+        if (t.value === MAGIC_OTP) { st.toast = false; st.magicSaved = true; magicGo('address'); }
+        else { t.value = ''; showErr('#m-otp-err', "That OTP didn't match. Try again."); }
+      }
     } else if (t.id === 'forgot-otp') {
       st.otp = t.value.replace(/\D/g, '').slice(0, 4);
       clearError(); render();
       if (st.otp.length === 4) {
         if (st.otp === CODE) { go('forgotNew', { toast: false, otp: '' }); }
-        else { st.otp = ''; render(); fail("That code didn't match. Check the WhatsApp message from Wcommerce."); }
+        else { st.otp = ''; render(); fail("That code didn't match. Check the code on WhatsApp."); }
       }
     }
   });
