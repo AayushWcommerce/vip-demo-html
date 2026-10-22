@@ -387,6 +387,7 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
             <div class="mblock">
               <div class="mlabel">Delivery address</div>
               <div class="mline"><div><b id="m-addr-name"></b><span id="m-addr-text"></span></div><button class="mlink" data-act="mOpenList">Add/Change</button></div>
+              <button class="mlink" data-act="mAddFromMain">+ Deliver to a new address</button>
             </div>
 
             <div class="mblock">
@@ -1018,7 +1019,7 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
     magicBack: function () {
       var back = {
         otp: 'contact', list: 'main', saveotp: 'form',
-        form: st.mFormFrom === 'list' ? 'list' : 'contact'
+        form: st.mFormFrom === 'list' ? 'list' : (st.mFormFrom === 'main' ? 'main' : 'contact')
       }[st.magicStep] || 'contact';
       st.toast = false; magicGo(back);
     },
@@ -1040,6 +1041,7 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
     },
     mListDone: function () { magicGo('main'); },
     mAddNew: function () { st.mFormFrom = 'list'; clearMagicForm(); magicGo('form'); },
+    mAddFromMain: function () { st.mFormFrom = 'main'; clearMagicForm(); magicGo('form'); },
     mSaveAs: function (el) { st.mSaveAs = el.getAttribute('data-v'); $('#m-savechk').checked = true; render(); },
     mFormNext: function () {
       var name = $('#m-name').value.trim(), pin = $('#m-pin').value, line = $('#m-line').value.trim();
