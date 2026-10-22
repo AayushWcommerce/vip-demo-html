@@ -381,19 +381,13 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
             <div class="mblock">
               <div class="mlabel">Coupons and offers</div>
               <div class="mline" id="m-coupon-off"><div><b>FESTIVE10</b><span>10% off · ends 29 Oct</span></div><button class="mlink" data-act="mApplyCoupon">Apply</button></div>
-              <div class="mline" id="m-coupon-on" hidden><div><b>FESTIVE10 applied</b><span id="m-saving"></span></div><button class="mlink" data-act="mRemoveCoupon">Remove</button></div>
+              <div class="mline" id="m-coupon-on" hidden style="border-color:#BFE3CB;background:#F2FAF4"><div><b>FESTIVE10 applied</b><span id="m-saving"></span></div><button class="xbtn" style="width:28px;height:28px" data-act="mRemoveCoupon" aria-label="Remove coupon FESTIVE10"><svg width="14" height="14"><use href="#x"/></svg></button></div>
             </div>
 
             <div class="mblock">
               <div class="mlabel">Delivery address</div>
               <div class="mline"><div><b id="m-addr-name"></b><span id="m-addr-text"></span></div><button class="mlink" data-act="mOpenList">Add/Change</button></div>
               <button class="mlink" data-act="mAddFromMain">+ Deliver to a new address</button>
-            </div>
-
-            <div class="mblock">
-              <div class="mlabel">Delivery option</div>
-              <button class="mmethod" data-act="mShip" data-v="std"><span class="dot"></span><span>Standard · 3–7 days<small>Free</small></span></button>
-              <button class="mmethod" data-act="mShip" data-v="exp"><span class="dot"></span><span>Express · 2–3 days<small>₹99</small></span></button>
             </div>
 
             <div class="mblock">
@@ -686,7 +680,7 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
       guestName: '', guestPhone: '', toastKind: 'wa',
       orderKind: '', orderPhone: '', codMsg: false, codConfirmed: false,
       magicStep: 'contact', magicPhone: '', magicMethod: 'upi', orderTotal: 0,
-      mAddrs: [], mSel: 0, mMenu: -1, mCoupon: false, mShip: 'std', mSummary: false,
+      mAddrs: [], mSel: 0, mMenu: -1, mCoupon: true, mSummary: false,
       mSaveAs: 'Home', mVerified: false, mPending: null, mFormFrom: 'contact',
       phone: keep ? st.phone : '',
       page: keep ? st.page : 'home',
@@ -885,7 +879,8 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
   // address, most-used payment method pre-selected).
   function rupees(n) { return '₹' + n.toLocaleString('en-IN'); }
   function mTotals() {
-    var items = 2600, disc = st.mCoupon ? 260 : 0, ship = st.mShip === 'exp' ? 99 : 0, cod = st.magicMethod === 'cod' ? 45 : 0;
+    // The store has one delivery option (free over ₹499), so there is no delivery choice to make.
+    var items = 2600, disc = st.mCoupon ? 260 : 0, ship = 0, cod = st.magicMethod === 'cod' ? 45 : 0;
     return { items: items, disc: disc, ship: ship, cod: cod, total: items - disc + ship + cod };
   }
   function savedAddresses(phone) {
@@ -922,7 +917,6 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
     $('#m-saving').textContent = 'You save ' + rupees(260);
     $('#m-addr-name').textContent = addr ? addr.name + ' · ' + addr.tag : 'No address yet';
     $('#m-addr-text').textContent = addr ? addr.text : 'Add where this order should go.';
-    $$('[data-act="mShip"]').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-v') === st.mShip); });
     $$('[data-act="mMethod"]').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-v') === st.magicMethod); });
     var payLabel = st.magicMethod === 'cod' ? 'Place COD order · ' + rupees(t.total) : 'Pay ' + rupees(t.total);
     $('#m-pay').textContent = payLabel;
@@ -994,7 +988,8 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
       if (checkoutMode !== 'magic') { st.page = 'address'; st.overlay = null; st.screens++; render(); return; }
       if (st.flow !== 'Guest shopping') { st.flow = 'Magic checkout'; st.startedAt = Date.now(); st.taps = 1; st.screens = 1; st.doneAt = null; }
       st.overlay = 'magic'; st.magicMethod = 'upi';
-      st.mAddrs = []; st.mSel = 0; st.mCoupon = false; st.mShip = 'std'; st.mSummary = false;
+      // The store applies its live coupon automatically; the shopper can remove it with ×.
+      st.mAddrs = []; st.mSel = 0; st.mCoupon = true; st.mSummary = false;
       st.mVerified = false; st.mPending = null;
       $('#m-otp').value = ''; $('#m-saveotp').value = ''; clearMagicForm();
       ['#m-contact-err', '#m-otp-err', '#m-saveotp-err', '#m-pay-err'].forEach(function (s) { showErr(s, ''); });
@@ -1028,7 +1023,6 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
     mToggleSummary: function () { st.mSummary = !st.mSummary; render(); },
     mApplyCoupon: function () { st.mCoupon = true; render(); },
     mRemoveCoupon: function () { st.mCoupon = false; render(); },
-    mShip: function (el) { st.mShip = el.getAttribute('data-v'); render(); },
     mMethod: function (el) { st.magicMethod = el.getAttribute('data-v'); showErr('#m-pay-err', ''); render(); },
     mPick: function (el) { st.mSel = +el.getAttribute('data-idx'); st.mMenu = -1; render(); },
     mMenu: function (el) { var i = +el.getAttribute('data-idx'); st.mMenu = st.mMenu === i ? -1 : i; render(); },
