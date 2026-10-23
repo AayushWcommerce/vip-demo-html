@@ -113,6 +113,9 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
 .sdone .big{width:58px;height:58px;border-radius:50%;background:#E8F6EC;color:#1E863B;display:grid;place-items:center;margin:0 auto 12px}
 .sdone h2{font-size:18px;font-weight:500;margin:0}
 .sdone p{font-size:12px;color:#545454;margin:6px 0 0;line-height:1.5}
+.spin{width:40px;height:40px;border:3px solid #E8EAF0;border-top-color:#4862EE;border-radius:50%;margin:0 auto 14px;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.spin{animation-duration:2.4s}}
 
 .menu{padding:0 8px 24px;display:flex;flex-direction:column;gap:8px}
 .mhome{display:flex;align-items:center;gap:12px;background:#EEF0FE;border-radius:18px;padding:12px 14px;color:#4862EE;font-size:15px}
@@ -260,7 +263,7 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
           <div class="total"><span>Total</span><b>₹2,600</b></div>
           <button class="proceed" data-act="proceed">Proceed to checkout →</button>
         </div>
-        <span class="guestline" id="guestline">Shopped here before? <button data-act="openSheet">Log in</button> · New here? <button data-act="openSheetSignup">Create account</button></span>
+        <span class="guestline" id="guestline">Shopped here before? <button data-act="openSheet">Log in</button> to fetch your address</span>
         <span class="guestline" id="userline" hidden>Logged in as <b style="font-weight:500;color:#1F212E" class="phone-pretty"></b></span>
       </div>
     </div>
@@ -270,11 +273,11 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
       <button class="hot" style="left:8px;top:6px" data-act="goCart" aria-label="Back to cart"></button>
       <div class="loginbar" id="loginbar-guest">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4862EE" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
-        <span>Checking out as <b>guest</b> — fast &amp; secure. <button data-act="openSheet">Log in</button> or <button data-act="openSheetSignup">create an account</button> to use saved addresses.</span>
+        <span>Checking out as <b>guest</b> — fast &amp; secure. <button data-act="openSheet">Log in</button> to use saved addresses.</span>
       </div>
       <div class="loginbar" id="loginbar-user" hidden>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1E863B" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
-        <span>Logged in as <b style="font-weight:500;color:#1F212E" class="phone-pretty"></b>. This address will be saved to your account.</span>
+        <span>Logged in as <b style="font-weight:500;color:#1F212E" class="phone-pretty"></b>. Your saved details are filled in.</span>
       </div>
       <label class="sr" for="guest-name">Full name</label>
       <input class="ginput" id="guest-name" style="top:216px" placeholder="Name for delivery" autocomplete="name">
@@ -457,7 +460,7 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
     <div class="login" id="login">
       <section data-screen="login">
         <div class="title only-drawer">Log in <span>· orders, wishlist &amp; faster checkout</span></div>
-        <div class="only-sheet"><div class="stitle">Shopped here before?</div><p class="ssubt">Log in to see your <b style="font-weight:400;color:#1F212E">orders &amp; saved addresses</b>.</p></div>
+        <div class="only-sheet"><div class="stitle">Shopped here before?</div><p class="ssubt">Log in to fetch your address.</p></div>
         <div class="flabel">Mobile number</div>
         <div class="field">
           <span class="cc">+91 <svg width="10" height="10"><use href="#down"/></svg></span>
@@ -472,14 +475,15 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
         </div>
         <div class="err" role="alert" hidden>
           <span class="err-text"></span>
-          <button data-act="openSignup" data-kind="noaccount" hidden>Create account</button>
+          <button class="only-drawer" data-act="openSignup" data-kind="noaccount" hidden>Create account</button>
+          <button class="only-sheet" data-act="closeAll" data-kind="noaccount" hidden>Continue as guest</button>
           <button data-act="openForgot" data-kind="wrongpw" hidden>Forgot password?</button>
           <button data-act="openSetPassword" data-kind="nopw" hidden>Set a password</button>
         </div>
         <button class="btn" data-act="doLogin" data-need="phone,pw">Log in</button>
         <div class="links">
           <button class="link" data-act="openForgot">Forgot password?</button>
-          <button class="link muted" data-act="openSignup">New here? <b>Create account</b></button>
+          <button class="link muted only-drawer" data-act="openSignup">New here? <b>Create account</b></button>
         </div>
         <p class="guestnote only-sheet"><b>You don't need to log in to check out.</b> Tap away to keep going as guest. Logging in just saves typing.</p>
       </section>
@@ -551,6 +555,14 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
         </div>
         <div class="err" role="alert" hidden><span class="err-text"></span></div>
         <button class="btn" data-act="saveNew" data-need="pw8">Save &amp; log in</button>
+      </section>
+
+      <section data-screen="loading" hidden>
+        <div class="sdone" role="status">
+          <div class="spin" aria-hidden="true"></div>
+          <h2>Logged in</h2>
+          <p>Fetching your saved address…</p>
+        </div>
       </section>
 
       <section data-screen="done" hidden>
@@ -747,7 +759,17 @@ button:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
 
   function finish(msg) {
     clearPasswords();
-    go('done', { doneMsg: msg, doneAt: Date.now(), toast: false, otp: '', loggedIn: true });
+    var done = { doneMsg: msg, doneAt: Date.now(), toast: false, otp: '', loggedIn: true };
+    if (st.overlay !== 'sheet') return go('done', done);
+    // Logging in from checkout: show a short loader in the same sheet, then go straight to
+    // the address step with the saved details filled in (no extra "Back to checkout" tap).
+    go('loading', done);
+    setTimeout(function () {
+      if (st.screen !== 'loading') return;
+      if (st.phone === '9876543210' && !st.guestName) st.guestName = 'Asha';
+      st.overlay = null; st.page = 'address'; st.screen = 'done'; st.screens++;
+      render();
+    }, 1300);
   }
 
   function validPhone() {
