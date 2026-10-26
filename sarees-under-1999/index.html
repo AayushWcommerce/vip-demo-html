@@ -298,6 +298,7 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
       <span>All of these already exist on the live sarees page. The options come from the store's in-stock sarees, so a filter with nothing to offer is hidden.</span>
       <ul>
         <li class="yes">Price (min – max)</li>
+        <li class="yes">NEW: quick price chips in the Price sheet (Under ₹2,000, ₹2,000 – ₹3,000…), only those with sarees</li>
         <li class="yes">Shop by craft</li>
         <li class="yes">Occasion · Fabric · Colour</li>
         <li class="yes">Search within sarees</li>
@@ -472,6 +473,21 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
     return rupees(min) + ' – ' + rupees(max);
   }
 
+  // Quick price chips in the sheet. A chip shows only when it overlaps the store's in-stock price
+  // range (product_filters price.min/max), so a store never sees a chip that leads to nothing.
+  var BUCKETS = [
+    { min: null, max: 1000 },
+    { min: null, max: 2000 },
+    { min: 2000, max: 3000 },
+    { min: 3000, max: null }
+  ];
+  function visibleBuckets() {
+    return BUCKETS.filter(function (b) {
+      return (b.max == null || FACETS.price.min <= b.max) && (b.min == null || FACETS.price.max >= b.min);
+    });
+  }
+  function isBucketOn(b) { return pending.min === b.min && pending.max === b.max; }
+
   function facetCount(k) {
     if (k === 'price') return sel.min != null || sel.max != null ? 1 : 0;
     return sel[k].length;
@@ -523,7 +539,12 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
     var keys = sheet === 'all' ? FACET_ORDER : [sheet];
     $('#sheetBody').innerHTML = keys.map(function (k) {
       if (k === 'price') {
-        return '<div class="sec"><h5>Price (' + rupees(FACETS.price.min) + ' – ' + rupees(FACETS.price.max) + ')</h5><div class="prow">' +
+        var quick = visibleBuckets().map(function (b, i) {
+          var on = isBucketOn(b);
+          return '<button class="chip' + (on ? ' on' : '') + '" data-bucket="' + i + '">' + (on ? '✓ ' : '') + priceLabel(b.min, b.max) + '</button>';
+        }).join('');
+        return '<div class="sec"><h5>Price (' + rupees(FACETS.price.min) + ' – ' + rupees(FACETS.price.max) + ')</h5>' +
+          (quick ? '<div class="opts" style="margin-bottom:12px">' + quick + '</div>' : '') + '<div class="prow">' +
           '<label>Min<input type="number" data-price="min" placeholder="' + FACETS.price.min + '" value="' + (pending.min == null ? '' : pending.min) + '"></label>' +
           '<label>Max<input type="number" data-price="max" placeholder="' + FACETS.price.max + '" value="' + (pending.max == null ? '' : pending.max) + '"></label></div></div>';
       }
@@ -581,8 +602,15 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
   };
 
   document.addEventListener('click', function (e) {
-    var t = e.target.closest('[data-act],[data-sheet],[data-craft],[data-rm],[data-opt],[data-pos]');
+    var t = e.target.closest('[data-act],[data-sheet],[data-craft],[data-rm],[data-opt],[data-pos],[data-bucket]');
     if (!t) return;
+    if (t.dataset.bucket) {
+      // Tap fills Min/Max; tapping the active chip again clears the price.
+      var b = visibleBuckets()[Number(t.dataset.bucket)];
+      if (isBucketOn(b)) { pending.min = null; pending.max = null; }
+      else { pending.min = b.min; pending.max = b.max; }
+      return renderSheet();
+    }
     if (t.dataset.pos) {
       pos = t.dataset.pos;
       if (screen !== 'home') { screen = 'home'; sheet = null; render(); }
@@ -611,7 +639,14 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
   });
   document.addEventListener('input', function (e) {
     var k = e.target.dataset.price;
-    if (k) pending[k] = e.target.value === '' ? null : Number(e.target.value);
+    if (!k) return;
+    pending[k] = e.target.value === '' ? null : Number(e.target.value);
+    // Typing 2000 in Max ticks "Under ₹2,000" without re-rendering (keeps the cursor in the box).
+    Array.prototype.forEach.call(document.querySelectorAll('[data-bucket]'), function (c) {
+      var b = visibleBuckets()[Number(c.dataset.bucket)], on = isBucketOn(b);
+      c.classList.toggle('on', on);
+      c.textContent = (on ? '✓ ' : '') + priceLabel(b.min, b.max);
+    });
   });
   $('#sort').addEventListener('change', function (e) { sort = e.target.value; render(); });
   $('#q').addEventListener('input', function (e) { q = e.target.value; renderListing(); });
