@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Crafts Archive · Sarees under ₹1,999 Prototype</title>
+<title>The Crafts Archive · Sarees under ₹2K Prototype</title>
 <style>
 @font-face{font-family:"Geomanist";src:url("../password-login/Geomanist-Light.woff2") format("woff2");font-weight:300}
 @font-face{font-family:"Geomanist";src:url("../password-login/Geomanist-Regular.woff2") format("woff2");font-weight:400}
@@ -207,7 +207,7 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
         <button class="banner" id="banner" data-act="openBanner">
           <span class="bcopy">
             <span class="beye">HANDWOVEN, WITHIN BUDGET</span>
-            <span class="bhead">Sarees under ₹1,999</span>
+            <span class="bhead">Sarees under ₹2K</span>
             <span class="bsub">Meera's pick of everyday handlooms, all in stock</span>
             <span class="bcta">Shop now <svg width="14" height="14"><use href="#arrow"/></svg></span>
           </span>
@@ -289,7 +289,7 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
       <div class="eyebrow">Start from</div>
       <div class="jump">
         <button data-act="goHome" id="j-home">Home page</button>
-        <button data-act="openBanner" id="j-banner">Sarees under ₹1,999</button>
+        <button data-act="openBanner" id="j-banner">Sarees under ₹2K</button>
         <button data-act="openSarees" id="j-all">All sarees</button>
       </div>
     </div>
@@ -312,8 +312,8 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
     <div class="pcard">
       <div class="eyebrow">Tasks for the tester</div>
       <ol>
-        <li>On the home page, tap the “Sarees under ₹1,999” banner.</li>
-        <li>Check every saree costs ₹1,999 or less, and the chip says “Under ₹1,999”.</li>
+        <li>On the home page, tap the “Sarees under ₹2K” banner.</li>
+        <li>Check every saree costs ₹2,000 or less, and the chip says “Under ₹2,000”.</li>
         <li>Pick a craft, then a fabric from Filters. Watch the link above the phone change.</li>
         <li>Sort by Price: low–high.</li>
         <li>Remove the price chip (✕) and see the dearer sarees come back.</li>
@@ -322,8 +322,8 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
     </div>
     <div class="pcard">
       <div class="eyebrow">Demo details</div>
-      <span>Sample sarees with the store's own saree photos (each photo used twice, once mirrored). Names and prices are made up. On the live site the banner hides when the store has no Sarees category or no in-stock saree at ₹1,999 or less.</span>
-      <span>The page itself is the live sarees page; only the home banner is new. The banner opens it with <b>?price=-1999</b>.</span>
+      <span>Sample sarees with the store's own saree photos (each photo used twice, once mirrored). Names and prices are made up. On the live site the banner hides when the store has no Sarees category or no in-stock saree at ₹2,000 or less.</span>
+      <span>The page itself is the live sarees page; only the home banner is new. The banner opens it with <b>?price=-2000</b>.</span>
       <span style="color:#707078">Add <b>?hidepanel</b> to the URL to hide this panel for testers.</span>
     </div>
   </div>
@@ -354,7 +354,7 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
   ];
   var HOST = 'thecraftsarchive.in';
   var BASE = '/shop/womens-fashion/sarees/229';
-  var BANNER_MAX = 1999;
+  var BANNER_MAX = 2000;
   var FACET_ORDER = ['price', 'occasion', 'fabric', 'color'];
   var LABELS = { price: 'Price', occasion: 'Occasion', fabric: 'Fabric', color: 'Color' };
   var FIELD = { craft: 'craft', occasion: 'occ', fabric: 'fabric', color: 'color' };
@@ -464,7 +464,7 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
       (s.stock === 0 ? '<span class="oos">Out of stock</span>' : '') + '</div>';
   }
 
-  // Only a max -> "Under ₹1,999"; only a min -> "Over ₹1,000"; both -> a range. Never fills an
+  // Only a max -> "Under ₹2,000"; only a min -> "Over ₹1,000"; both -> a range. Never fills an
   // unset end with the cheapest/dearest saree, which read as a limit nobody set.
   function priceLabel(min, max) {
     if (min == null) return 'Under ' + rupees(max);
@@ -629,7 +629,7 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
   if (/hidepanel/.test(location.search)) $('#panel').hidden = true;
   renderNewRail();
   placeBanner(false);
-  // A shared link (#/shop/...?price=-1999&fabric=cotton) opens the listing with those filters.
+  // A shared link (#/shop/...?price=-2000&fabric=cotton) opens the listing with those filters.
   var m = location.hash.match(/^#\/shop\/[^?]*\??(.*)$/);
   if (m) openListing(m[1]); else render();
 })();
