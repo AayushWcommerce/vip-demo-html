@@ -57,6 +57,40 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
 .band{margin:4px 16px 22px;padding:14px;border-radius:14px;background:#F7F5F0;font-size:12px;color:#545454}
 .band b{display:block;font-size:14px;font-weight:500;color:#1F212E;margin-bottom:3px}
 [data-slot]:empty{display:none}
+/* banner design B: photo-led */
+.banner.b-photo{display:block;position:relative;height:214px;padding:0;border:0;background:#1F212E;overflow:hidden}
+.b-photo .ph3{position:absolute;inset:0;display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:2px}
+.b-photo .ph3 img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.b-photo .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,16,24,0) 30%,rgba(15,16,24,.8))}
+.b-photo .ptxt{position:absolute;left:16px;right:14px;bottom:14px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.b-photo .beye{color:#FFD2BF}
+.b-photo .bhead{color:#fff;font-size:21px}
+.b-photo .bsub{color:rgba(255,255,255,.85)}
+.b-photo .bcta{flex:none;margin:0;background:#fff;color:#1F212E}
+/* banner design C: bold price */
+.banner.b-bold{background:#1F212E;border:0;color:#fff;padding:18px 12px 18px 18px;overflow:hidden}
+.banner.b-bold:hover{background:#262838}
+.b-bold .beye{color:#F2B544}
+.b-bold .bsm{font-size:15px;color:#E6E7EE;margin-top:4px}
+.b-bold .big{font-size:42px;font-weight:500;line-height:1;letter-spacing:-1px;color:#fff}
+.b-bold .big small{font-size:15px;letter-spacing:0;color:#F2B544;margin-right:6px;font-weight:400}
+.b-bold .bsub{color:#B9BBC7}
+.b-bold .bcta{background:#F2B544;color:#1F212E}
+.fan{position:relative;flex:none;width:116px;height:150px}
+.fan img{position:absolute;width:78px;height:106px;object-fit:cover;object-position:top;border-radius:10px;border:2px solid #fff;box-shadow:0 8px 18px rgba(0,0,0,.35)}
+.fan img:nth-child(1){left:0;top:30px;transform:rotate(-9deg)}
+.fan img:nth-child(2){left:36px;top:6px;transform:rotate(7deg)}
+/* banner design D: product preview */
+.banner.b-rail{display:block;background:#F4F5FF;border:1px solid #DDE3FF;padding:14px}
+.banner.b-rail:hover{background:#EEF0FF}
+.b-rail .rhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.b-rail .bhead{font-size:18px}
+.b-rail .see{font-size:12.5px;color:#4862EE;font-weight:500;white-space:nowrap}
+.b-rail .bsub{display:block;margin:2px 0 10px}
+.b-rail .mini{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.b-rail .mi{display:block;background:#fff;border-radius:10px;overflow:hidden}
+.b-rail .mi img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top}
+.b-rail .mi b{display:block;padding:5px 8px 7px;font-weight:500;font-size:12.5px}
 [data-slot="top"] .banner{margin-top:14px;margin-bottom:0}
 .banner.flash{outline:3px solid #4862EE;outline-offset:3px}
 .pos{display:flex;flex-direction:column;gap:8px}
@@ -184,18 +218,18 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
         <div class="strip s2">Free shipping on orders above ₹999</div>
         <div class="strip s3">Authenticity promise on every saree · Know more ›</div>
         <div data-slot="top"></div>
-        <div class="owner"><div class="oav" aria-hidden="true">M</div><div><b>Hi, I'm Meera</b><span>I pick every piece from weavers I know.</span></div></div>
+        <div class="owner"><div class="oav" aria-hidden="true">M</div><div><b>Hi, I'm Meera</b><span>I pick every piece myself and check it before it ships.</span></div></div>
         <div class="hsearch"><svg width="16" height="16"><use href="#search"/></svg>Search sarees, kurtis, crafts…</div>
         <div class="fest" id="fest" hidden>
           <span class="feye">DIWALI EDIT</span>
           <span class="fhead">The festival of lights</span>
-          <span class="fsub">Meera's festive handlooms</span>
+          <span class="fsub">Meera's festive edit</span>
           <span class="frow"><span class="fcta">Shop now</span><span class="fcode">DIWALI10 · 10% off</span></span>
         </div>
         <div data-slot="festival"></div>
 
         <h2 class="h2">Newly arrived <span>sarees</span></h2>
-        <div class="hsub">Fresh picks from Meera's weavers</div>
+        <div class="hsub">Fresh picks from Meera</div>
         <div class="rail" id="newRail"></div>
         <div data-slot="after-new"></div>
 
@@ -204,15 +238,8 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
         <div class="rail" id="pinRail"></div>
 
         <!-- NEW: SareesUnderBanner (moved into the chosen data-slot by script) -->
-        <button class="banner" id="banner" data-act="openBanner">
-          <span class="bcopy">
-            <span class="beye">HANDWOVEN, WITHIN BUDGET</span>
-            <span class="bhead">Sarees under ₹2,000</span>
-            <span class="bsub">Meera's pick of everyday handlooms, all in stock</span>
-            <span class="bcta">Shop now <svg width="14" height="14"><use href="#arrow"/></svg></span>
-          </span>
-          <span class="bart" aria-hidden="true"><img alt="" src="https://ik.imagekit.io/3quk5czhx/temp/ef905626-5e42-4da8-badf-996e9ba6dd5c_IMG_20260731_173010__01%20(AI%20Fashion%20Models).webp?tr=w-156,h-208,fo-top,q-80"></span>
-        </button>
+        <!-- Inner markup comes from renderBanner(): one of four designs (panel: Banner design). -->
+        <button class="banner" id="banner" data-act="openBanner" aria-label="Sarees under ₹2,000. Shop now"></button>
 
         <h2 class="h2" style="margin-bottom:11px">Women's fashion</h2>
         <div class="cats">
@@ -274,6 +301,16 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
   </div>
 
   <div class="panel" id="panel">
+    <div class="pcard">
+      <div class="eyebrow">Banner design</div>
+      <div class="pos">
+        <button data-style="classic" id="s-classic">A · Card<span>The first design, with new copy. Light and calm.</span></button>
+        <button data-style="photo" id="s-photo">B · Photo-led<span>Three saree photos edge to edge, text over the photos.</span></button>
+        <button data-style="bold" id="s-bold">C · Bold price<span>Dark block, big “₹2,000”, two photos fanned out.</span></button>
+        <button data-style="rail" id="s-rail">D · Product preview<span>Shows the 3 cheapest sarees under ₹2,000 with prices.</span></button>
+      </div>
+      <span style="font-size:12px;color:#707078">Copy for all four: no “handloom” claim, since not every saree is handloom. Each design has its own link (<b>?style=…</b>).</span>
+    </div>
     <div class="pcard">
       <div class="eyebrow">Banner position</div>
       <div class="pos">
@@ -416,6 +453,42 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
   var boot = new URLSearchParams(location.search);
   var pos = POSITIONS.indexOf(boot.get('pos')) > -1 ? boot.get('pos') : 'after-new';
   var fest = boot.has('fest');
+  var STYLES = ['classic', 'photo', 'bold', 'rail'];
+  var style = STYLES.indexOf(boot.get('style')) > -1 ? boot.get('style') : 'classic';
+
+  // Shared copy: no handloom/handwoven claim (sir, 26 Oct: not every saree is handloom).
+  var COPY = { eye: 'BUDGET PICKS', head: 'Sarees under ₹2,000', sub: 'Everyday to festive, picked by Meera', cta: 'Shop now' };
+  var ARROW = '<svg width="14" height="14"><use href="#arrow"/></svg>';
+  var pic = function (s) { return '<img alt="" src="' + s.img + '"' + (s.m ? ' class="flip"' : '') + '>'; };
+
+  function renderBanner() {
+    var b = $('#banner'), h;
+    if (style === 'photo') {
+      h = '<span class="ph3">' + pic(SAREES[0]) + pic(SAREES[1]) + pic(SAREES[3]) + '</span><span class="shade"></span>' +
+        '<span class="ptxt"><span class="bcopy"><span class="beye">' + COPY.eye + '</span><span class="bhead">' + COPY.head + '</span>' +
+        '<span class="bsub">' + COPY.sub + '</span></span><span class="bcta">' + COPY.cta + ' ' + ARROW + '</span></span>';
+    } else if (style === 'bold') {
+      h = '<span class="bcopy"><span class="beye">' + COPY.eye + '</span><span class="bsm">Sarees</span>' +
+        '<span class="big"><small>under</small>₹2,000</span><span class="bsub">' + COPY.sub + '</span>' +
+        '<span class="bcta">' + COPY.cta + ' ' + ARROW + '</span></span>' +
+        '<span class="fan" aria-hidden="true">' + pic(SAREES[2]) + pic(SAREES[0]) + '</span>';
+    } else if (style === 'rail') {
+      // Real build: the 3 cheapest in-stock sarees from all_store_products_by_hct (maxPrice, sort=price_asc, pageSize=3).
+      var picks = SAREES.filter(function (s) { return s.stock > 0 && s.p <= BANNER_MAX; })
+        .sort(function (a, z) { return a.p - z.p; }).slice(0, 3);
+      h = '<span class="rhead"><span class="bhead">' + COPY.head + '</span><span class="see">See all ›</span></span>' +
+        '<span class="bsub">' + COPY.sub + '</span><span class="mini">' + picks.map(function (s) {
+          return '<span class="mi">' + pic(s) + '<b>' + rupees(s.p) + '</b></span>';
+        }).join('') + '</span>';
+    } else {
+      h = '<span class="bcopy"><span class="beye">' + COPY.eye + '</span><span class="bhead">' + COPY.head + '</span>' +
+        '<span class="bsub">' + COPY.sub + '</span><span class="bcta">' + COPY.cta + ' ' + ARROW + '</span></span>' +
+        '<span class="bart" aria-hidden="true">' + pic(SAREES[2]) + '</span>';
+    }
+    b.className = 'banner' + (style === 'classic' ? '' : ' b-' + style);
+    b.innerHTML = h;
+    STYLES.forEach(function (s) { $('#s-' + s).classList.toggle('on', s === style); });
+  }
 
   function syncUrl() {
     var path = screen === 'home' ? '/' : BASE;
@@ -423,6 +496,7 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
     $('#addr').innerHTML = HOST + esc(path) + (qs ? '?<b>' + esc(qs) + '</b>' : '');
     var hash = screen === 'home' ? '' : '#' + path + (qs ? '?' + qs : '');
     var demo = [];
+    if (style !== 'classic') demo.push('style=' + style);
     if (pos !== 'after-new') demo.push('pos=' + pos);
     if (fest) demo.push('fest');
     if (/hidepanel/.test(location.search)) demo.push('hidepanel');
@@ -601,8 +675,15 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
   };
 
   document.addEventListener('click', function (e) {
-    var t = e.target.closest('[data-act],[data-sheet],[data-craft],[data-rm],[data-opt],[data-pos],[data-bucket]');
+    var t = e.target.closest('[data-act],[data-sheet],[data-craft],[data-rm],[data-opt],[data-pos],[data-bucket],[data-style]');
     if (!t) return;
+    if (t.dataset.style) {
+      style = t.dataset.style;
+      if (screen !== 'home') { screen = 'home'; sheet = null; render(); }
+      renderBanner();
+      placeBanner(true);
+      return syncUrl();
+    }
     if (t.dataset.bucket) {
       // Tap fills Min/Max; tapping the active chip again clears the price.
       var b = visibleBuckets()[Number(t.dataset.bucket)];
@@ -662,6 +743,7 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
 
   if (/hidepanel/.test(location.search)) $('#panel').hidden = true;
   renderNewRail();
+  renderBanner();
   placeBanner(false);
   // A shared link (#/shop/...?price=-2000&fabric=cotton) opens the listing with those filters.
   var m = location.hash.match(/^#\/shop\/[^?]*\??(.*)$/);
