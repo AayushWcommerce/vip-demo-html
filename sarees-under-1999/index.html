@@ -36,6 +36,35 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
 .strip{font-size:11.5px;padding:9px 16px}
 .s1{background:#F4F5FF;color:#4862EE}
 .s2{background:#EEF7F1;color:#1E6B45}
+.s3{background:#FFF8E7;color:#7A5A12}
+.owner{display:flex;gap:12px;align-items:center;margin:14px 16px 0;padding:12px;border:1px solid #E8EAF0;border-radius:14px;font-size:12px;color:#545454}
+.owner b{display:block;font-size:14px;font-weight:500;color:#1F212E}
+.oav{width:42px;height:42px;border-radius:50%;background:#F4F5FF;color:#4862EE;display:grid;place-items:center;font-weight:500;flex:none}
+.fest{display:flex;flex-direction:column;gap:5px;margin:0 16px 16px;padding:16px;border-radius:12px;background:#2B0B16;border-top:2px solid #F2B544}
+.feye{font-size:10.5px;letter-spacing:2.2px;color:#F2B544;font-weight:500}
+.fhead{font-size:24px;color:#FAF6F1;line-height:1.2}
+.fsub{font-size:12.5px;color:#E8DFD8}
+.frow{display:flex;gap:6px;align-items:center;margin-top:4px}
+.fcta{background:#F2B544;color:#2B0B16;border-radius:999px;padding:7px 12px;font-size:11.5px;font-weight:500}
+.fcode{border:1.5px dashed #F2B544;color:#FAF6F1;border-radius:10px;padding:5px 8px;font-size:11px}
+.pin{flex:none;width:118px;font-size:11.5px;color:#545454}
+.pin .im{border-radius:12px}
+.pin p{margin:6px 0 0}
+.craft{flex:none;width:132px;font-size:12px}
+.craft .im{aspect-ratio:1;border-radius:14px}
+.craft b{display:block;font-weight:500;margin-top:6px}
+.craft span{font-size:10.5px;color:#707078}
+.band{margin:4px 16px 22px;padding:14px;border-radius:14px;background:#F7F5F0;font-size:12px;color:#545454}
+.band b{display:block;font-size:14px;font-weight:500;color:#1F212E;margin-bottom:3px}
+[data-slot]:empty{display:none}
+[data-slot="top"] .banner{margin-top:14px;margin-bottom:0}
+.banner.flash{outline:3px solid #4862EE;outline-offset:3px}
+.pos{display:flex;flex-direction:column;gap:8px}
+.pos button{text-align:left;min-height:40px;padding:8px 14px;border:1px solid #D5DDE2;border-radius:10px;background:#fff;color:#1F212E;font-size:14px;line-height:1.35}
+.pos button span{display:block;font-size:12px;color:#707078}
+.pos button.on{border-color:#4862EE;background:#F4F5FF}
+.pos button.on,.pos button.on span{color:#4862EE}
+.tog{display:flex;align-items:center;gap:8px;font-size:14px}
 .hsearch{display:flex;align-items:center;gap:8px;margin:14px 16px 12px;border:1px solid #E8EAF0;border-radius:12px;padding:11px 12px;font-size:13px;color:#707078}
 .h2{font-size:17px;font-weight:500;margin:0;padding:0 16px}
 .h2 span{color:#C73F21}
@@ -150,15 +179,31 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
           </div>
           <button class="ibtn" aria-label="Cart"><svg width="22" height="22"><use href="#bag"/></svg></button>
         </div>
+        <!-- Same order as MyStore.jsx. data-slot = a place the banner can go (panel: Banner position). -->
         <div class="strip s1">Handpicked by Meera · every piece checked before it ships</div>
         <div class="strip s2">Free shipping on orders above ₹999</div>
+        <div class="strip s3">Authenticity promise on every saree · Know more ›</div>
+        <div data-slot="top"></div>
+        <div class="owner"><div class="oav" aria-hidden="true">M</div><div><b>Hi, I'm Meera</b><span>I pick every piece from weavers I know.</span></div></div>
         <div class="hsearch"><svg width="16" height="16"><use href="#search"/></svg>Search sarees, kurtis, crafts…</div>
+        <div class="fest" id="fest" hidden>
+          <span class="feye">DIWALI EDIT</span>
+          <span class="fhead">The festival of lights</span>
+          <span class="fsub">Meera's festive handlooms</span>
+          <span class="frow"><span class="fcta">Shop now</span><span class="fcode">DIWALI10 · 10% off</span></span>
+        </div>
+        <div data-slot="festival"></div>
 
         <h2 class="h2">Newly arrived <span>sarees</span></h2>
         <div class="hsub">Fresh picks from Meera's weavers</div>
         <div class="rail" id="newRail"></div>
+        <div data-slot="after-new"></div>
 
-        <!-- NEW: SareesUnderBanner -->
+        <h2 class="h2">Meera's pinboard</h2>
+        <div class="hsub">What I'm wearing this week</div>
+        <div class="rail" id="pinRail"></div>
+
+        <!-- NEW: SareesUnderBanner (moved into the chosen data-slot by script) -->
         <button class="banner" id="banner" data-act="openBanner">
           <span class="bcopy">
             <span class="beye">HANDWOVEN, WITHIN BUDGET</span>
@@ -179,6 +224,12 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
           <button class="cat"><i></i>Dress Materials</button>
           <button class="cat"><i></i>Co-ord Sets</button>
         </div>
+        <div data-slot="after-cats"></div>
+
+        <h2 class="h2">Shop clothing by craft</h2>
+        <div class="hsub">Weaves from across India</div>
+        <div class="rail" id="craftRail"></div>
+        <div class="band"><b>Every piece, independently tested</b><span>Burn test and lab checks on fabric, yarn and zari.</span></div>
         <div class="foot">The Crafts Archive · Meera Iyer, Jaipur<br>Prototype · sample products only</div>
       </div>
 
@@ -224,6 +275,17 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
 
   <div class="panel" id="panel">
     <div class="pcard">
+      <div class="eyebrow">Banner position</div>
+      <div class="pos">
+        <button data-pos="top" id="p-top">1 · Top, under the strips<span>First thing seen. Pushes the owner card and search down.</span></button>
+        <button data-pos="festival" id="p-festival">2 · After the search bar<span>The festival banner's spot. Two big blocks in a row when a festival coupon is live.</span></button>
+        <button data-pos="after-new" id="p-after-new">3 · After Newly arrived sarees (suggested)<span>Next to the other saree content. Seen after one short scroll.</span></button>
+        <button data-pos="after-cats" id="p-after-cats">4 · After the category grid<span>Quiet: shoppers who scroll past the categories. Easy to miss.</span></button>
+      </div>
+      <label class="tog"><input type="checkbox" id="festToggle"> Show a festival banner too (Diwali coupon live)</label>
+      <span style="font-size:12px;color:#707078">Each position has its own link: the page address changes to <b>?pos=…</b> so you can send one link per option.</span>
+    </div>
+    <div class="pcard">
       <div class="eyebrow">Start from</div>
       <div class="jump">
         <button data-act="goHome" id="j-home">Home page</button>
@@ -251,7 +313,7 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
       <div class="eyebrow">Tasks for the tester</div>
       <ol>
         <li>On the home page, tap the “Sarees under ₹1,999” banner.</li>
-        <li>Check every saree costs ₹1,999 or less, and the price chip is selected.</li>
+        <li>Check every saree costs ₹1,999 or less, and the chip says “Under ₹1,999”.</li>
         <li>Pick a craft, then a fabric from Filters. Watch the link above the phone change.</li>
         <li>Sort by Price: low–high.</li>
         <li>Remove the price chip (✕) and see the dearer sarees come back.</li>
@@ -347,13 +409,37 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
     sort = so === 'price-asc' || so === 'price-desc' ? so : 'newest';
   }
 
+  // Demo-only settings live in the real query string (?pos=…&fest&hidepanel); the store link the
+  // shopper would see lives in the hash, so both survive a reload or a shared link.
+  var POSITIONS = ['top', 'festival', 'after-new', 'after-cats'];
+  var boot = new URLSearchParams(location.search);
+  var pos = POSITIONS.indexOf(boot.get('pos')) > -1 ? boot.get('pos') : 'after-new';
+  var fest = boot.has('fest');
+
   function syncUrl() {
     var path = screen === 'home' ? '/' : BASE;
     var qs = screen === 'home' ? '' : serialize();
     $('#addr').innerHTML = HOST + esc(path) + (qs ? '?<b>' + esc(qs) + '</b>' : '');
     var hash = screen === 'home' ? '' : '#' + path + (qs ? '?' + qs : '');
-    var keep = /hidepanel/.test(location.search) ? location.search : '';
-    history.replaceState(null, '', location.pathname + keep + hash);
+    var demo = [];
+    if (pos !== 'after-new') demo.push('pos=' + pos);
+    if (fest) demo.push('fest');
+    if (/hidepanel/.test(location.search)) demo.push('hidepanel');
+    try { history.replaceState(null, '', location.pathname + (demo.length ? '?' + demo.join('&') : '') + hash); } catch (e) { /* file:// preview */ }
+  }
+
+  function placeBanner(scroll) {
+    var slot = document.querySelector('[data-slot="' + pos + '"]');
+    slot.appendChild($('#banner'));
+    $('#fest').hidden = !fest;
+    $('#festToggle').checked = fest;
+    POSITIONS.forEach(function (p) { $('#p-' + p).classList.toggle('on', p === pos); });
+    if (scroll && screen === 'home') {
+      var b = $('#banner'), home = $('#home');
+      home.scrollTo({ top: Math.max(0, b.offsetTop - 120), behavior: 'smooth' });
+      b.classList.add('flash');
+      setTimeout(function () { b.classList.remove('flash'); }, 1200);
+    }
   }
 
   function results() {
@@ -376,6 +462,14 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
   function img(s) {
     return '<div class="im"><img src="' + s.img + '" alt="' + esc(s.n) + '" loading="lazy"' + (s.m ? ' class="flip"' : '') + '>' +
       (s.stock === 0 ? '<span class="oos">Out of stock</span>' : '') + '</div>';
+  }
+
+  // Only a max -> "Under ₹1,999"; only a min -> "Over ₹1,000"; both -> a range. Never fills an
+  // unset end with the cheapest/dearest saree, which read as a limit nobody set.
+  function priceLabel(min, max) {
+    if (min == null) return 'Under ' + rupees(max);
+    if (max == null) return 'Over ' + rupees(min);
+    return rupees(min) + ' – ' + rupees(max);
   }
 
   function facetCount(k) {
@@ -403,7 +497,7 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
       sel[k].forEach(function (v) { a += '<span class="ap" data-rm="' + k + '" data-v="' + esc(v) + '">' + esc(v) + ' <em>✕</em></span>'; });
     });
     if (sel.min != null || sel.max != null) {
-      a += '<span class="ap" data-rm="price">' + rupees(sel.min == null ? FACETS.price.min : sel.min) + ' – ' + rupees(sel.max == null ? FACETS.price.max : sel.max) + ' <em>✕</em></span>';
+      a += '<span class="ap" data-rm="price">' + priceLabel(sel.min, sel.max) + ' <em>✕</em></span>';
     }
     if (a) a += '<button class="clr" data-act="clearAll">Clear all</button>';
     $('#applied').innerHTML = a;
@@ -444,6 +538,12 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
     $('#newRail').innerHTML = SAREES.slice(0, 4).map(function (s) {
       return '<div class="na" role="button" tabindex="0">' + img(s) + '<p>' + esc(s.n) + '</p><b>' + rupees(s.p) + '</b></div>';
     }).join('');
+    $('#pinRail').innerHTML = [SAREES[3], SAREES[6], SAREES[0], SAREES[5]].map(function (s, i) {
+      return '<div class="pin">' + img(s) + '<p>' + ['Diwali evening', 'Office Monday', 'Sunday brunch', 'A cousin\'s haldi'][i] + '</p></div>';
+    }).join('');
+    $('#craftRail').innerHTML = [SAREES[2], SAREES[1], SAREES[3], SAREES[0]].map(function (s) {
+      return '<div class="craft">' + img(s) + '<b>' + esc(s.craft) + '</b><span>' + esc(s.region.split(',')[1].trim()) + '</span></div>';
+    }).join('');
   }
 
   function render() {
@@ -481,8 +581,14 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
   };
 
   document.addEventListener('click', function (e) {
-    var t = e.target.closest('[data-act],[data-sheet],[data-craft],[data-rm],[data-opt]');
+    var t = e.target.closest('[data-act],[data-sheet],[data-craft],[data-rm],[data-opt],[data-pos]');
     if (!t) return;
+    if (t.dataset.pos) {
+      pos = t.dataset.pos;
+      if (screen !== 'home') { screen = 'home'; sheet = null; render(); }
+      placeBanner(true);
+      return syncUrl();
+    }
     if (t.dataset.act) return ACTS[t.dataset.act]();
     if (t.dataset.sheet) { pending = cloneSel(sel); sheet = t.dataset.sheet; return renderSheet(); }
     if (t.dataset.craft !== undefined) {
@@ -513,8 +619,16 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
     if (e.key === 'Escape' && sheet) { sheet = null; render(); }
   });
 
+  $('#festToggle').addEventListener('change', function (e) {
+    fest = e.target.checked;
+    if (screen !== 'home') { screen = 'home'; sheet = null; render(); }
+    placeBanner(true);
+    syncUrl();
+  });
+
   if (/hidepanel/.test(location.search)) $('#panel').hidden = true;
   renderNewRail();
+  placeBanner(false);
   // A shared link (#/shop/...?price=-1999&fabric=cotton) opens the listing with those filters.
   var m = location.hash.match(/^#\/shop\/[^?]*\??(.*)$/);
   if (m) openListing(m[1]); else render();
