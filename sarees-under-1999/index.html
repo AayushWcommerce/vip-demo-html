@@ -135,8 +135,6 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
 .sbody{flex:1;min-height:0;overflow-y:auto}
 .sec h5{margin:15px 0 9px;font-size:10.5px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:#707078}
 .opts{display:flex;flex-wrap:wrap;gap:10px}
-.phint{margin:-4px 0 10px;font-size:11.5px;color:#9A9AA3}
-.prow input::placeholder{color:#B4B4BC}
 .prow{display:flex;gap:12px}
 .prow label{flex:1;font-size:11px;color:#707078}
 .prow input{display:block;margin-top:4px;width:100%;border:1px solid #E8EAF0;border-radius:10px;padding:9px 12px;font-size:13px;color:#1F212E}
@@ -542,13 +540,12 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
           var on = isBucketOn(b);
           return '<button class="chip' + (on ? ' on' : '') + '" data-bucket="' + i + '">' + (on ? '✓ ' : '') + priceLabel(b.min, b.max) + '</button>';
         }).join('');
-        // Heading is just "Price"; the store's range is a separate hint so it can't read as the filter.
-        // Empty boxes say "No min" / "No max" instead of the cheapest/dearest price, which looked set.
-        return '<div class="sec"><h5>Price</h5>' +
-          '<p class="phint">Sarees here cost ' + rupees(FACETS.price.min) + ' – ' + rupees(FACETS.price.max) + '</p>' +
+        // Heading and placeholders exactly as the live SubcategoryFilters.jsx: `Price (₹min – ₹max)`
+        // (no thousands comma), and the store's cheapest/dearest price as the Min/Max placeholders.
+        return '<div class="sec"><h5>Price (₹' + FACETS.price.min + ' – ₹' + FACETS.price.max + ')</h5>' +
           (quick ? '<div class="opts" style="margin-bottom:12px">' + quick + '</div>' : '') + '<div class="prow">' +
-          '<label>Min<input type="number" data-price="min" placeholder="No min" value="' + (pending.min == null ? '' : pending.min) + '"></label>' +
-          '<label>Max<input type="number" data-price="max" placeholder="No max" value="' + (pending.max == null ? '' : pending.max) + '"></label></div></div>';
+          '<label>Min<input type="number" data-price="min" placeholder="' + FACETS.price.min + '" value="' + (pending.min == null ? '' : pending.min) + '"></label>' +
+          '<label>Max<input type="number" data-price="max" placeholder="' + FACETS.price.max + '" value="' + (pending.max == null ? '' : pending.max) + '"></label></div></div>';
       }
       return '<div class="sec"><h5>' + LABELS[k] + '</h5><div class="opts">' + FACETS[k].map(function (v) {
         var on = pending[k].indexOf(v) > -1;
