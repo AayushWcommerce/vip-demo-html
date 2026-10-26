@@ -54,8 +54,8 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
 .bhead{font-size:22px;font-weight:500;line-height:1.2}
 .bsub{font-size:12px;color:#545454;line-height:1.4}
 .bcta{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;margin-top:6px;background:#C73F21;color:#fff;border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:500}
-.bart{flex:none;width:74px;height:100px;border-radius:10px;background:repeating-linear-gradient(135deg,#E9C4A8 0 6px,#F3DCCB 6px 12px);position:relative;overflow:hidden}
-.bart::after{content:"";position:absolute;left:0;right:0;bottom:16px;height:12px;background:#C73F21;opacity:.75}
+.bart{flex:none;width:78px;height:104px;border-radius:10px;overflow:hidden;background:#EFEDEA}
+.bart img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
 
 .cats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px 8px;padding:0 16px 22px}
 .cat{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;text-align:center;text-decoration:underline;text-underline-offset:2px;cursor:pointer;border:0;background:transparent;padding:0;color:inherit}
@@ -84,8 +84,9 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
 .bar select{border:0;background:transparent;font-size:13px;color:#1F212E;cursor:pointer}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .card{cursor:pointer;font-size:12px}
-.im{position:relative;aspect-ratio:3/4;border-radius:10px;overflow:hidden}
-.im i{position:absolute;left:0;right:0;bottom:14%;height:9%;opacity:.8}
+.im{position:relative;aspect-ratio:3/4;border-radius:10px;overflow:hidden;background:#EFEDEA}
+.im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
+.im img.flip{transform:scaleX(-1)}
 .oos{position:absolute;top:8px;left:8px;background:rgba(255,255,255,.94);color:#C73F21;font-size:9.5px;font-weight:500;padding:3px 7px;border-radius:6px}
 .org{font-size:10.5px;color:#707078;margin-top:7px}
 .nm{line-height:1.3;margin-top:2px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
@@ -165,7 +166,7 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
             <span class="bsub">Meera's pick of everyday handlooms, all in stock</span>
             <span class="bcta">Shop now <svg width="14" height="14"><use href="#arrow"/></svg></span>
           </span>
-          <span class="bart" aria-hidden="true"></span>
+          <span class="bart" aria-hidden="true"><img alt="" src="https://ik.imagekit.io/3quk5czhx/temp/ef905626-5e42-4da8-badf-996e9ba6dd5c_IMG_20260731_173010__01%20(AI%20Fashion%20Models).webp?tr=w-156,h-208,fo-top,q-80"></span>
         </button>
 
         <h2 class="h2" style="margin-bottom:11px">Women's fashion</h2>
@@ -259,7 +260,7 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
     </div>
     <div class="pcard">
       <div class="eyebrow">Demo details</div>
-      <span>Sample sarees, not a real store. On the live site the banner hides when the store has no Sarees category or no in-stock saree at ₹1,999 or less.</span>
+      <span>Sample sarees with the store's own saree photos (each photo used twice, once mirrored). Names and prices are made up. On the live site the banner hides when the store has no Sarees category or no in-stock saree at ₹1,999 or less.</span>
       <span>The page itself is the live sarees page; only the home banner is new. The banner opens it with <b>?price=-1999</b>.</span>
       <span style="color:#707078">Add <b>?hidepanel</b> to the URL to hide this panel for testers.</span>
     </div>
@@ -268,22 +269,26 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
 
 <script>
 (function () {
-  // Sample sarees. d = days since the store added it (Newest sorts on this).
+  // The store's own saree photos (dev catalogue, ImageKit). Same files and the same 2x 3:4 render
+  // the newly-arrived demo uses. Each is used twice, the second time mirrored (m: true).
+  var IK = 'https://ik.imagekit.io/3quk5czhx/temp/';
+  var TR = '?tr=w-369,h-492,fo-top,q-80';
+  var PHOTO = {
+    yellow: IK + 'b3a57146-4b28-4412-86d2-18fd866a4304_model_34turn%20(10).webp' + TR,
+    mauve: IK + 'cf9191a1-1c17-4d43-b22d-48736b792172_IMG_20260731_184148__01%20(AI%20Fashion%20Models).webp' + TR,
+    mustard: IK + 'ef905626-5e42-4da8-badf-996e9ba6dd5c_IMG_20260731_173010__01%20(AI%20Fashion%20Models).webp' + TR,
+    ivory: IK + 'f1c5dc64-7096-485f-932a-13b862624472_model_34turn%20(11).webp' + TR
+  };
+  // Sample sarees, named to match their photos. d = days since the store added it (Newest sorts on this).
   var SAREES = [
-    { n: 'Kota Doria saree, rose pink', craft: 'Kota Doria', region: 'Kota, Rajasthan', fabric: 'Cotton', color: 'Pink', occ: 'Daily wear', p: 1290, stock: 3, d: 1, a: '#F4DDE3', b: '#C95B7A' },
-    { n: 'Mangalgiri cotton saree, teal', craft: 'Mangalgiri', region: 'Guntur, Andhra Pradesh', fabric: 'Cotton', color: 'Teal', occ: 'Office wear', p: 1690, stock: 5, d: 2, a: '#D3ECE8', b: '#1F7A70' },
-    { n: 'Ikat cotton saree, mustard', craft: 'Ikat', region: 'Pochampally, Telangana', fabric: 'Cotton', color: 'Yellow', occ: 'Daily wear', p: 1999, stock: 2, d: 3, a: '#F6E7B9', b: '#B8860B' },
-    { n: 'Chanderi silk-cotton saree, ivory', craft: 'Chanderi', region: 'Chanderi, Madhya Pradesh', fabric: 'Silk-cotton', color: 'White', occ: 'Festive', p: 2450, stock: 4, d: 4, a: '#F3EEE2', b: '#C9A227' },
-    { n: 'Kota Doria saree, lemon', craft: 'Kota Doria', region: 'Kota, Rajasthan', fabric: 'Cotton', color: 'Yellow', occ: 'Daily wear', p: 1150, stock: 6, d: 5, a: '#F8F1C8', b: '#8A9A2B' },
-    { n: 'Sambalpuri cotton saree, maroon', craft: 'Sambalpuri', region: 'Bargarh, Odisha', fabric: 'Cotton', color: 'Red', occ: 'Festive', p: 1890, stock: 1, d: 6, a: '#EBC9CB', b: '#7A1F2B' },
-    { n: 'Ikat silk-cotton saree, indigo', craft: 'Ikat', region: 'Pochampally, Telangana', fabric: 'Silk-cotton', color: 'Blue', occ: 'Office wear', p: 2290, stock: 3, d: 7, a: '#D5DAF0', b: '#2E3E8C' },
-    { n: 'Mangalgiri cotton saree, mint', craft: 'Mangalgiri', region: 'Guntur, Andhra Pradesh', fabric: 'Cotton', color: 'Green', occ: 'Daily wear', p: 1450, stock: 0, d: 8, a: '#DDF1E4', b: '#3C8D5A' },
-    { n: 'Linen saree, slate grey', craft: 'Handloom linen', region: 'Phulia, West Bengal', fabric: 'Linen', color: 'Grey', occ: 'Office wear', p: 1790, stock: 4, d: 9, a: '#E3E5EA', b: '#5B6270' },
-    { n: 'Chanderi saree, blush', craft: 'Chanderi', region: 'Chanderi, Madhya Pradesh', fabric: 'Silk-cotton', color: 'Pink', occ: 'Festive', p: 1950, stock: 2, d: 10, a: '#F6E1DE', b: '#C77B6B' },
-    { n: 'Sambalpuri silk saree, black', craft: 'Sambalpuri', region: 'Bargarh, Odisha', fabric: 'Silk', color: 'Black', occ: 'Festive', p: 3200, stock: 1, d: 11, a: '#D9D9DD', b: '#B23A3A' },
-    { n: 'Kota Doria saree, sky blue', craft: 'Kota Doria', region: 'Kota, Rajasthan', fabric: 'Cotton', color: 'Blue', occ: 'Daily wear', p: 1390, stock: 5, d: 12, a: '#DDEBF7', b: '#3C78B5' },
-    { n: 'Linen saree, rust', craft: 'Handloom linen', region: 'Phulia, West Bengal', fabric: 'Linen', color: 'Orange', occ: 'Office wear', p: 2150, stock: 3, d: 13, a: '#F4DCCB', b: '#B5562B' },
-    { n: 'Ikat cotton saree, wine', craft: 'Ikat', region: 'Pochampally, Telangana', fabric: 'Cotton', color: 'Red', occ: 'Daily wear', p: 1590, stock: 2, d: 14, a: '#EBCBD3', b: '#7E2440' }
+    { n: 'Kota Doria saree, lemon with painted florals', craft: 'Kota Doria', region: 'Kota, Rajasthan', fabric: 'Cotton', color: 'Yellow', occ: 'Daily wear', p: 1290, stock: 3, d: 1, img: PHOTO.yellow },
+    { n: 'Chettinad cotton saree, mauve', craft: 'Chettinad', region: 'Karaikudi, Tamil Nadu', fabric: 'Cotton', color: 'Mauve', occ: 'Daily wear', p: 1590, stock: 5, d: 2, img: PHOTO.mauve },
+    { n: 'Mangalgiri cotton saree, mustard', craft: 'Mangalgiri', region: 'Guntur, Andhra Pradesh', fabric: 'Cotton', color: 'Yellow', occ: 'Office wear', p: 1690, stock: 4, d: 3, img: PHOTO.mustard },
+    { n: 'Chanderi tissue saree, ivory and blue', craft: 'Chanderi', region: 'Chanderi, Madhya Pradesh', fabric: 'Silk-cotton', color: 'White', occ: 'Festive', p: 1950, stock: 2, d: 4, img: PHOTO.ivory },
+    { n: 'Organza saree, butter yellow', craft: 'Chanderi', region: 'Chanderi, Madhya Pradesh', fabric: 'Silk-cotton', color: 'Yellow', occ: 'Festive', p: 2450, stock: 3, d: 5, img: PHOTO.yellow, m: true },
+    { n: 'Narayanpet cotton saree, dusty rose', craft: 'Narayanpet', region: 'Narayanpet, Telangana', fabric: 'Cotton', color: 'Mauve', occ: 'Office wear', p: 1890, stock: 1, d: 6, img: PHOTO.mauve, m: true },
+    { n: 'Mangalgiri silk-cotton saree, ochre', craft: 'Mangalgiri', region: 'Guntur, Andhra Pradesh', fabric: 'Silk-cotton', color: 'Yellow', occ: 'Festive', p: 2290, stock: 2, d: 7, img: PHOTO.mustard, m: true },
+    { n: 'Maheshwari saree, pearl grey', craft: 'Maheshwari', region: 'Maheshwar, Madhya Pradesh', fabric: 'Silk-cotton', color: 'Grey', occ: 'Office wear', p: 1450, stock: 0, d: 8, img: PHOTO.ivory, m: true }
   ];
   var HOST = 'thecraftsarchive.in';
   var BASE = '/shop/womens-fashion/sarees/229';
@@ -369,8 +374,8 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
   }
 
   function img(s) {
-    return '<div class="im" style="background:repeating-linear-gradient(135deg,' + s.a + ' 0 7px,#fff 7px 9px,' + s.a + ' 9px 16px)">' +
-      '<i style="background:' + s.b + '"></i>' + (s.stock === 0 ? '<span class="oos">Out of stock</span>' : '') + '</div>';
+    return '<div class="im"><img src="' + s.img + '" alt="' + esc(s.n) + '" loading="lazy"' + (s.m ? ' class="flip"' : '') + '>' +
+      (s.stock === 0 ? '<span class="oos">Out of stock</span>' : '') + '</div>';
   }
 
   function facetCount(k) {
@@ -436,7 +441,7 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
   }
 
   function renderNewRail() {
-    $('#newRail').innerHTML = SAREES.slice(0, 5).map(function (s) {
+    $('#newRail').innerHTML = SAREES.slice(0, 4).map(function (s) {
       return '<div class="na" role="button" tabindex="0">' + img(s) + '<p>' + esc(s.n) + '</p><b>' + rupees(s.p) + '</b></div>';
     }).join('');
   }
