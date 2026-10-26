@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sarees under ₹2,000 · Desktop banner options</title>
+<style>
+@font-face{font-family:"Geomanist";src:url("../password-login/Geomanist-Regular.woff2") format("woff2");font-weight:400}
+@font-face{font-family:"Geomanist";src:url("../password-login/Geomanist-Medium.woff2") format("woff2");font-weight:500}
+*{box-sizing:border-box}
+body{margin:0;background:#ECEFF2;font-family:Geomanist,Manrope,system-ui,"Segoe UI",sans-serif;color:#1F212E}
+button{font-family:inherit;cursor:pointer}
+[hidden]{display:none!important}
+
+.bar{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding:12px 16px;background:#fff;border-bottom:1px solid #E1E4EA}
+.bar b{font-weight:500;margin-right:6px}
+.bar button{min-height:38px;padding:0 14px;border:1px solid #D5DDE2;border-radius:10px;background:#fff;color:#1F212E;font-size:14px}
+.bar button.on{border-color:#4862EE;color:#4862EE;background:#F4F5FF}
+.bar span{font-size:12.5px;color:#707078;margin-left:6px}
+
+/* the store page, at desktop width */
+.site{max-width:1180px;margin:20px auto 40px;background:#fff;box-shadow:0 10px 40px rgba(31,33,46,.12)}
+.coupon{background:#FFF8E7;text-align:center;font-size:12px;padding:8px;font-weight:500}
+.hdr{display:flex;align-items:center;gap:14px;padding:16px 20px}
+.logo{width:44px;height:44px;border-radius:50%;background:#F3EFE6;display:grid;place-items:center;font-size:9px;color:#545454}
+.hdr h1{margin:0;font-size:20px;font-weight:500}
+.hdr p{margin:2px 0 0;font-size:12.5px;color:#545454}
+.trust{display:grid;grid-template-columns:repeat(3,1fr);background:#1F212E;color:#fff;font-size:11px;text-align:center}
+.trust div{padding:8px;border-right:1px solid #343647}
+.trust b{display:block;color:#F2B544;font-weight:500}
+.strip{font-size:12px;text-align:center;padding:9px;background:#F4F5FF;color:#1F212E}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:16px}
+.box{border:1px solid #E8EAF0;border-radius:14px;padding:16px;font-size:13px;color:#707078}
+.h2{font-size:17px;font-weight:500;padding:4px 16px 2px;margin:0}
+.h2 span{color:#C73F21}
+.sub{font-size:11px;color:#707078;padding:0 16px 10px}
+.na{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;padding:0 16px 18px}
+.na img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top;border-radius:12px;display:block}
+.na p{margin:6px 0 0;font-size:12px}
+.na b{font-size:13px;font-weight:500}
+.cats{display:flex;gap:10px;padding:0 16px 30px}
+.cats div{width:100px;aspect-ratio:1;border-radius:14px;background:#F4F5FF;border:1px solid #E8EAF0}
+
+/* ===== banners (each 260-300px tall, inside 16px side margins like the live one) ===== */
+.banner{display:block;margin:0 16px 22px;border-radius:14px;overflow:hidden;position:relative;text-decoration:none;color:inherit}
+.eye{font-size:12px;letter-spacing:.14em;font-weight:500}
+.cta{display:inline-flex;align-items:center;gap:6px;border-radius:999px;font-size:14px;font-weight:500;padding:10px 20px;width:max-content}
+.cta svg{width:15px;height:15px}
+
+/* NOW (what is in PR #924) */
+.b-now{display:flex;height:260px;background:#1F212E}
+.b-now .txt{flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px;padding:0 28px;color:#fff}
+.b-now .eye{color:#FFD2BF}
+.b-now h3{margin:0;font-size:32px;font-weight:500}
+.b-now .s{font-size:14px;color:rgba(255,255,255,.85);margin-top:-8px}
+.b-now .cta{background:#fff;color:#1F212E}
+.b-now .ph{display:grid;grid-template-columns:repeat(3,195px)}
+.b-now .ph img{width:195px;height:260px;object-fit:cover;object-position:top;display:block}
+
+/* A · WARM FESTIVE */
+.b-a{display:flex;align-items:center;height:300px;background:#5E1B2A;color:#FBEFE3;padding:0 36px;gap:28px}
+.b-a::before{content:"";position:absolute;inset:14px;border:1px solid rgba(242,181,68,.35);border-radius:10px;pointer-events:none}
+.b-a .txt{flex:1;display:flex;flex-direction:column;gap:10px;position:relative}
+.b-a .eye{color:#F2B544}
+.b-a h3{margin:0;font-size:26px;font-weight:400;line-height:1.15}
+.b-a .big{display:block;font-size:64px;font-weight:500;color:#F2B544;letter-spacing:-1.5px;line-height:1;margin-top:4px}
+.b-a .s{font-size:14px;color:#E8D5C8}
+.b-a .cta{background:#F2B544;color:#5E1B2A;margin-top:8px}
+.b-a .cards{display:flex;gap:16px;position:relative}
+.b-a .card{position:relative;width:168px;height:224px;border-radius:12px;overflow:hidden;border:3px solid #FBEFE3;box-shadow:0 10px 24px rgba(0,0,0,.28)}
+.b-a .card:nth-child(2){transform:translateY(-10px)}
+.b-a .card img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.tag{position:absolute;left:8px;bottom:8px;background:#fff;color:#1F212E;border-radius:999px;font-size:12.5px;font-weight:500;padding:4px 10px;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+
+/* B · PHOTO BACKDROP */
+.b-b{display:flex;align-items:center;height:300px;padding:0 40px;gap:20px;background:#2a2320}
+.b-b .bg{position:absolute;inset:-40px;background-size:cover;background-position:center 20%;filter:blur(22px) saturate(1.5) brightness(.7);transform:scale(1.3);background-position:center 45%}
+.b-b .veil{position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,16,14,.85) 0%,rgba(20,16,14,.45) 55%,rgba(20,16,14,.1) 100%)}
+.b-b .txt{position:relative;flex:1;display:flex;flex-direction:column;gap:12px;color:#fff}
+.b-b .eye{color:#FFD2BF}
+.b-b h3{margin:0;font-size:40px;font-weight:500;line-height:1.1}
+.b-b h3 em{font-style:normal;color:#FFD2BF}
+.b-b .s{font-size:15px;color:rgba(255,255,255,.85)}
+.b-b .cta{background:#fff;color:#1F212E;margin-top:6px}
+.b-b .fan{position:relative;width:420px;height:260px;flex:none}
+.b-b .fan .card{position:absolute;top:22px;width:170px;height:226px;border-radius:12px;overflow:hidden;border:3px solid #fff;box-shadow:0 14px 30px rgba(0,0,0,.4)}
+.b-b .fan .card img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.b-b .fan .card:nth-child(1){left:0;transform:rotate(-8deg)}
+.b-b .fan .card:nth-child(2){left:125px;top:6px;z-index:2}
+.b-b .fan .card:nth-child(3){left:250px;transform:rotate(8deg)}
+
+/* C · LIGHT SHELF */
+.b-c{display:flex;align-items:center;gap:26px;padding:26px 30px;background:#FAF3EA;border:1px solid #F0E2D2}
+.b-c .txt{width:300px;flex:none;display:flex;flex-direction:column;gap:10px}
+.b-c .eye{color:#C73F21}
+.b-c h3{margin:0;font-size:30px;font-weight:500;line-height:1.15}
+.b-c h3 b{display:block;font-weight:500;font-size:52px;color:#C73F21;letter-spacing:-1px}
+.b-c .s{font-size:14px;color:#545454}
+.b-c .cta{background:#1F212E;color:#fff;margin-top:6px}
+.b-c .shelf{flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.b-c .pc{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(31,33,46,.08)}
+.b-c .pc img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top;display:block}
+.b-c .pc p{margin:8px 10px 0;font-size:12.5px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.b-c .pc b{display:block;margin:2px 10px 10px;font-size:14px;font-weight:500}
+.b-c .all{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border:1.5px dashed #D9C3AE;border-radius:12px;color:#C73F21;font-weight:500;font-size:14px}
+.b-c .all i{font-style:normal;width:44px;height:44px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:20px}
+.note{max-width:1180px;margin:0 auto 30px;padding:0 16px;font-size:13px;color:#545454;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="bar" id="bar">
+  <b>Desktop banner</b>
+  <button data-d="now">Now (in PR)</button>
+  <button data-d="a">A · Warm festive</button>
+  <button data-d="b">B · Photo backdrop</button>
+  <button data-d="c">C · Light shelf</button>
+  <span id="hint"></span>
+</div>
+
+<div class="site">
+  <div class="coupon">HALOWEEN26 — 10% off · till 8 Nov</div>
+  <div class="hdr"><div class="logo">Naveen<br>Nambari</div><div><h1>Naveen Nambari</h1><p>A store by Rishabh Pant, Visakhapatnam</p></div></div>
+  <div class="trust"><div><b>7-day</b>easy returns</div><div><b>COD</b>available</div><div><b>100%</b>secure pay</div></div>
+  <div class="strip">Free shipping on prepaid orders over ₹499 · Ships worldwide</div>
+  <div class="row2"><div class="box">Curated by Rishabh · Verified · Fulfilled by Wcommerce</div><div class="box">Search sarees, kurtas, “kota doria”…</div></div>
+  <h2 class="h2">Newly arrived <span>sarees</span></h2>
+  <div class="sub">Recently added by Rishabh</div>
+  <div class="na" id="na"></div>
+
+  <a class="banner" id="banner" href="#" onclick="return false"></a>
+
+  <h2 class="h2" style="margin-bottom:10px">Women's Fashion</h2>
+  <div class="cats"><div></div><div></div><div></div><div></div></div>
+</div>
+<p class="note" id="note"></p>
+
+<script>
+(function () {
+  var IK = 'https://ik.imagekit.io/3quk5czhx/temp/';
+  var tr = function (w, h) { return '?tr=w-' + w + ',h-' + h + ',fo-top,q-85'; };
+  // Same three sarees, photos and card prices as dev store 4 (2026-10-26).
+  var P = [
+    { n: 'TEST Saree 3', p: '₹1,795.50', f: 'b3a57146-4b28-4412-86d2-18fd866a4304_model_34turn%20(10).webp' },
+    { n: 'TEST Saree 4', p: '₹1,890.50', f: 'ef905626-5e42-4da8-badf-996e9ba6dd5c_IMG_20260731_173010__01%20(AI%20Fashion%20Models).webp' },
+    { n: 'Test Product One', p: '₹1,900', f: 'cf9191a1-1c17-4d43-b22d-48736b792172_IMG_20260731_184148__01%20(AI%20Fashion%20Models).webp' }
+  ];
+  var src = function (x, w, h) { return IK + x.f + tr(w, h); };
+  var ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>';
+  var CTA = 'Shop now ' + ARROW;
+
+  document.getElementById('na').innerHTML = P.concat([P[0]]).slice(0, 3).map(function (x) {
+    return '<div><img alt="" src="' + src(x, 369, 492) + '"><p>' + x.n + '</p><b>' + x.p + '</b></div>';
+  }).join('');
+
+  var D = {
+    now: {
+      cls: 'b-now', note: 'What is in PR #924 today: plain dark panel, photos as 3:4 strips on the right.',
+      html: function () {
+        return '<div class="txt"><span class="eye">BUDGET PICKS</span><h3>Sarees under ₹2,000</h3>' +
+          '<span class="s">Everyday to festive, picked by Rishabh</span><span class="cta">' + CTA + '</span></div>' +
+          '<div class="ph">' + P.map(function (x) { return '<img alt="" src="' + src(x, 390, 520) + '">'; }).join('') + '</div>';
+      }
+    },
+    a: {
+      cls: 'b-a', note: 'A · Warm festive: deep maroon with a thin gold frame, a big gold “₹2,000”, and the sarees as framed cards (middle one lifted) with their price on each. Same colours as the festival banners.',
+      html: function () {
+        return '<div class="txt"><span class="eye">BUDGET PICKS</span><h3>Sarees under<span class="big">₹2,000</span></h3>' +
+          '<span class="s">Everyday to festive, picked by Rishabh</span><span class="cta">' + CTA + '</span></div>' +
+          '<div class="cards">' + P.map(function (x) {
+            return '<div class="card"><img alt="" src="' + src(x, 336, 448) + '"><span class="tag">' + x.p + '</span></div>';
+          }).join('') + '</div>';
+      }
+    },
+    b: {
+      cls: 'b-b', note: 'B · Photo backdrop: the first saree, softly blurred, fills the whole banner (its colours change with the store’s sarees); the three sarees fan out on the right as crisp cards.',
+      html: function () {
+        // Backdrop from the most colourful photo (mustard/rust): a mostly-wall photo blurs to plain grey.
+        return '<div class="bg" style="background-image:url(\'' + src(P[1], 600, 800) + '\')"></div><div class="veil"></div>' +
+          '<div class="txt"><span class="eye">BUDGET PICKS</span><h3>Sarees under<br><em>₹2,000</em></h3>' +
+          '<span class="s">Everyday to festive, picked by Rishabh</span><span class="cta">' + CTA + '</span></div>' +
+          '<div class="fan">' + P.map(function (x) {
+            return '<div class="card"><img alt="" src="' + src(x, 340, 452) + '"><span class="tag">' + x.p + '</span></div>';
+          }).join('') + '</div>';
+      }
+    },
+    c: {
+      cls: 'b-c', note: 'C · Light shelf: bright cream, a coral “₹2,000”, and the three sarees as mini product cards with name and price, plus a “See all” tile. Most like shopping; lightest on the page.',
+      html: function () {
+        return '<div class="txt"><span class="eye">BUDGET PICKS</span><h3>Sarees under<b>₹2,000</b></h3>' +
+          '<span class="s">Everyday to festive, picked by Rishabh</span><span class="cta">' + CTA + '</span></div>' +
+          '<div class="shelf">' + P.map(function (x) {
+            return '<div class="pc"><img alt="" src="' + src(x, 300, 400) + '"><p>' + x.n + '</p><b>' + x.p + '</b></div>';
+          }).join('') + '<div class="all"><i>→</i>See all</div></div>';
+      }
+    }
+  };
+
+  var cur = new URLSearchParams(location.search).get('d');
+  if (!D[cur]) cur = 'now';
+  function show(k) {
+    cur = k;
+    var b = document.getElementById('banner');
+    b.className = 'banner ' + D[k].cls;
+    b.innerHTML = D[k].html();
+    document.getElementById('note').textContent = D[k].note + ' Tap target: the whole banner opens Sarees with “Under ₹2,000”.';
+    Array.prototype.forEach.call(document.querySelectorAll('[data-d]'), function (x) { x.classList.toggle('on', x.dataset.d === k); });
+    document.getElementById('hint').textContent = 'link: ?d=' + k;
+    try { history.replaceState(null, '', location.pathname + '?d=' + k); } catch (e) { /* file preview */ }
+  }
+  document.getElementById('bar').addEventListener('click', function (e) {
+    var t = e.target.closest('[data-d]'); if (t) show(t.dataset.d);
+  });
+  show(cur);
+})();
+</script>
+</body>
+</html>
