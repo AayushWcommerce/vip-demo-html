@@ -298,7 +298,7 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
       <span>All of these already exist on the live sarees page. The options come from the store's in-stock sarees, so a filter with nothing to offer is hidden.</span>
       <ul>
         <li class="yes">Price (min – max)</li>
-        <li class="yes">NEW: quick price chips in the Price sheet (Under ₹2,000, ₹2,000 – ₹3,000…), only those with sarees</li>
+        <li class="yes">NEW: an “Under ₹2,000” quick chip in the Price sheet</li>
         <li class="yes">Shop by craft</li>
         <li class="yes">Occasion · Fabric · Colour</li>
         <li class="yes">Search within sarees</li>
@@ -473,13 +473,10 @@ button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outli
     return rupees(min) + ' – ' + rupees(max);
   }
 
-  // Quick price chips in the sheet. A chip shows only when it overlaps the store's in-stock price
-  // range (product_filters price.min/max), so a store never sees a chip that leads to nothing.
+  // Quick price chip in the sheet: just the banner's own "Under ₹2,000". Shows only when the store
+  // has an in-stock saree at or below it (product_filters price.min), so it never leads to nothing.
   var BUCKETS = [
-    { min: null, max: 1000 },
-    { min: null, max: 2000 },
-    { min: 2000, max: 3000 },
-    { min: 3000, max: null }
+    { min: null, max: BANNER_MAX }
   ];
   function visibleBuckets() {
     return BUCKETS.filter(function (b) {
