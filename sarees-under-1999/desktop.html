@@ -88,6 +88,8 @@ button{font-family:inherit;cursor:pointer}
 .b-b .fan .card:nth-child(1){left:0;transform:rotate(-8deg)}
 .b-b .fan .card:nth-child(2){left:125px;top:6px;z-index:2}
 .b-b .fan .card:nth-child(3){left:250px;transform:rotate(8deg)}
+/* The middle card covers the third card's bottom-left corner, so its price sits bottom-right. */
+.b-b .fan .card:nth-child(3) .tag{left:auto;right:8px}
 
 /* C · LIGHT SHELF */
 .b-c{display:flex;align-items:center;gap:26px;padding:26px 30px;background:#FAF3EA;border:1px solid #F0E2D2}
