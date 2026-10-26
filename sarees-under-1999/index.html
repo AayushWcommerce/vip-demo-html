@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Crafts Archive · Sarees under ₹1,999 Prototype</title>
+<style>
+@font-face{font-family:"Geomanist";src:url("../password-login/Geomanist-Light.woff2") format("woff2");font-weight:300}
+@font-face{font-family:"Geomanist";src:url("../password-login/Geomanist-Regular.woff2") format("woff2");font-weight:400}
+@font-face{font-family:"Geomanist";src:url("../password-login/Geomanist-Medium.woff2") format("woff2");font-weight:500}
+*{box-sizing:border-box}
+body{margin:0;background:#ECEFF2;font-family:Geomanist,Manrope,system-ui,"Segoe UI",sans-serif;color:#1F212E}
+button,input,select{font-family:inherit}
+button{cursor:pointer}
+button:focus-visible,[role=button]:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+.stage{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;justify-content:center;padding:28px 16px}
+.device{display:flex;flex-direction:column;gap:10px;width:375px;max-width:100%}
+.addr{display:flex;align-items:center;gap:8px;background:#fff;border-radius:999px;padding:8px 14px;font-size:12px;color:#545454;box-shadow:0 2px 8px rgba(31,33,46,.08);overflow:hidden}
+.addr code{font-family:inherit;white-space:nowrap;overflow-x:auto;scrollbar-width:none}
+.addr code::-webkit-scrollbar{display:none}
+.addr b{font-weight:500;color:#4862EE}
+.phone{position:relative;width:375px;max-width:100%;height:812px;flex-shrink:0;background:#fff;overflow:hidden;border-radius:28px;box-shadow:0 10px 40px rgba(31,33,46,.18)}
+.page{position:absolute;inset:0;overflow-y:auto;scrollbar-width:none}
+.page::-webkit-scrollbar{display:none}
+
+/* home */
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.logo{width:36px;height:36px;border-radius:50%;background:#1B1E33;color:#F2B544;display:grid;place-items:center;font-size:12px;font-weight:500;flex:none}
+.sname{font-size:15px;font-weight:500}
+.ssub{font-size:11px;color:#545454}
+.ibtn{width:36px;height:36px;border:0;background:transparent;color:#2C2C2C;display:grid;place-items:center}
+.strip{font-size:11.5px;padding:9px 16px}
+.s1{background:#F4F5FF;color:#4862EE}
+.s2{background:#EEF7F1;color:#1E6B45}
+.hsearch{display:flex;align-items:center;gap:8px;margin:14px 16px 12px;border:1px solid #E8EAF0;border-radius:12px;padding:11px 12px;font-size:13px;color:#707078}
+.h2{font-size:17px;font-weight:500;margin:0;padding:0 16px}
+.h2 span{color:#C73F21}
+.hsub{font-size:11px;color:#707078;padding:3px 16px 11px}
+.rail{display:flex;gap:11px;overflow-x:auto;padding:2px 16px 14px;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.na{flex:none;width:150px;font-size:12px;cursor:pointer}
+.na .im{border-radius:12px}
+.na p{margin:7px 0 0;line-height:1.25}
+.na b{display:block;font-weight:500;font-size:13px;margin-top:3px}
+
+.banner{display:flex;align-items:center;gap:12px;margin:2px 16px 18px;padding:16px;border-radius:14px;background:#FFF4EC;border:1px solid #F3D6C4;cursor:pointer;text-align:left;width:calc(100% - 32px);color:inherit}
+.banner:hover{background:#FFEFE3}
+.bcopy{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.beye{font-size:10.5px;letter-spacing:.14em;color:#C73F21;font-weight:500}
+.bhead{font-size:22px;font-weight:500;line-height:1.2}
+.bsub{font-size:12px;color:#545454;line-height:1.4}
+.bcta{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;margin-top:6px;background:#C73F21;color:#fff;border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:500}
+.bart{flex:none;width:74px;height:100px;border-radius:10px;background:repeating-linear-gradient(135deg,#E9C4A8 0 6px,#F3DCCB 6px 12px);position:relative;overflow:hidden}
+.bart::after{content:"";position:absolute;left:0;right:0;bottom:16px;height:12px;background:#C73F21;opacity:.75}
+
+.cats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px 8px;padding:0 16px 22px}
+.cat{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;text-align:center;text-decoration:underline;text-underline-offset:2px;cursor:pointer;border:0;background:transparent;padding:0;color:inherit}
+.cat i{display:block;width:100%;aspect-ratio:1;border-radius:14px;background:#F4F5FF;border:1px solid #E8EAF0}
+.foot{background:#1F212E;color:#C9CBD6;font-size:11.5px;padding:22px 16px 40px;line-height:1.6}
+
+/* listing */
+.top{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:6px;background:#fff;padding:10px 10px 8px;border-bottom:1px solid #F0F1F5}
+.top h1{flex:1;margin:0;font-size:16px;font-weight:500}
+.feat{display:flex;gap:14px;justify-content:center;font-size:10.5px;color:#545454;background:#FAFAFC;padding:8px 12px}
+.wrap{padding:14px 16px 24px}
+.lsearch{display:flex;align-items:center;gap:8px;border:1px solid #E8EAF0;border-radius:12px;padding:0 12px}
+.lsearch input{flex:1;min-width:0;border:0;outline:none;padding:11px 0;font-size:13px;color:#1F212E;background:transparent}
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-top:12px;padding-bottom:2px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;padding:9px 14px;border-radius:999px;border:1px solid #E8EAF0;background:#fff;color:#2C2C2C;white-space:nowrap}
+.chip.on{background:#F4F5FF;border-color:#4862EE;color:#4862EE}
+.chip.solid{background:#4862EE;border-color:#4862EE;color:#fff}
+.lbl{font-size:9.5px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:#9A9AA3;margin:12px 0 5px}
+.applied{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.ap{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:500;color:#4862EE;background:#F4F5FF;border:1px solid #CBD4FF;border-radius:999px;padding:5px 11px;cursor:pointer}
+.ap em{font-style:normal;color:#9A9AA3}
+.clr{font-size:11px;font-weight:500;color:#707078;border:1px solid #E8EAF0;border-radius:999px;padding:5px 11px;background:#fff}
+.bar{display:flex;align-items:center;justify-content:space-between;margin:12px 0 8px;font-size:13px;color:#545454}
+.bar b{color:#1F212E;font-weight:400}
+.bar select{border:0;background:transparent;font-size:13px;color:#1F212E;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card{cursor:pointer;font-size:12px}
+.im{position:relative;aspect-ratio:3/4;border-radius:10px;overflow:hidden}
+.im i{position:absolute;left:0;right:0;bottom:14%;height:9%;opacity:.8}
+.oos{position:absolute;top:8px;left:8px;background:rgba(255,255,255,.94);color:#C73F21;font-size:9.5px;font-weight:500;padding:3px 7px;border-radius:6px}
+.org{font-size:10.5px;color:#707078;margin-top:7px}
+.nm{line-height:1.3;margin-top:2px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.pr{font-size:13px;font-weight:500;margin-top:3px}
+.low{font-size:10.5px;color:#C73F21;margin-top:2px}
+.empty{padding:34px 0;text-align:center;font-size:12.5px;color:#707078;line-height:1.6}
+.empty button{border:0;background:transparent;color:#4862EE;font-weight:500;font-size:12.5px}
+
+/* filter sheet */
+.overlay{position:absolute;inset:0;z-index:5}
+.scrim{position:absolute;inset:0;border:0;background:rgba(31,33,46,.45)}
+.sheet{position:absolute;left:0;right:0;bottom:0;max-height:85%;display:flex;flex-direction:column;background:#fff;border-radius:20px 20px 0 0;padding:8px 16px 16px;box-shadow:0 -10px 30px rgba(31,33,46,.18)}
+.grip{width:40px;height:4px;border-radius:4px;background:#D7DAE6;margin:4px auto 2px;flex:none}
+.shead{display:flex;justify-content:space-between;align-items:center;flex:none}
+.shead h4{margin:15px 0 9px;font-size:15px;font-weight:500;letter-spacing:.05em;text-transform:uppercase}
+.shead button{border:0;background:transparent;color:#4862EE;font-size:12px;font-weight:500}
+.sbody{flex:1;min-height:0;overflow-y:auto}
+.sec h5{margin:15px 0 9px;font-size:10.5px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:#707078}
+.opts{display:flex;flex-wrap:wrap;gap:10px}
+.prow{display:flex;gap:12px}
+.prow label{flex:1;font-size:11px;color:#707078}
+.prow input{display:block;margin-top:4px;width:100%;border:1px solid #E8EAF0;border-radius:10px;padding:9px 12px;font-size:13px;color:#1F212E}
+.go{flex:none;margin-top:16px;width:100%;border:0;border-radius:12px;background:#4862EE;color:#fff;font-size:14px;font-weight:500;padding:13px 0;box-shadow:0 8px 22px rgba(72,98,238,.28)}
+
+/* tester panel (same as password-login) */
+.panel{width:340px;max-width:100%;display:flex;flex-direction:column;gap:16px}
+.pcard{background:#fff;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:1.45}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#707078;font-weight:500}
+.pcard ol,.pcard ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:14.5px}
+.pcard b{font-weight:500}
+.jump{display:flex;gap:8px;flex-wrap:wrap}
+.jump button{min-height:40px;padding:0 14px;border:1px solid #D5DDE2;border-radius:10px;background:#fff;color:#1F212E;font-size:14px}
+.jump button.on{border-color:#4862EE;color:#4862EE;background:#F4F5FF}
+.yes{color:#1E6B45}
+.no{color:#9A9AA3}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></symbol>
+  <symbol id="bag" viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8zm3 0V6a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/></symbol>
+  <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M16 16l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="1.9" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="filter" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="16" cy="7" r="2" stroke="currentColor" stroke-width="1.8" fill="none"/><circle cx="10" cy="17" r="2" stroke="currentColor" stroke-width="1.8" fill="none"/></symbol>
+  <symbol id="lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.8" fill="none"/></symbol>
+</svg>
+
+<div class="stage">
+  <div class="device">
+    <div class="addr"><svg width="14" height="14" style="flex:none"><use href="#lock"/></svg><code id="addr"></code></div>
+    <div class="phone" id="phone">
+
+      <!-- HOME (MyStore.jsx) -->
+      <div class="page" id="home">
+        <div class="hdr">
+          <div class="brand">
+            <button class="ibtn" aria-label="Menu"><svg width="22" height="22"><use href="#menu"/></svg></button>
+            <div class="logo" aria-hidden="true">TCA</div>
+            <div style="min-width:0"><div class="sname">The Crafts Archive</div><div class="ssub">Meera Iyer · Jaipur</div></div>
+          </div>
+          <button class="ibtn" aria-label="Cart"><svg width="22" height="22"><use href="#bag"/></svg></button>
+        </div>
+        <div class="strip s1">Handpicked by Meera · every piece checked before it ships</div>
+        <div class="strip s2">Free shipping on orders above ₹999</div>
+        <div class="hsearch"><svg width="16" height="16"><use href="#search"/></svg>Search sarees, kurtis, crafts…</div>
+
+        <h2 class="h2">Newly arrived <span>sarees</span></h2>
+        <div class="hsub">Fresh picks from Meera's weavers</div>
+        <div class="rail" id="newRail"></div>
+
+        <!-- NEW: SareesUnderBanner -->
+        <button class="banner" id="banner" data-act="openBanner">
+          <span class="bcopy">
+            <span class="beye">HANDWOVEN, WITHIN BUDGET</span>
+            <span class="bhead">Sarees under ₹1,999</span>
+            <span class="bsub">Meera's pick of everyday handlooms, all in stock</span>
+            <span class="bcta">Shop now <svg width="14" height="14"><use href="#arrow"/></svg></span>
+          </span>
+          <span class="bart" aria-hidden="true"></span>
+        </button>
+
+        <h2 class="h2" style="margin-bottom:11px">Women's fashion</h2>
+        <div class="cats">
+          <button class="cat" data-act="openSarees"><i></i>Sarees</button>
+          <button class="cat"><i></i>Kurtis</button>
+          <button class="cat"><i></i>Dresses</button>
+          <button class="cat"><i></i>Dupattas</button>
+          <button class="cat"><i></i>Blouses</button>
+          <button class="cat"><i></i>Dress Materials</button>
+          <button class="cat"><i></i>Co-ord Sets</button>
+        </div>
+        <div class="foot">The Crafts Archive · Meera Iyer, Jaipur<br>Prototype · sample products only</div>
+      </div>
+
+      <!-- LISTING (HealthConcernList.jsx) -->
+      <div class="page" id="listing" hidden>
+        <div class="top">
+          <button class="ibtn" aria-label="Back" data-act="goHome"><svg width="22" height="22"><use href="#back"/></svg></button>
+          <h1>Sarees</h1>
+          <button class="ibtn" aria-label="Cart"><svg width="22" height="22"><use href="#bag"/></svg></button>
+        </div>
+        <div class="feat"><span>Handpicked</span><span>·</span><span>Quality checked</span><span>·</span><span>Easy returns</span></div>
+        <div class="wrap">
+          <label class="lsearch"><svg width="16" height="16" style="color:#707078"><use href="#search"/></svg>
+            <span class="sr">Search in Sarees</span><input id="q" placeholder="Search in Sarees…" autocomplete="off"></label>
+          <div class="chips" id="facetChips"></div>
+          <div class="lbl">Shop by craft</div>
+          <div class="chips" style="margin-top:0" id="craftRow"></div>
+          <div class="applied" id="applied"></div>
+          <div class="bar"><span id="count"></span>
+            <label>Sort: <select id="sort">
+              <option value="newest">Newest</option>
+              <option value="price-asc">Price: low–high</option>
+              <option value="price-desc">Price: high–low</option>
+            </select></label>
+          </div>
+          <div class="grid" id="grid"></div>
+          <div class="empty" id="empty" hidden>No pieces match these filters.<br><button data-act="clearAll">Clear all filters</button></div>
+        </div>
+      </div>
+
+      <!-- FILTER SHEET (SubcategoryFilters.jsx) -->
+      <div class="overlay" id="sheetWrap" hidden>
+        <button class="scrim" aria-label="Close filters" data-act="closeSheet"></button>
+        <div class="sheet" role="dialog" aria-label="Filters">
+          <div class="grip"></div>
+          <div class="shead"><h4 id="sheetTitle">Filters</h4><button data-act="clearSheet" id="sheetClear">Clear all</button></div>
+          <div class="sbody" id="sheetBody"></div>
+          <button class="go" data-act="applySheet">Show results</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel">
+    <div class="pcard">
+      <div class="eyebrow">Start from</div>
+      <div class="jump">
+        <button data-act="goHome" id="j-home">Home page</button>
+        <button data-act="openBanner" id="j-banner">Sarees under ₹1,999</button>
+        <button data-act="openSarees" id="j-all">All sarees</button>
+      </div>
+    </div>
+    <div class="pcard">
+      <div class="eyebrow">What the sarees page offers</div>
+      <span>All of these already exist on the live sarees page. The options come from the store's in-stock sarees, so a filter with nothing to offer is hidden.</span>
+      <ul>
+        <li class="yes">Price (min – max)</li>
+        <li class="yes">Shop by craft</li>
+        <li class="yes">Occasion · Fabric · Colour</li>
+        <li class="yes">Search within sarees</li>
+        <li class="yes">Sort: Newest · Price low–high · Price high–low</li>
+      </ul>
+      <span><b>Not on this page:</b></span>
+      <ul>
+        <li class="no">Size (never shown for sarees)</li>
+        <li class="no">Discount, in-stock only, popular sort (the backend has no such option)</li>
+      </ul>
+    </div>
+    <div class="pcard">
+      <div class="eyebrow">Tasks for the tester</div>
+      <ol>
+        <li>On the home page, tap the “Sarees under ₹1,999” banner.</li>
+        <li>Check every saree costs ₹1,999 or less, and the price chip is selected.</li>
+        <li>Pick a craft, then a fabric from Filters. Watch the link above the phone change.</li>
+        <li>Sort by Price: low–high.</li>
+        <li>Remove the price chip (✕) and see the dearer sarees come back.</li>
+        <li>Copy the link above the phone into a new tab: it opens with the same filters.</li>
+      </ol>
+    </div>
+    <div class="pcard">
+      <div class="eyebrow">Demo details</div>
+      <span>Sample sarees, not a real store. On the live site the banner hides when the store has no Sarees category or no in-stock saree at ₹1,999 or less.</span>
+      <span>The page itself is the live sarees page; only the home banner is new. The banner opens it with <b>?price=-1999</b>.</span>
+      <span style="color:#707078">Add <b>?hidepanel</b> to the URL to hide this panel for testers.</span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  // Sample sarees. d = days since the store added it (Newest sorts on this).
+  var SAREES = [
+    { n: 'Kota Doria saree, rose pink', craft: 'Kota Doria', region: 'Kota, Rajasthan', fabric: 'Cotton', color: 'Pink', occ: 'Daily wear', p: 1290, stock: 3, d: 1, a: '#F4DDE3', b: '#C95B7A' },
+    { n: 'Mangalgiri cotton saree, teal', craft: 'Mangalgiri', region: 'Guntur, Andhra Pradesh', fabric: 'Cotton', color: 'Teal', occ: 'Office wear', p: 1690, stock: 5, d: 2, a: '#D3ECE8', b: '#1F7A70' },
+    { n: 'Ikat cotton saree, mustard', craft: 'Ikat', region: 'Pochampally, Telangana', fabric: 'Cotton', color: 'Yellow', occ: 'Daily wear', p: 1999, stock: 2, d: 3, a: '#F6E7B9', b: '#B8860B' },
+    { n: 'Chanderi silk-cotton saree, ivory', craft: 'Chanderi', region: 'Chanderi, Madhya Pradesh', fabric: 'Silk-cotton', color: 'White', occ: 'Festive', p: 2450, stock: 4, d: 4, a: '#F3EEE2', b: '#C9A227' },
+    { n: 'Kota Doria saree, lemon', craft: 'Kota Doria', region: 'Kota, Rajasthan', fabric: 'Cotton', color: 'Yellow', occ: 'Daily wear', p: 1150, stock: 6, d: 5, a: '#F8F1C8', b: '#8A9A2B' },
+    { n: 'Sambalpuri cotton saree, maroon', craft: 'Sambalpuri', region: 'Bargarh, Odisha', fabric: 'Cotton', color: 'Red', occ: 'Festive', p: 1890, stock: 1, d: 6, a: '#EBC9CB', b: '#7A1F2B' },
+    { n: 'Ikat silk-cotton saree, indigo', craft: 'Ikat', region: 'Pochampally, Telangana', fabric: 'Silk-cotton', color: 'Blue', occ: 'Office wear', p: 2290, stock: 3, d: 7, a: '#D5DAF0', b: '#2E3E8C' },
+    { n: 'Mangalgiri cotton saree, mint', craft: 'Mangalgiri', region: 'Guntur, Andhra Pradesh', fabric: 'Cotton', color: 'Green', occ: 'Daily wear', p: 1450, stock: 0, d: 8, a: '#DDF1E4', b: '#3C8D5A' },
+    { n: 'Linen saree, slate grey', craft: 'Handloom linen', region: 'Phulia, West Bengal', fabric: 'Linen', color: 'Grey', occ: 'Office wear', p: 1790, stock: 4, d: 9, a: '#E3E5EA', b: '#5B6270' },
+    { n: 'Chanderi saree, blush', craft: 'Chanderi', region: 'Chanderi, Madhya Pradesh', fabric: 'Silk-cotton', color: 'Pink', occ: 'Festive', p: 1950, stock: 2, d: 10, a: '#F6E1DE', b: '#C77B6B' },
+    { n: 'Sambalpuri silk saree, black', craft: 'Sambalpuri', region: 'Bargarh, Odisha', fabric: 'Silk', color: 'Black', occ: 'Festive', p: 3200, stock: 1, d: 11, a: '#D9D9DD', b: '#B23A3A' },
+    { n: 'Kota Doria saree, sky blue', craft: 'Kota Doria', region: 'Kota, Rajasthan', fabric: 'Cotton', color: 'Blue', occ: 'Daily wear', p: 1390, stock: 5, d: 12, a: '#DDEBF7', b: '#3C78B5' },
+    { n: 'Linen saree, rust', craft: 'Handloom linen', region: 'Phulia, West Bengal', fabric: 'Linen', color: 'Orange', occ: 'Office wear', p: 2150, stock: 3, d: 13, a: '#F4DCCB', b: '#B5562B' },
+    { n: 'Ikat cotton saree, wine', craft: 'Ikat', region: 'Pochampally, Telangana', fabric: 'Cotton', color: 'Red', occ: 'Daily wear', p: 1590, stock: 2, d: 14, a: '#EBCBD3', b: '#7E2440' }
+  ];
+  var HOST = 'thecraftsarchive.in';
+  var BASE = '/shop/womens-fashion/sarees/229';
+  var BANNER_MAX = 1999;
+  var FACET_ORDER = ['price', 'occasion', 'fabric', 'color'];
+  var LABELS = { price: 'Price', occasion: 'Occasion', fabric: 'Fabric', color: 'Color' };
+  var FIELD = { craft: 'craft', occasion: 'occ', fabric: 'fabric', color: 'color' };
+
+  var $ = function (s) { return document.querySelector(s); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var slug = function (s) { return String(s).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); };
+  var rupees = function (n) { return '₹' + Number(n).toLocaleString('en-IN'); };
+  var uniq = function (arr) { return arr.filter(function (v, i) { return arr.indexOf(v) === i; }).sort(); };
+
+  // product_filters: options from IN-STOCK sarees only, not narrowed by the chosen price.
+  var inStock = SAREES.filter(function (s) { return s.stock > 0; });
+  var FACETS = {
+    craft: uniq(inStock.map(function (s) { return s.craft; })),
+    occasion: uniq(inStock.map(function (s) { return s.occ; })),
+    fabric: uniq(inStock.map(function (s) { return s.fabric; })),
+    color: uniq(inStock.map(function (s) { return s.color; })),
+    price: { min: Math.min.apply(null, inStock.map(function (s) { return s.p; })), max: Math.max.apply(null, inStock.map(function (s) { return s.p; })) }
+  };
+
+  function emptySel() { return { craft: [], occasion: [], fabric: [], color: [], min: null, max: null }; }
+  function cloneSel(s) { return { craft: s.craft.slice(), occasion: s.occasion.slice(), fabric: s.fabric.slice(), color: s.color.slice(), min: s.min, max: s.max }; }
+  var screen = 'home', sel = emptySel(), sort = 'newest', q = '', sheet = null, pending = emptySel();
+
+  // listingParams.js rules: alphabetical keys, sorted comma values, price=min-max, newest omitted.
+  function serialize() {
+    var e = [];
+    ['craft', 'color', 'fabric', 'occasion'].forEach(function (k) {
+      if (sel[k].length) e.push([k, sel[k].map(slug).sort().join(',')]);
+    });
+    if (sel.min != null || sel.max != null) e.push(['price', (sel.min == null ? '' : sel.min) + '-' + (sel.max == null ? '' : sel.max)]);
+    if (sort !== 'newest') e.push(['sort', sort]);
+    e.sort(function (a, b) { return a[0].localeCompare(b[0]); });
+    return e.map(function (p) { return p[0] + '=' + p[1]; }).join('&');
+  }
+  function parse(qs) {
+    var p = new URLSearchParams(qs), s = emptySel();
+    ['craft', 'occasion', 'fabric', 'color'].forEach(function (k) {
+      var raw = p.get(k);
+      if (!raw) return;
+      var tokens = raw.split(',').map(function (t) { return t.trim().toLowerCase(); });
+      s[k] = FACETS[k].filter(function (v) { return tokens.indexOf(slug(v)) > -1; });
+    });
+    var pr = p.get('price');
+    if (pr && /^\d*-\d*$/.test(pr) && pr !== '-') {
+      var mm = pr.split('-');
+      s.min = mm[0] === '' ? null : Number(mm[0]);
+      s.max = mm[1] === '' ? null : Number(mm[1]);
+    }
+    sel = s;
+    var so = p.get('sort');
+    sort = so === 'price-asc' || so === 'price-desc' ? so : 'newest';
+  }
+
+  function syncUrl() {
+    var path = screen === 'home' ? '/' : BASE;
+    var qs = screen === 'home' ? '' : serialize();
+    $('#addr').innerHTML = HOST + esc(path) + (qs ? '?<b>' + esc(qs) + '</b>' : '');
+    var hash = screen === 'home' ? '' : '#' + path + (qs ? '?' + qs : '');
+    var keep = /hidepanel/.test(location.search) ? location.search : '';
+    history.replaceState(null, '', location.pathname + keep + hash);
+  }
+
+  function results() {
+    var term = q.trim().toLowerCase();
+    var list = SAREES.filter(function (s) {
+      for (var k in FIELD) { if (sel[k].length && sel[k].indexOf(s[FIELD[k]]) < 0) return false; }
+      if (sel.min != null && s.p < sel.min) return false;
+      if (sel.max != null && s.p > sel.max) return false;
+      if (term && s.n.toLowerCase().indexOf(term) < 0 && s.craft.toLowerCase().indexOf(term) < 0) return false;
+      return true;
+    });
+    list.sort(function (a, b) {
+      if (sort === 'price-asc') return a.p - b.p;
+      if (sort === 'price-desc') return b.p - a.p;
+      return a.d - b.d;
+    });
+    return list;
+  }
+
+  function img(s) {
+    return '<div class="im" style="background:repeating-linear-gradient(135deg,' + s.a + ' 0 7px,#fff 7px 9px,' + s.a + ' 9px 16px)">' +
+      '<i style="background:' + s.b + '"></i>' + (s.stock === 0 ? '<span class="oos">Out of stock</span>' : '') + '</div>';
+  }
+
+  function facetCount(k) {
+    if (k === 'price') return sel.min != null || sel.max != null ? 1 : 0;
+    return sel[k].length;
+  }
+
+  function renderListing() {
+    var total = FACET_ORDER.reduce(function (n, k) { return n + facetCount(k); }, 0);
+    var h = '<button class="chip' + (total ? ' on' : '') + '" data-sheet="all"><svg width="14" height="14"><use href="#filter"/></svg>Filters' + (total ? ' · ' + total : '') + '</button>';
+    FACET_ORDER.forEach(function (k) {
+      var n = facetCount(k);
+      h += '<button class="chip' + (n ? ' on' : '') + '" data-sheet="' + k + '">' + (n ? '✓ ' : '') + LABELS[k] + (n ? ' · ' + n : '') + '</button>';
+    });
+    $('#facetChips').innerHTML = h;
+
+    var c = '<button class="chip' + (sel.craft.length ? '' : ' solid') + '" data-craft="">All crafts</button>';
+    FACETS.craft.forEach(function (v) {
+      c += '<button class="chip' + (sel.craft.indexOf(v) > -1 ? ' on' : '') + '" data-craft="' + esc(v) + '">' + esc(v) + '</button>';
+    });
+    $('#craftRow').innerHTML = c;
+
+    var a = '';
+    ['craft', 'occasion', 'color', 'fabric'].forEach(function (k) {
+      sel[k].forEach(function (v) { a += '<span class="ap" data-rm="' + k + '" data-v="' + esc(v) + '">' + esc(v) + ' <em>✕</em></span>'; });
+    });
+    if (sel.min != null || sel.max != null) {
+      a += '<span class="ap" data-rm="price">' + rupees(sel.min == null ? FACETS.price.min : sel.min) + ' – ' + rupees(sel.max == null ? FACETS.price.max : sel.max) + ' <em>✕</em></span>';
+    }
+    if (a) a += '<button class="clr" data-act="clearAll">Clear all</button>';
+    $('#applied').innerHTML = a;
+
+    var list = results();
+    $('#count').innerHTML = '<b>' + list.length + '</b> ' + (list.length === 1 ? 'piece' : 'pieces');
+    $('#sort').value = sort;
+    $('#grid').innerHTML = list.map(function (s) {
+      return '<div class="card" role="button" tabindex="0">' + img(s) +
+        '<div class="org">' + esc(s.craft) + ' · ' + esc(s.region.split(',')[1].trim()) + '</div>' +
+        '<div class="nm">' + esc(s.n) + '</div><div class="pr">' + rupees(s.p) + '</div>' +
+        (s.stock > 0 && s.stock <= 2 ? '<div class="low">Only ' + s.stock + ' left</div>' : '') + '</div>';
+    }).join('');
+    $('#empty').hidden = list.length > 0;
+  }
+
+  function renderSheet() {
+    var wrap = $('#sheetWrap');
+    if (!sheet) { wrap.hidden = true; return; }
+    wrap.hidden = false;
+    $('#sheetTitle').textContent = sheet === 'all' ? 'Filters' : LABELS[sheet];
+    $('#sheetClear').textContent = sheet === 'all' ? 'Clear all' : 'Clear';
+    var keys = sheet === 'all' ? FACET_ORDER : [sheet];
+    $('#sheetBody').innerHTML = keys.map(function (k) {
+      if (k === 'price') {
+        return '<div class="sec"><h5>Price (' + rupees(FACETS.price.min) + ' – ' + rupees(FACETS.price.max) + ')</h5><div class="prow">' +
+          '<label>Min<input type="number" data-price="min" placeholder="' + FACETS.price.min + '" value="' + (pending.min == null ? '' : pending.min) + '"></label>' +
+          '<label>Max<input type="number" data-price="max" placeholder="' + FACETS.price.max + '" value="' + (pending.max == null ? '' : pending.max) + '"></label></div></div>';
+      }
+      return '<div class="sec"><h5>' + LABELS[k] + '</h5><div class="opts">' + FACETS[k].map(function (v) {
+        var on = pending[k].indexOf(v) > -1;
+        return '<button class="chip' + (on ? ' on' : '') + '" data-opt="' + k + '" data-v="' + esc(v) + '">' + (on ? '✓ ' : '') + esc(v) + '</button>';
+      }).join('') + '</div></div>';
+    }).join('');
+  }
+
+  function renderNewRail() {
+    $('#newRail').innerHTML = SAREES.slice(0, 5).map(function (s) {
+      return '<div class="na" role="button" tabindex="0">' + img(s) + '<p>' + esc(s.n) + '</p><b>' + rupees(s.p) + '</b></div>';
+    }).join('');
+  }
+
+  function render() {
+    $('#home').hidden = screen !== 'home';
+    $('#listing').hidden = screen !== 'listing';
+    $('#j-home').classList.toggle('on', screen === 'home');
+    var bannerView = screen === 'listing' && sel.max === BANNER_MAX && sel.min == null;
+    $('#j-banner').classList.toggle('on', bannerView);
+    $('#j-all').classList.toggle('on', screen === 'listing' && !bannerView);
+    if (screen === 'listing') renderListing();
+    renderSheet();
+    syncUrl();
+  }
+
+  function openListing(qs) {
+    screen = 'listing'; q = ''; $('#q').value = ''; sheet = null;
+    parse(qs);
+    $('#listing').scrollTop = 0;
+    render();
+  }
+
+  var ACTS = {
+    openBanner: function () { openListing('price=-' + BANNER_MAX); },
+    openSarees: function () { openListing(''); },
+    goHome: function () { screen = 'home'; sheet = null; render(); },
+    clearAll: function () { sel = emptySel(); render(); },
+    closeSheet: function () { sheet = null; render(); },
+    clearSheet: function () {
+      if (sheet === 'all') pending = emptySel();
+      else if (sheet === 'price') { pending.min = null; pending.max = null; }
+      else pending[sheet] = [];
+      renderSheet();
+    },
+    applySheet: function () { sel = cloneSel(pending); sheet = null; render(); }
+  };
+
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-act],[data-sheet],[data-craft],[data-rm],[data-opt]');
+    if (!t) return;
+    if (t.dataset.act) return ACTS[t.dataset.act]();
+    if (t.dataset.sheet) { pending = cloneSel(sel); sheet = t.dataset.sheet; return renderSheet(); }
+    if (t.dataset.craft !== undefined) {
+      var v = t.dataset.craft;
+      if (!v) sel.craft = [];
+      else if (sel.craft.indexOf(v) > -1) sel.craft.splice(sel.craft.indexOf(v), 1);
+      else sel.craft.push(v);
+      return render();
+    }
+    if (t.dataset.rm) {
+      if (t.dataset.rm === 'price') { sel.min = null; sel.max = null; }
+      else sel[t.dataset.rm] = sel[t.dataset.rm].filter(function (x) { return x !== t.dataset.v; });
+      return render();
+    }
+    if (t.dataset.opt) {
+      var arr = pending[t.dataset.opt], i = arr.indexOf(t.dataset.v);
+      if (i > -1) arr.splice(i, 1); else arr.push(t.dataset.v);
+      return renderSheet();
+    }
+  });
+  document.addEventListener('input', function (e) {
+    var k = e.target.dataset.price;
+    if (k) pending[k] = e.target.value === '' ? null : Number(e.target.value);
+  });
+  $('#sort').addEventListener('change', function (e) { sort = e.target.value; render(); });
+  $('#q').addEventListener('input', function (e) { q = e.target.value; renderListing(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && sheet) { sheet = null; render(); }
+  });
+
+  if (/hidepanel/.test(location.search)) $('#panel').hidden = true;
+  renderNewRail();
+  // A shared link (#/shop/...?price=-1999&fabric=cotton) opens the listing with those filters.
+  var m = location.hash.match(/^#\/shop\/[^?]*\??(.*)$/);
+  if (m) openListing(m[1]); else render();
+})();
+</script>
+</body>
+</html>
