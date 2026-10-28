@@ -1,0 +1,498 @@
+<title>Artisan Details Prototype</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:"Geomanist";src:url("Geomanist-Light.woff2") format("woff2");font-weight:300}
+@font-face{font-family:"Geomanist";src:url("Geomanist-Regular.woff2") format("woff2");font-weight:400}
+@font-face{font-family:"Geomanist";src:url("Geomanist-Medium.woff2") format("woff2");font-weight:500}
+
+/* Layout: same as the other demos in vip-demo-repo — phone mock, tester panel, admin form, side by side, wrapping on narrow screens.
+   Stage tokens follow the viewer's theme; the phone itself is the real (light) consumer PDP, so it uses consumer-ui's Tailwind colours directly. */
+:root{
+  --stage:#ECEFF2; --card:#FFFFFF; --text:#1F212E; --muted:#707078; --line:#D5DDE2; --accent:#4862EE; --accent-tint:#F4F5FF; --ok:#1E6B45; --err:#C73F21;
+  --font:Geomanist,Manrope,system-ui,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --stage:#14161F; --card:#1E2130; --text:#E9EAF0; --muted:#A0A3B1; --line:#343850; --accent:#8A9BFF; --accent-tint:#262B45; --ok:#6BCB93; --err:#FF8A70; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --stage:#14161F; --card:#1E2130; --text:#E9EAF0; --muted:#A0A3B1; --line:#343850; --accent:#8A9BFF; --accent-tint:#262B45; --ok:#6BCB93; --err:#FF8A70; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--stage);color:var(--text);font-family:var(--font);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px}
+button,input,textarea{font-family:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+.intro{max-width:1150px;margin:0 auto 22px}
+.intro h1{font-size:24px;font-weight:500;margin:0 0 4px;text-wrap:balance}
+.intro p{margin:0;color:var(--muted);font-size:14px;line-height:1.5;max-width:70ch}
+.stage{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;justify-content:center}
+
+/* ── phone (consumer PDP, ProductDetailPageNew mobile) ── */
+.device{display:flex;flex-direction:column;gap:10px;width:375px;max-width:100%}
+.addr{display:flex;align-items:center;gap:8px;background:var(--card);border-radius:999px;padding:8px 14px;font-size:12px;color:var(--muted);overflow:hidden;white-space:nowrap}
+.addr b{font-weight:500;color:var(--accent)}
+.phone{position:relative;width:375px;max-width:100%;height:812px;background:#fff;overflow:hidden;border-radius:28px;box-shadow:0 10px 40px rgba(31,33,46,.18);color:#1F212E}
+.page{position:absolute;inset:0;overflow-y:auto;scrollbar-width:none;padding-bottom:96px;scroll-behavior:smooth}
+.page::-webkit-scrollbar{display:none}
+.shot{height:500px;background:url("pdp.jpg") top center/375px auto no-repeat #eee}
+.chip{display:inline-block;margin:14px 16px 0;background:#F5C99C;border-radius:999px;padding:7px 14px;font-size:12px}
+.ptitle{font-size:19px;font-weight:500;line-height:1.25;margin:10px 16px 0}
+.pprice{margin:6px 16px 0;font-size:20px;font-weight:500}
+.pprice small{font-size:12px;color:#545454;font-weight:400;margin-left:6px}
+.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:14px 16px 0}
+.trust div{background:#F7F7FA;border-radius:10px;padding:8px 6px;font-size:10.5px;text-align:center;color:#2C2C2C;line-height:1.3}
+.promise{display:flex;gap:10px;margin:14px 16px 0;padding:10px 12px;border-radius:12px;background:#EEF7F1;font-size:11.5px;color:#545454}
+.promise b{display:block;color:#1E6B45;font-weight:500;font-size:12.5px}
+.atable{margin:8px 16px 0;border:1px solid #E8EAF0;border-radius:14px;overflow:hidden}
+.atable h4{margin:0;padding:11px 13px;background:#F4F5FF;font-size:13px;font-weight:500}
+.atable dl{margin:0;padding:4px 13px 8px}
+.atable dl div{display:flex;gap:12px;padding:8px 0;font-size:12px;border-bottom:1px solid #E8EAF0}
+.atable dl div:last-child{border:0}
+.atable dt{width:84px;flex:none;color:#545454}
+.atable dd{margin:0}
+.seller{margin:14px 16px 0;padding:12px;border-radius:14px;background:#F4F5FF}
+.srow{display:flex;gap:11px;align-items:center}
+.sav{width:42px;height:42px;border-radius:50%;background:#4862EE;color:#fff;display:grid;place-items:center;font-weight:500;font-size:17px;flex:none}
+.sname{font-size:12.5px;font-weight:500}
+.sver{font-size:10px;font-weight:500;color:#4862EE;margin-top:2px}
+.sfoot{display:flex;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid rgba(31,33,46,.07);font-size:12px;font-weight:500}
+.sfoot span:last-child{color:#4862EE}
+.acc{margin:18px 16px 0;border-top:1px solid #E8EAF0}
+.acc div{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid #E8EAF0;font-size:14px;font-weight:500}
+.acc div::after{content:"+";color:#707078;font-weight:400}
+.more{margin:20px 16px 0;font-size:16px;font-weight:500}
+.mrail{display:flex;gap:10px;margin:10px 16px 0}
+.mrail i{flex:1;aspect-ratio:3/4;border-radius:12px;background:#F2EFEA}
+.bar{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;gap:12px;background:#fff;border-top:1px solid #E8EAF0;padding:10px 16px 14px;z-index:2}
+.bar .pp{font-size:11px;color:#545454}
+.bar .pp b{display:block;font-size:18px;color:#1F212E;font-weight:500}
+.bar button{flex:1;border:0;border-radius:10px;background:#4862EE;color:#fff;font-size:14px;font-weight:500;padding:13px 0}
+.slot:empty{display:none}
+.flash{animation:flash 1.4s ease-out}
+@keyframes flash{0%,40%{box-shadow:0 0 0 3px #4862EE}100%{box-shadow:0 0 0 3px rgba(72,98,238,0)}}
+
+/* artisan photo + fallback */
+.ph{display:block;width:100%;height:100%;object-fit:cover}
+.ini{display:grid;place-items:center;width:100%;height:100%;background:#F3E3C3;color:#8A5A12;font-weight:500}
+
+/* A · Story card (like the reference) */
+.a-wrap{margin-top:18px;padding:18px 16px 20px;background:#FBF6EC}
+.a-h{margin:0 0 12px;font-size:17px;font-weight:500;letter-spacing:.01em}
+.a-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:10px}
+.a-ph{aspect-ratio:3/4;border-radius:12px;overflow:hidden;max-width:100%}
+.a-ph .ini{font-size:40px}
+.a-card{display:flex;flex-direction:column;justify-content:center;gap:4px;padding:14px;border-radius:12px;background:#FBEFC8}
+.a-tag{font-size:13px;color:#2C2C2C;line-height:1.3}
+.a-name{font-size:19px;font-weight:500;margin-top:14px;overflow-wrap:anywhere}
+.a-since{font-size:12.5px;color:#545454}
+.linkbtn{align-self:flex-start;margin-top:10px;border:0;background:transparent;padding:0;color:#4862EE;font-size:12.5px;font-weight:500}
+
+/* B · Compact row (matches PDPSellerCard) */
+.b-card{margin:14px 16px 0;padding:12px;border:1px solid #E8EAF0;border-radius:14px}
+.b-row{display:flex;gap:12px;align-items:center}
+.b-ph{width:54px;height:54px;border-radius:50%;overflow:hidden;flex:none}
+.b-ph .ini{font-size:20px}
+.b-eye{font-size:10px;letter-spacing:.1em;color:#707078;font-weight:500}
+.b-name{font-size:14px;font-weight:500;overflow-wrap:anywhere}
+.b-tag{font-size:11.5px;color:#545454}
+.b-pill{flex:none;align-self:flex-start;background:#FFF8E7;color:#7A5A12;border-radius:999px;padding:4px 9px;font-size:10.5px;font-weight:500;white-space:nowrap}
+.b-story{margin:10px 0 0;padding-top:10px;border-top:1px solid #E8EAF0;font-size:12px;color:#2C2C2C;line-height:1.5}
+
+/* C · Photo-led */
+.c-card{margin:16px 16px 0;border-radius:14px;overflow:hidden;background:#1F212E}
+.c-ph{position:relative;aspect-ratio:16/11;max-width:100%}
+.c-ph .ini{font-size:56px}
+.c-ph::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,16,24,0) 40%,rgba(15,16,24,.85))}
+.c-txt{position:absolute;left:14px;right:14px;bottom:12px;z-index:1;color:#fff}
+.c-eye{font-size:10px;letter-spacing:.14em;color:#F2B544;font-weight:500}
+.c-name{font-size:21px;font-weight:500;margin-top:2px;overflow-wrap:anywhere}
+.c-sub{font-size:12px;color:rgba(255,255,255,.85)}
+.c-story{padding:12px 14px 14px;background:#FBF6EC;font-size:12px;line-height:1.5;color:#2C2C2C}
+.c-story p{margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.c-story.open p{display:block}
+
+/* D · Years first */
+.d-card{display:flex;gap:14px;align-items:center;margin:16px 16px 0;padding:16px 14px;border-radius:14px;background:#FFF8E7;border:1px solid #F1E2BC}
+.d-num{flex:none;text-align:center;width:84px;padding-right:14px;border-right:1px solid #EAD8A8}
+.d-num b{display:block;font-size:40px;line-height:1;font-weight:500;color:#B07F1E;letter-spacing:-1px;font-variant-numeric:tabular-nums}
+.d-num span{font-size:10.5px;color:#7A5A12;line-height:1.25;display:block;margin-top:4px}
+.d-body{flex:1;min-width:0}
+.d-who{display:flex;gap:9px;align-items:center}
+.d-ph{width:38px;height:38px;border-radius:50%;overflow:hidden;flex:none}
+.d-ph .ini{font-size:15px}
+.d-name{font-size:14px;font-weight:500;overflow-wrap:anywhere}
+.d-tag{font-size:11.5px;color:#545454}
+.d-since{font-size:11.5px;color:#545454;margin-top:8px}
+
+/* story sheet */
+.sheet{position:absolute;inset:0;z-index:5}
+.scrim{position:absolute;inset:0;border:0;width:100%;background:rgba(31,33,46,.45)}
+.sbox{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:20px 20px 0 0;padding:10px 18px 26px;max-height:80%;overflow-y:auto}
+.grab{width:40px;height:4px;border-radius:4px;background:#D5DDE2;margin:0 auto 14px}
+.shead{display:flex;gap:12px;align-items:center}
+.sph{width:64px;height:64px;border-radius:50%;overflow:hidden;flex:none}
+.sph .ini{font-size:24px}
+.sbox h3{margin:0;font-size:18px;font-weight:500}
+.sbox .st{font-size:12.5px;color:#545454}
+.sbox p{font-size:13.5px;line-height:1.6;color:#2C2C2C;margin:14px 0 0}
+.sclose{margin-top:18px;width:100%;border:1px solid #D5DDE2;background:#fff;border-radius:10px;padding:12px;font-size:14px;font-weight:500;color:#1F212E}
+
+/* ── tester panel (same as the other demos) ── */
+.panel{width:340px;max-width:100%;display:flex;flex-direction:column;gap:16px}
+.pcard{background:var(--card);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:1.45;min-width:0}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.pcard ul,.pcard ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.pcard b{font-weight:500}
+.note{font-size:12px;color:var(--muted)}
+.pos{display:flex;flex-direction:column;gap:8px}
+.pos button{text-align:left;min-height:40px;padding:8px 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text);font-size:14px;line-height:1.35}
+.pos button span{display:block;font-size:12px;color:var(--muted)}
+.pos button.on{border-color:var(--accent);background:var(--accent-tint);color:var(--accent)}
+.pos button.on span{color:var(--accent)}
+.jump{display:flex;gap:8px;flex-wrap:wrap}
+.jump button{min-height:36px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text);font-size:13px}
+
+/* ── admin form mock (wcommerce-admin-ui: antd + Formik, EditFashionProduct sections) ── */
+.admin{width:380px;max-width:100%;background:var(--card);border-radius:16px;overflow:hidden;font-size:14px}
+.abar{display:flex;align-items:center;gap:8px;padding:12px 18px;border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}
+.abar b{color:var(--text);font-weight:500}
+.asec{padding:18px}
+.atitle{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:4px}
+.atitle h2{margin:0;font-size:16px;font-weight:500}
+.asub{font-size:12px;color:var(--muted);margin:0 0 16px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label,.flabel{font-size:13px;font-weight:500}
+.field label i,.flabel i{color:var(--err);font-style:normal}
+.field .opt{font-weight:400;color:var(--muted)}
+.field input[type=text],.field input[type=number],.field textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 11px;font-size:14px;background:var(--card);color:var(--text)}
+.field textarea{resize:vertical;min-height:84px;line-height:1.45}
+.field input:focus,.field textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 2px var(--accent-tint)}
+.field .bad{border-color:var(--err)!important}
+.help{display:flex;justify-content:space-between;gap:8px;font-size:11.5px;color:var(--muted)}
+.help.err{color:var(--err)}
+.up{display:flex;gap:12px;align-items:center}
+.upbox{width:84px;height:112px;border:1px dashed var(--line);border-radius:8px;overflow:hidden;flex:none;display:grid;place-items:center;font-size:11px;color:var(--muted);text-align:center;position:relative}
+.upbox img{width:100%;height:100%;object-fit:cover}
+.upact{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:8px;padding:6px 12px;font-size:13px}
+.btn.link{border:0;padding:0;color:var(--err);background:transparent}
+.sw{position:relative;width:44px;height:22px;border-radius:999px;border:0;background:#BFC3CF;flex:none;padding:0}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .15s}
+.sw[aria-checked=true]{background:var(--accent)}
+.sw[aria-checked=true]::after{left:24px}
+.swrow{display:flex;align-items:center;gap:10px;font-size:13px}
+.afoot{display:flex;justify-content:flex-end;gap:8px;padding:14px 18px;border-top:1px solid var(--line)}
+.afoot .save{background:var(--accent);border-color:var(--accent);color:#fff}
+.saved{font-size:12px;color:var(--ok);align-self:center;margin-right:auto}
+</style>
+
+<div class="intro">
+  <h1>Artisan details on the product page</h1>
+  <p>An admin adds the artisan who made a product. The product page shows them in a small “hands behind your saree” block. Pick a design and a position on the right; type in the admin form and the phone updates live. All names and stories here are example data.</p>
+</div>
+
+<div class="stage">
+  <div class="device">
+    <div class="addr"><span>thecraftsarchive.in/product/</span><b>magenta-bandhani-handwork-saree</b></div>
+    <div class="phone" id="phone">
+      <div class="page" id="page">
+        <div class="shot" role="img" aria-label="Product photo and header of the live PDP"></div>
+        <span class="chip">✶ Handwoven bandhani border</span>
+        <div class="ptitle">Magenta Bandhani Handwork Saree</div>
+        <div class="pprice">₹4,037.50 <small>incl. all taxes</small></div>
+
+        <div class="trust"><div>Lab-tested fabric</div><div>45-day guarantee</div><div>Free shipping</div></div>
+
+        <div class="slot" id="slot-promise"></div>
+        <div class="promise"><span style="color:#1E6B45">✓</span><div><b>Verified Authentic: Fabric · Yarn · Silk · Zari</b>Backed by a 45-day lab-tested guarantee.</div></div>
+        <div class="atable">
+          <h4>Authenticity &amp; details</h4>
+          <dl>
+            <div><dt>Craft</dt><dd>Bandhani (tie-dye)</dd></div>
+            <div><dt>Fabric</dt><dd>Pure Gaji silk</dd></div>
+            <div><dt>Region</dt><dd>Bhuj, Kutch · Gujarat</dd></div>
+            <div><dt>Length</dt><dd>6.2 m (5.5 m saree + 70 cm blouse)</dd></div>
+          </dl>
+        </div>
+        <div class="seller">
+          <div class="srow"><div class="sav">M</div><div><div class="sname">Sold by Meera · The Crafts Archive</div><div class="sver">✓ Verified seller</div></div></div>
+          <div class="sfoot"><span><span style="color:#F2B135">★</span> 4.6 · 161 reviews ›</span><span>Meet the owner ›</span></div>
+        </div>
+        <div class="slot" id="slot-seller"></div>
+
+        <div class="acc"><div>Description</div><div>Material &amp; care</div><div>Shipping &amp; returns</div></div>
+        <div class="more">You may also like</div>
+        <div class="mrail"><i></i><i></i><i></i></div>
+      </div>
+
+      <div class="bar"><div class="pp">Price<b>₹4,037.50</b></div><button type="button">Add to cart</button></div>
+
+      <div class="sheet" id="sheet" hidden>
+        <button class="scrim" id="scrim" aria-label="Close story"></button>
+        <div class="sbox" role="dialog" aria-labelledby="sh-name">
+          <div class="grab"></div>
+          <div class="shead"><div class="sph" data-photo></div><div><h3 id="sh-name"></h3><div class="st" id="sh-tag"></div></div></div>
+          <p id="sh-story"></p>
+          <button class="sclose" id="sclose">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="pcard">
+      <div class="eyebrow">Design</div>
+      <div class="pos" id="designs">
+        <button data-d="a">A · Story card<span>Like the priyangaa.in section: heading, photo left, pale yellow card right. Story opens in a sheet.</span></button>
+        <button data-d="b">B · Compact row<span>Same shape as the seller card. Smallest. Story expands in place.</span></button>
+        <button data-d="c">C · Photo-led<span>Wide photo with the name on it, two lines of story below.</span></button>
+        <button data-d="d">D · Years first<span>Big “years at the loom” number, small photo. Story opens in a sheet.</span></button>
+      </div>
+      <span class="note">Each design has its own link: add <b>#design-a</b> … <b>#design-d</b> to the page address.</span>
+    </div>
+    <div class="pcard">
+      <div class="eyebrow">Position on the product page</div>
+      <div class="pos" id="positions">
+        <button data-p="promise">1 · Above the authenticity block<span>Where priyangaa.in puts it: just above “Product details”.</span></button>
+        <button data-p="seller">2 · After the seller card (suggested)<span>“Sold by Meera”, then “Made by Hasina”: the people sit together, before Description.</span></button>
+      </div>
+      <span class="note">Not between the green “Verified Authentic” strip and the table: in the code that strip is the table's header (<b>PDPAuthenticityPromise</b> sits right above <b>PDPAuthenticity</b>).</span>
+    </div>
+    <div class="pcard">
+      <div class="eyebrow">Try with</div>
+      <div class="jump" id="presets">
+        <button data-k="hasina">Hasina (full)</button>
+        <button data-k="nataraj">Nataraj, no story</button>
+        <button data-k="nophoto">No photo</button>
+        <button data-k="long">Long text</button>
+      </div>
+      <span class="note">No photo shows the initial instead. No story hides “Read their story”. Switch off in the admin form and the block disappears.</span>
+    </div>
+    <div class="pcard">
+      <div class="eyebrow">What gets built later</div>
+      <ul>
+        <li><b>admin-ui:</b> an “Artisan” section in Edit Product, after Authenticity &amp; Details</li>
+        <li><b>backend-admin + core:</b> artisan fields on the product, one migration</li>
+        <li><b>consumer-ui:</b> a new <b>PDPArtisanCard</b> in <b>ProductDetailPageNew</b>, hidden when off or empty</li>
+      </ul>
+    </div>
+  </div>
+
+  <form class="admin" id="admin" novalidate>
+    <div class="abar">Products › Edit Fashion Product › <b>Artisan</b></div>
+    <div class="asec">
+      <div class="atitle">
+        <h2>Artisan</h2>
+        <div class="swrow"><button type="button" class="sw" id="f-on" role="switch" aria-checked="true" aria-label="Show on this product"></button><span id="onlbl">Show on this product</span></div>
+      </div>
+      <p class="asub">Shown on this product's page only. Leave it off if you don't know who made it.</p>
+
+      <div class="field">
+        <span class="flabel">Photo <span class="opt">(optional)</span></span>
+        <div class="up">
+          <div class="upbox" id="upbox"></div>
+          <div class="upact">
+            <label class="btn" for="f-photo" style="cursor:pointer">Upload photo</label>
+            <input type="file" id="f-photo" accept="image/*" class="sr" style="position:absolute;width:1px;height:1px;opacity:0">
+            <button type="button" class="btn link" id="f-rm">Remove</button>
+            <span class="help">Portrait, 3:4, at least 600 px wide</span>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label for="f-name">Artisan name <i>*</i></label>
+        <input type="text" id="f-name" maxlength="40">
+        <div class="help" id="h-name"><span></span><span id="c-name"></span></div>
+      </div>
+      <div class="field">
+        <label for="f-tag">Specialty <span class="opt">(short line)</span></label>
+        <input type="text" id="f-tag" maxlength="40" placeholder="e.g. Expert in 9 yards">
+        <div class="help"><span></span><span id="c-tag"></span></div>
+      </div>
+      <div class="field">
+        <label for="f-since">Weaving since (year)</label>
+        <input type="number" id="f-since" min="1940" inputmode="numeric">
+        <div class="help" id="h-since"><span id="m-since"></span></div>
+      </div>
+      <div class="field">
+        <label for="f-story">Short story <span class="opt">(optional)</span></label>
+        <textarea id="f-story" maxlength="300"></textarea>
+        <div class="help"><span>Two or three sentences in plain words</span><span id="c-story"></span></div>
+      </div>
+    </div>
+    <div class="afoot"><span class="saved" id="saved" hidden>Saved (demo only)</span><button type="button" class="btn" id="f-reset">Reset</button><button type="submit" class="btn save">Save</button></div>
+  </form>
+</div>
+
+<script>
+(function () {
+  var NOW = new Date().getFullYear();
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+
+  // Illustrated stand-in for an artisan photo (no real photo is used in the demo).
+  function portrait(bg1, bg2, cloth, skin) {
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">' +
+      '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + bg1 + '"/><stop offset="1" stop-color="' + bg2 + '"/></linearGradient></defs>' +
+      '<rect width="300" height="400" fill="url(#g)"/>' +
+      '<g stroke="#ffffff" stroke-opacity=".35" stroke-width="2">' +
+      [30, 52, 74, 96, 236, 258, 280].map(function (x) { return '<line x1="' + x + '" y1="0" x2="' + x + '" y2="400"/>'; }).join('') + '</g>' +
+      '<rect x="0" y="300" width="300" height="100" fill="#000" fill-opacity=".12"/>' +
+      '<path d="M60 400 C 70 300, 110 268, 150 268 C 190 268, 230 300, 240 400 Z" fill="' + cloth + '"/>' +
+      '<rect x="134" y="226" width="32" height="50" rx="12" fill="' + skin + '"/>' +
+      '<ellipse cx="150" cy="190" rx="44" ry="52" fill="' + skin + '"/>' +
+      '<path d="M104 182 C 104 140, 196 140, 196 182 C 186 160, 114 160, 104 182 Z" fill="#2B2320"/>' +
+      '<path d="M96 300 C 150 330, 200 300, 236 360 L 240 400 L 210 400 C 200 360, 150 340, 100 330 Z" fill="#F2B544" fill-opacity=".85"/>' +
+      '</svg>';
+    return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+  }
+  var PHOTO_HASINA = portrait("#C9A06A", "#8C5A3C", "#9E1F4F", "#B97F5A");
+  var PHOTO_NATARAJ = portrait("#9FB7C4", "#5E7480", "#F5F1E6", "#7A4B33");
+
+  var PRESETS = {
+    hasina: { on: true, photo: PHOTO_HASINA, name: "Hasina Khatri", tag: "Bandhani master, Kutch", since: 1992,
+      story: "Hasina learnt bandhani from her mother in Bhuj. She ties every dot on this saree by hand, about 9,000 knots, before it goes into the dye bath." },
+    nataraj: { on: true, photo: PHOTO_NATARAJ, name: "Nataraj", tag: "Expert in 9 yards", since: 1980, story: "" },
+    nophoto: { on: true, photo: "", name: "Hasina Khatri", tag: "Bandhani master, Kutch", since: 1992,
+      story: "Hasina learnt bandhani from her mother in Bhuj. She ties every dot on this saree by hand, about 9,000 knots, before it goes into the dye bath." },
+    long: { on: true, photo: PHOTO_HASINA, name: "Lakshmi Venkataraman Subramaniam", tag: "Kanjivaram korvai border specialist", since: 1968,
+      story: "Lakshmi has woven on the same pit loom in Kanchipuram for over fifty years. She and her son set up the korvai border by hand, which joins the body and border in contrasting colours, and one saree like this can take her three weeks." }
+  };
+
+  var st = Object.assign({ design: "a", pos: "seller" }, PRESETS.hasina);
+
+  function photo(cls) {
+    var inner = st.photo ? '<img class="ph" alt="' + esc(st.name) + '" src="' + st.photo + '">'
+      : '<div class="ini" aria-hidden="true">' + esc((st.name || "?").trim().charAt(0).toUpperCase()) + '</div>';
+    return '<div class="' + cls + '">' + inner + '</div>';
+  }
+  function sinceValid() { return st.since >= 1940 && st.since <= NOW; }
+  function sinceLine() { return sinceValid() ? "Weaving since " + st.since : ""; }
+  function years() { return sinceValid() ? NOW - st.since : null; }
+
+  function block() {
+    if (!st.on || !st.name.trim()) return "";
+    var name = esc(st.name.trim()), tag = esc(st.tag.trim()), has = !!st.story.trim();
+    var storyBtn = has ? '<button type="button" class="linkbtn" data-open>Read their story ›</button>' : "";
+    if (st.design === "a") {
+      return '<section class="a-wrap" id="artisan"><h3 class="a-h">The hands behind your saree</h3><div class="a-grid">' + photo("a-ph") +
+        '<div class="a-card">' + (tag ? '<div class="a-tag">' + tag + '</div>' : '') + '<div class="a-name">' + name + '</div>' +
+        (sinceLine() ? '<div class="a-since">' + sinceLine() + '</div>' : '') + storyBtn + '</div></div></section>';
+    }
+    if (st.design === "b") {
+      var y = years();
+      return '<section class="b-card" id="artisan"><div class="b-row">' + photo("b-ph") +
+        '<div style="flex:1;min-width:0"><div class="b-eye">MADE BY HAND BY</div><div class="b-name">' + name + '</div>' +
+        (tag ? '<div class="b-tag">' + tag + '</div>' : '') + '</div>' +
+        (y !== null ? '<span class="b-pill">Since ' + st.since + '</span>' : '') + '</div>' +
+        (has ? '<button type="button" class="linkbtn" data-expand aria-expanded="false">Read their story ›</button><p class="b-story" hidden>' + esc(st.story.trim()) + '</p>' : '') +
+        '</section>';
+    }
+    if (st.design === "c") {
+      var sub = [tag, sinceLine()].filter(Boolean).join(" · ");
+      return '<section class="c-card" id="artisan"><div class="c-ph">' + photo("ph-c").replace('class="ph-c"', 'style="position:absolute;inset:0"') +
+        '<div class="c-txt"><div class="c-eye">THE HANDS BEHIND YOUR SAREE</div><div class="c-name">' + name + '</div>' +
+        (sub ? '<div class="c-sub">' + sub + '</div>' : '') + '</div></div>' +
+        (has ? '<div class="c-story"><p>' + esc(st.story.trim()) + '</p><button type="button" class="linkbtn" data-clamp style="margin-top:6px">Read more</button></div>' : '') +
+        '</section>';
+    }
+    var yy = years();
+    return '<section class="d-card" id="artisan">' +
+      (yy !== null ? '<div class="d-num"><b>' + yy + '</b><span>years at the loom</span></div>' : '') +
+      '<div class="d-body"><div class="d-who">' + photo("d-ph") + '<div style="min-width:0"><div class="d-name">' + name + '</div>' +
+      (tag ? '<div class="d-tag">' + tag + '</div>' : '') + '</div></div>' +
+      (sinceLine() ? '<div class="d-since">' + sinceLine() + ', made this saree</div>' : '') + storyBtn + '</div></section>';
+  }
+
+  function renderPhone(scroll) {
+    $("#slot-promise").innerHTML = st.pos === "promise" ? block() : "";
+    $("#slot-seller").innerHTML = st.pos === "seller" ? block() : "";
+    var el = $("#artisan");
+    if (scroll && el) {
+      $("#page").scrollTop = Math.max(0, el.offsetTop - 140);
+      el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash");
+    }
+    document.querySelectorAll("#designs button").forEach(function (b) { b.classList.toggle("on", b.dataset.d === st.design); b.setAttribute("aria-pressed", b.dataset.d === st.design); });
+    document.querySelectorAll("#positions button").forEach(function (b) { b.classList.toggle("on", b.dataset.p === st.pos); b.setAttribute("aria-pressed", b.dataset.p === st.pos); });
+  }
+
+  function renderForm() {
+    $("#f-name").value = st.name; $("#f-tag").value = st.tag; $("#f-since").value = st.since || ""; $("#f-story").value = st.story;
+    $("#f-since").max = NOW;
+    syncFormBits();
+  }
+  function syncFormBits() {
+    $("#f-on").setAttribute("aria-checked", st.on);
+    $("#upbox").innerHTML = st.photo ? '<img alt="Artisan photo preview" src="' + st.photo + '">' : "No photo<br>yet";
+    $("#c-name").textContent = st.name.length + " / 40";
+    $("#c-tag").textContent = st.tag.length + " / 40";
+    $("#c-story").textContent = st.story.length + " / 300";
+    var nameBad = st.on && !st.name.trim();
+    $("#f-name").classList.toggle("bad", nameBad);
+    $("#h-name").classList.toggle("err", nameBad);
+    $("#h-name span").textContent = nameBad ? "Add a name, or switch the section off" : "";
+    var raw = $("#f-since").value, sinceBad = raw !== "" && !sinceValid();
+    $("#f-since").classList.toggle("bad", sinceBad);
+    $("#h-since").classList.toggle("err", sinceBad);
+    $("#m-since").textContent = sinceBad ? "Enter a year between 1940 and " + NOW
+      : (raw ? "Shows as “Weaving since " + st.since + "” · " + (NOW - st.since) + " years" : "Leave empty to hide the year");
+    $("#saved").hidden = true;
+  }
+
+  function openSheet() {
+    $("#sh-name").textContent = st.name.trim();
+    $("#sh-tag").textContent = [st.tag.trim(), sinceLine()].filter(Boolean).join(" · ");
+    $("#sh-story").textContent = st.story.trim();
+    $("#sheet [data-photo]").outerHTML = photo("sph").replace('class="sph"', 'class="sph" data-photo');
+    $("#sheet").hidden = false; $("#sclose").focus();
+  }
+  function closeSheet() { $("#sheet").hidden = true; }
+
+  // panel
+  $("#designs").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    st.design = b.dataset.d;
+    try { history.replaceState(null, "", "#design-" + st.design); } catch (_) {}
+    renderPhone(true);
+  });
+  $("#positions").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; st.pos = b.dataset.p; renderPhone(true); });
+  $("#presets").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    Object.assign(st, PRESETS[b.dataset.k]); renderForm(); renderPhone(true);
+  });
+
+  // phone interactions
+  $("#page").addEventListener("click", function (e) {
+    if (e.target.closest("[data-open]")) openSheet();
+    var x = e.target.closest("[data-expand]");
+    if (x) { var p = x.nextElementSibling, open = p.hidden; p.hidden = !open; x.setAttribute("aria-expanded", open); x.textContent = open ? "Hide story" : "Read their story ›"; }
+    var c = e.target.closest("[data-clamp]");
+    if (c) { var box = c.parentElement, o = box.classList.toggle("open"); c.textContent = o ? "Show less" : "Read more"; }
+  });
+  $("#scrim").addEventListener("click", closeSheet);
+  $("#sclose").addEventListener("click", closeSheet);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeSheet(); });
+
+  // admin form, live-bound to the phone
+  function bind(id, key, num) {
+    $(id).addEventListener("input", function (e) { st[key] = num ? parseInt(e.target.value, 10) || 0 : e.target.value; syncFormBits(); renderPhone(false); });
+  }
+  bind("#f-name", "name"); bind("#f-tag", "tag"); bind("#f-since", "since", true); bind("#f-story", "story");
+  $("#f-on").addEventListener("click", function () { st.on = !st.on; syncFormBits(); renderPhone(true); });
+  $("#f-photo").addEventListener("change", function (e) {
+    var f = e.target.files && e.target.files[0]; if (!f) return;
+    var r = new FileReader(); r.onload = function () { st.photo = r.result; syncFormBits(); renderPhone(true); }; r.readAsDataURL(f);
+  });
+  $("#f-rm").addEventListener("click", function () { st.photo = ""; $("#f-photo").value = ""; syncFormBits(); renderPhone(true); });
+  $("#f-reset").addEventListener("click", function () { Object.assign(st, PRESETS.hasina); renderForm(); renderPhone(true); });
+  $("#admin").addEventListener("submit", function (e) { e.preventDefault(); syncFormBits(); $("#saved").hidden = !!document.querySelector("#admin .bad"); });
+
+  var m = /^#design-([a-d])$/.exec(location.hash);
+  if (m) st.design = m[1];
+  renderForm(); renderPhone(false);
+  window.addEventListener("load", function () {
+    var el = $("#artisan"); if (el) $("#page").scrollTo({ top: Math.max(0, el.offsetTop - 140), behavior: "instant" });
+  });
+})();
+</script>
