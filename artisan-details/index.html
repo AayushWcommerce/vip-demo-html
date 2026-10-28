@@ -35,41 +35,14 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
 .addr{display:flex;align-items:center;gap:8px;background:var(--card);border-radius:999px;padding:6px 14px;font-size:12px;color:var(--muted);overflow:hidden;white-space:nowrap}
 .addr b{font-weight:500;color:var(--accent)}
 .phone{position:relative;width:375px;max-width:100%;height:min(812px,calc(100vh - 110px));min-height:560px;background:#fff;overflow:hidden;border-radius:28px;box-shadow:0 10px 40px rgba(31,33,46,.18);color:#1F212E}
-.page{position:absolute;inset:0;overflow-y:auto;scrollbar-width:none;padding-bottom:96px;scroll-behavior:smooth}
+.page{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;padding-bottom:240px;scroll-behavior:smooth}
 .page::-webkit-scrollbar{display:none}
-.shot{height:500px;background:url("pdp.jpg") top center/375px auto no-repeat #eee}
-.chip{display:inline-block;margin:14px 16px 0;background:#F5C99C;border-radius:999px;padding:7px 14px;font-size:12px}
-.ptitle{font-size:19px;font-weight:500;line-height:1.25;margin:10px 16px 0}
-.pprice{margin:6px 16px 0;font-size:20px;font-weight:500}
-.pprice small{font-size:12px;color:#545454;font-weight:400;margin-left:6px}
-.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:14px 16px 0}
-.trust div{background:#F7F7FA;border-radius:10px;padding:8px 6px;font-size:10.5px;text-align:center;color:#2C2C2C;line-height:1.3}
-.promise{display:flex;gap:10px;margin:14px 16px 0;padding:10px 12px;border-radius:12px;background:#EEF7F1;font-size:11.5px;color:#545454}
-.promise b{display:block;color:#1E6B45;font-weight:500;font-size:12.5px}
-.atable{margin:8px 16px 0;border:1px solid #E8EAF0;border-radius:14px;overflow:hidden}
-.atable h4{margin:0;padding:11px 13px;background:#F4F5FF;font-size:13px;font-weight:500}
-.atable dl{margin:0;padding:4px 13px 8px}
-.atable dl div{display:flex;gap:12px;padding:8px 0;font-size:12px;border-bottom:1px solid #E8EAF0}
-.atable dl div:last-child{border:0}
-.atable dt{width:84px;flex:none;color:#545454}
-.atable dd{margin:0}
-.seller{margin:14px 16px 0;padding:12px;border-radius:14px;background:#F4F5FF}
-.srow{display:flex;gap:11px;align-items:center}
-.sav{width:42px;height:42px;border-radius:50%;background:#4862EE;color:#fff;display:grid;place-items:center;font-weight:500;font-size:17px;flex:none}
-.sname{font-size:12.5px;font-weight:500}
-.sver{font-size:10px;font-weight:500;color:#4862EE;margin-top:2px}
-.sfoot{display:flex;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid rgba(31,33,46,.07);font-size:12px;font-weight:500}
-.sfoot span:last-child{color:#4862EE}
-.acc{margin:18px 16px 0;border-top:1px solid #E8EAF0}
-.acc div{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid #E8EAF0;font-size:14px;font-weight:500}
-.acc div::after{content:"+";color:#707078;font-weight:400}
-.more{margin:20px 16px 0;font-size:16px;font-weight:500}
-.mrail{display:flex;gap:10px;margin:10px 16px 0}
-.mrail i{flex:1;aspect-ratio:3/4;border-radius:12px;background:#F2EFEA}
-.bar{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;gap:12px;background:#fff;border-top:1px solid #E8EAF0;padding:10px 16px 14px;z-index:2}
-.bar .pp{font-size:11px;color:#545454}
-.bar .pp b{display:block;font-size:18px;color:#1F212E;font-weight:500}
-.bar button{flex:1;border:0;border-radius:10px;background:#4862EE;color:#fff;font-size:14px;font-weight:500;padding:13px 0}
+/* Live PDP captured at 375px (4 screenshots), shown as slices so the artisan block can sit between them.
+   .cut shows `height` px of a screenshot starting `--y` px down. */
+.cut{width:375px;overflow:hidden}
+.cut img{display:block;width:375px;max-width:none;margin-top:calc(var(--y,0px) * -1)}
+.bar{position:absolute;left:0;bottom:0;width:375px;height:236px;overflow:hidden;z-index:2;pointer-events:none}
+.bar img{display:block;width:375px;max-width:none;margin-top:-16px}
 .slot:empty{display:none}
 .flash{animation:flash 1.4s ease-out}
 @keyframes flash{0%,40%{box-shadow:0 0 0 3px #4862EE}100%{box-shadow:0 0 0 3px rgba(72,98,238,0)}}
@@ -193,44 +166,28 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
 
 <div class="intro">
   <h1>Artisan details on the product page</h1>
-  <p>Pick a design and position; type in the admin form and the phone updates live. Example data only.</p>
+  <p>Phone = live saree page (28 Oct). Only the artisan block is new (example data).</p>
 </div>
 
 <div class="stage">
   <div class="device">
-    <div class="addr"><span>thecraftsarchive.in/product/</span><b>magenta-bandhani-handwork-saree</b></div>
+    <div class="addr"><span>thecraftsarchive.wcommerce.store/product/</span><b>brown-sambalpuri-baandha-ikat…/963</b></div>
     <div class="phone" id="phone">
       <div class="page" id="page">
-        <div class="shot" role="img" aria-label="Product photo and header of the live PDP"></div>
-        <span class="chip">✶ Handwoven bandhani border</span>
-        <div class="ptitle">Magenta Bandhani Handwork Saree</div>
-        <div class="pprice">₹4,037.50 <small>incl. all taxes</small></div>
-
-        <div class="trust"><div>Lab-tested fabric</div><div>45-day guarantee</div><div>Free shipping</div></div>
-
+        <!-- Header, gallery, title, price, colour, size, stock, pincode, trust row -->
+        <div class="cut" style="height:812px"><img src="pdp-1.png" alt="Live PDP: header, gallery, title, price, colour and size"></div>
+        <div class="cut" style="height:292px"><img src="pdp-2.png" alt="Live PDP: stock note, pincode check and trust row"></div>
         <div class="slot" id="slot-promise"></div>
-        <div class="promise"><span style="color:#1E6B45">✓</span><div><b>Verified Authentic: Fabric · Yarn · Silk · Zari</b>Backed by a 45-day lab-tested guarantee.</div></div>
-        <div class="atable">
-          <h4>Authenticity &amp; details</h4>
-          <dl>
-            <div><dt>Craft</dt><dd>Bandhani (tie-dye)</dd></div>
-            <div><dt>Fabric</dt><dd>Pure Gaji silk</dd></div>
-            <div><dt>Region</dt><dd>Bhuj, Kutch · Gujarat</dd></div>
-            <div><dt>Length</dt><dd>6.2 m (5.5 m saree + 70 cm blouse)</dd></div>
-          </dl>
-        </div>
-        <div class="seller">
-          <div class="srow"><div class="sav">M</div><div><div class="sname">Sold by Meera · The Crafts Archive</div><div class="sver">✓ Verified seller</div></div></div>
-          <div class="sfoot"><span><span style="color:#F2B135">★</span> 4.6 · 161 reviews ›</span><span>Meet the owner ›</span></div>
-        </div>
+        <!-- Verified Authentic strip, Authenticity & details table, seller card -->
+        <div class="cut" style="height:383px;--y:292px"><img src="pdp-2.png" alt="Live PDP: Verified Authentic strip, Authenticity and details table, seller card"></div>
         <div class="slot" id="slot-seller"></div>
-
-        <div class="acc"><div>Description</div><div>Material &amp; care</div><div>Shipping &amp; returns</div></div>
-        <div class="more">You may also like</div>
-        <div class="mrail"><i></i><i></i><i></i></div>
+        <!-- Description, accordions, Shipping & Returns, Complete the look, Similar pieces -->
+        <div class="cut" style="height:137px;--y:675px"><img src="pdp-2.png" alt="Live PDP: description"></div>
+        <div class="cut" style="height:812px"><img src="pdp-3.png" alt="Live PDP: description, Size and Fit, Material and Care, Specifications, Shipping and Returns"></div>
+        <div class="cut" style="height:678px;--y:134px"><img src="pdp-4.png" alt="Live PDP: returns policy, Complete the look, Similar pieces"></div>
       </div>
 
-      <div class="bar"><div class="pp">Price<b>₹4,037.50</b></div><button type="button">Add to cart</button></div>
+      <div class="bar"><img src="pdp-bar.png" alt="Live PDP sticky bar: stock note, price, Add to cart, Buy now"></div>
 
       <div class="sheet" id="sheet" hidden>
         <button class="scrim" id="scrim" aria-label="Close story"></button>
@@ -345,15 +302,15 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
       '</svg>';
     return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
   }
-  var PHOTO_HASINA = portrait("#C9A06A", "#8C5A3C", "#9E1F4F", "#B97F5A");
+  var PHOTO_HASINA = portrait("#C9A06A", "#8C5A3C", "#5B3A2E", "#8A5A3C");
   var PHOTO_NATARAJ = portrait("#9FB7C4", "#5E7480", "#F5F1E6", "#7A4B33");
 
   var PRESETS = {
-    hasina: { on: true, photo: PHOTO_HASINA, name: "Hasina Khatri", tag: "Bandhani master, Kutch", since: 1992,
-      story: "Hasina learnt bandhani from her mother in Bhuj. She ties every dot on this saree by hand, about 9,000 knots, before it goes into the dye bath." },
+    hasina: { on: true, photo: PHOTO_HASINA, name: "Ramesh Meher", tag: "Baandha ikat weaver, Sambalpur", since: 1988,
+      story: "Ramesh ties and dyes the yarn for every motif before it goes on the loom, a craft his family in Bargarh has kept for three generations. A saree like this takes him about ten days." },
     nataraj: { on: true, photo: PHOTO_NATARAJ, name: "Nataraj", tag: "Expert in 9 yards", since: 1980, story: "" },
-    nophoto: { on: true, photo: "", name: "Hasina Khatri", tag: "Bandhani master, Kutch", since: 1992,
-      story: "Hasina learnt bandhani from her mother in Bhuj. She ties every dot on this saree by hand, about 9,000 knots, before it goes into the dye bath." },
+    nophoto: { on: true, photo: "", name: "Ramesh Meher", tag: "Baandha ikat weaver, Sambalpur", since: 1988,
+      story: "Ramesh ties and dyes the yarn for every motif before it goes on the loom, a craft his family in Bargarh has kept for three generations. A saree like this takes him about ten days." },
     long: { on: true, photo: PHOTO_HASINA, name: "Lakshmi Venkataraman Subramaniam", tag: "Kanjivaram korvai border specialist", since: 1968,
       story: "Lakshmi has woven on the same pit loom in Kanchipuram for over fifty years. She and her son set up the korvai border by hand, which joins the body and border in contrasting colours, and one saree like this can take her three weeks." }
   };
@@ -408,7 +365,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
     $("#slot-seller").innerHTML = st.pos === "seller" ? block() : "";
     var el = $("#artisan");
     if (scroll && el) {
-      $("#page").scrollTop = Math.max(0, el.offsetTop - 140);
+      $("#page").scrollTop = Math.max(0, el.offsetTop - 70);
       el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash");
     }
     document.querySelectorAll("#designs button").forEach(function (b) { b.classList.toggle("on", b.dataset.d === st.design); b.setAttribute("aria-pressed", b.dataset.d === st.design); });
@@ -490,7 +447,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
   if (m) st.design = m[1];
   renderForm(); renderPhone(false);
   window.addEventListener("load", function () {
-    var el = $("#artisan"); if (el) $("#page").scrollTo({ top: Math.max(0, el.offsetTop - 140), behavior: "instant" });
+    var el = $("#artisan"); if (el) $("#page").scrollTo({ top: Math.max(0, el.offsetTop - 70), behavior: "instant" });
   });
 })();
 </script>
