@@ -17,22 +17,23 @@
   --stage:#14161F; --card:#1E2130; --text:#E9EAF0; --muted:#A0A3B1; --line:#343850; --accent:#8A9BFF; --accent-tint:#262B45; --ok:#6BCB93; --err:#FF8A70; color-scheme:dark}
 
 *{box-sizing:border-box}
-body{margin:0;background:var(--stage);color:var(--text);font-family:var(--font);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px}
+body{margin:0;background:var(--stage);color:var(--text);font-family:var(--font);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px}
 button,input,textarea{font-family:inherit}
 button{cursor:pointer}
 button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 @media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important;transition:none!important}}
 
-.intro{max-width:1150px;margin:0 auto 22px}
-.intro h1{font-size:24px;font-weight:500;margin:0 0 4px;text-wrap:balance}
-.intro p{margin:0;color:var(--muted);font-size:14px;line-height:1.5;max-width:70ch}
-.stage{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;justify-content:center}
+/* One-screen layout: the phone takes the viewport height, the two side cards are sized to fit beside it. */
+.intro{max-width:1143px;margin:0 auto 12px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+.intro h1{font-size:18px;font-weight:500;margin:0}
+.intro p{margin:0;color:var(--muted);font-size:13px;line-height:1.4}
+.stage{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start;justify-content:center}
 
 /* ── phone (consumer PDP, ProductDetailPageNew mobile) ── */
-.device{display:flex;flex-direction:column;gap:10px;width:375px;max-width:100%}
-.addr{display:flex;align-items:center;gap:8px;background:var(--card);border-radius:999px;padding:8px 14px;font-size:12px;color:var(--muted);overflow:hidden;white-space:nowrap}
+.device{display:flex;flex-direction:column;gap:8px;width:375px;max-width:100%}
+.addr{display:flex;align-items:center;gap:8px;background:var(--card);border-radius:999px;padding:6px 14px;font-size:12px;color:var(--muted);overflow:hidden;white-space:nowrap}
 .addr b{font-weight:500;color:var(--accent)}
-.phone{position:relative;width:375px;max-width:100%;height:812px;background:#fff;overflow:hidden;border-radius:28px;box-shadow:0 10px 40px rgba(31,33,46,.18);color:#1F212E}
+.phone{position:relative;width:375px;max-width:100%;height:min(812px,calc(100vh - 110px));min-height:560px;background:#fff;overflow:hidden;border-radius:28px;box-shadow:0 10px 40px rgba(31,33,46,.18);color:#1F212E}
 .page{position:absolute;inset:0;overflow-y:auto;scrollbar-width:none;padding-bottom:96px;scroll-behavior:smooth}
 .page::-webkit-scrollbar{display:none}
 .shot{height:500px;background:url("pdp.jpg") top center/375px auto no-repeat #eee}
@@ -139,40 +140,42 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
 .sclose{margin-top:18px;width:100%;border:1px solid #D5DDE2;background:#fff;border-radius:10px;padding:12px;font-size:14px;font-weight:500;color:#1F212E}
 
 /* ── tester panel (same as the other demos) ── */
-.panel{width:340px;max-width:100%;display:flex;flex-direction:column;gap:16px}
-.pcard{background:var(--card);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:1.45;min-width:0}
+.panel{width:340px;max-width:100%;display:flex;flex-direction:column;gap:12px}
+.pcard{background:var(--card);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:1.4;min-width:0}
+#designs{display:grid;grid-template-columns:1fr 1fr}
 .eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
 .pcard ul,.pcard ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
 .pcard b{font-weight:500}
 .note{font-size:12px;color:var(--muted)}
 .pos{display:flex;flex-direction:column;gap:8px}
-.pos button{text-align:left;min-height:40px;padding:8px 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text);font-size:14px;line-height:1.35}
+.pos button{text-align:left;min-height:40px;padding:6px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text);font-size:14px;line-height:1.35}
 .pos button span{display:block;font-size:12px;color:var(--muted)}
 .pos button.on{border-color:var(--accent);background:var(--accent-tint);color:var(--accent)}
 .pos button.on span{color:var(--accent)}
-.jump{display:flex;gap:8px;flex-wrap:wrap}
+.jump{display:flex;gap:6px;flex-wrap:wrap}
 .jump button{min-height:36px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text);font-size:13px}
 
 /* ── admin form mock (wcommerce-admin-ui: antd + Formik, EditFashionProduct sections) ── */
 .admin{width:380px;max-width:100%;background:var(--card);border-radius:16px;overflow:hidden;font-size:14px}
 .abar{display:flex;align-items:center;gap:8px;padding:12px 18px;border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}
 .abar b{color:var(--text);font-weight:500}
-.asec{padding:18px}
+.asec{padding:12px 18px 2px}
 .atitle{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:4px}
 .atitle h2{margin:0;font-size:16px;font-weight:500}
-.asub{font-size:12px;color:var(--muted);margin:0 0 16px}
-.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.asub{font-size:12px;color:var(--muted);margin:0 0 10px}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:9px}
+.frow{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:10px}
 .field label,.flabel{font-size:13px;font-weight:500}
 .field label i,.flabel i{color:var(--err);font-style:normal}
 .field .opt{font-weight:400;color:var(--muted)}
 .field input[type=text],.field input[type=number],.field textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 11px;font-size:14px;background:var(--card);color:var(--text)}
-.field textarea{resize:vertical;min-height:84px;line-height:1.45}
+.field textarea{resize:vertical;min-height:62px;line-height:1.4}
 .field input:focus,.field textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 2px var(--accent-tint)}
 .field .bad{border-color:var(--err)!important}
 .help{display:flex;justify-content:space-between;gap:8px;font-size:11.5px;color:var(--muted)}
 .help.err{color:var(--err)}
 .up{display:flex;gap:12px;align-items:center}
-.upbox{width:84px;height:112px;border:1px dashed var(--line);border-radius:8px;overflow:hidden;flex:none;display:grid;place-items:center;font-size:11px;color:var(--muted);text-align:center;position:relative}
+.upbox{width:60px;height:80px;border:1px dashed var(--line);border-radius:8px;overflow:hidden;flex:none;display:grid;place-items:center;font-size:11px;color:var(--muted);text-align:center;position:relative}
 .upbox img{width:100%;height:100%;object-fit:cover}
 .upact{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
 .btn{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:8px;padding:6px 12px;font-size:13px}
@@ -182,14 +185,14 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
 .sw[aria-checked=true]{background:var(--accent)}
 .sw[aria-checked=true]::after{left:24px}
 .swrow{display:flex;align-items:center;gap:10px;font-size:13px}
-.afoot{display:flex;justify-content:flex-end;gap:8px;padding:14px 18px;border-top:1px solid var(--line)}
+.afoot{display:flex;justify-content:flex-end;gap:8px;padding:10px 18px;border-top:1px solid var(--line)}
 .afoot .save{background:var(--accent);border-color:var(--accent);color:#fff}
 .saved{font-size:12px;color:var(--ok);align-self:center;margin-right:auto}
 </style>
 
 <div class="intro">
   <h1>Artisan details on the product page</h1>
-  <p>An admin adds the artisan who made a product. The product page shows them in a small “hands behind your saree” block. Pick a design and a position on the right; type in the admin form and the phone updates live. All names and stories here are example data.</p>
+  <p>Pick a design and position; type in the admin form and the phone updates live. Example data only.</p>
 </div>
 
 <div class="stage">
@@ -244,38 +247,30 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
     <div class="pcard">
       <div class="eyebrow">Design</div>
       <div class="pos" id="designs">
-        <button data-d="a">A · Story card<span>Like the priyangaa.in section: heading, photo left, pale yellow card right. Story opens in a sheet.</span></button>
-        <button data-d="b">B · Compact row<span>Same shape as the seller card. Smallest. Story expands in place.</span></button>
-        <button data-d="c">C · Photo-led<span>Wide photo with the name on it, two lines of story below.</span></button>
-        <button data-d="d">D · Years first<span>Big “years at the loom” number, small photo. Story opens in a sheet.</span></button>
+        <button data-d="a">A · Story card<span>Like priyangaa.in</span></button>
+        <button data-d="b">B · Compact row<span>Seller-card shape</span></button>
+        <button data-d="c">C · Photo-led<span>Name on the photo</span></button>
+        <button data-d="d">D · Years first<span>Big years number</span></button>
       </div>
-      <span class="note">Each design has its own link: add <b>#design-a</b> … <b>#design-d</b> to the page address.</span>
+      <span class="note">Own links: <b>#design-a</b> … <b>#design-d</b></span>
     </div>
     <div class="pcard">
       <div class="eyebrow">Position on the product page</div>
       <div class="pos" id="positions">
-        <button data-p="promise">1 · Above the authenticity block<span>Where priyangaa.in puts it: just above “Product details”.</span></button>
-        <button data-p="seller">2 · After the seller card (suggested)<span>“Sold by Meera”, then “Made by Hasina”: the people sit together, before Description.</span></button>
+        <button data-p="promise">1 · Above the authenticity block<span>Where priyangaa.in puts it</span></button>
+        <button data-p="seller">2 · After the seller card (suggested)<span>Seller and artisan sit together</span></button>
       </div>
-      <span class="note">Not between the green “Verified Authentic” strip and the table: in the code that strip is the table's header (<b>PDPAuthenticityPromise</b> sits right above <b>PDPAuthenticity</b>).</span>
+      <span class="note">Never between the green strip and its table.</span>
     </div>
     <div class="pcard">
       <div class="eyebrow">Try with</div>
       <div class="jump" id="presets">
-        <button data-k="hasina">Hasina (full)</button>
-        <button data-k="nataraj">Nataraj, no story</button>
+        <button data-k="hasina">Full</button>
+        <button data-k="nataraj">No story</button>
         <button data-k="nophoto">No photo</button>
         <button data-k="long">Long text</button>
       </div>
-      <span class="note">No photo shows the initial instead. No story hides “Read their story”. Switch off in the admin form and the block disappears.</span>
-    </div>
-    <div class="pcard">
-      <div class="eyebrow">What gets built later</div>
-      <ul>
-        <li><b>admin-ui:</b> an “Artisan” section in Edit Product, after Authenticity &amp; Details</li>
-        <li><b>backend-admin + core:</b> artisan fields on the product, one migration</li>
-        <li><b>consumer-ui:</b> a new <b>PDPArtisanCard</b> in <b>ProductDetailPageNew</b>, hidden when off or empty</li>
-      </ul>
+      <span class="note">Empty parts hide themselves. Switch off in the form and the block disappears.</span>
     </div>
   </div>
 
@@ -296,7 +291,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
             <label class="btn" for="f-photo" style="cursor:pointer">Upload photo</label>
             <input type="file" id="f-photo" accept="image/*" class="sr" style="position:absolute;width:1px;height:1px;opacity:0">
             <button type="button" class="btn link" id="f-rm">Remove</button>
-            <span class="help">Portrait, 3:4, at least 600 px wide</span>
+            <span class="help">Portrait 3:4, min 600 px wide</span>
           </div>
         </div>
       </div>
@@ -305,20 +300,22 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
         <input type="text" id="f-name" maxlength="40">
         <div class="help" id="h-name"><span></span><span id="c-name"></span></div>
       </div>
+      <div class="frow">
       <div class="field">
-        <label for="f-tag">Specialty <span class="opt">(short line)</span></label>
+        <label for="f-tag">Specialty</label>
         <input type="text" id="f-tag" maxlength="40" placeholder="e.g. Expert in 9 yards">
         <div class="help"><span></span><span id="c-tag"></span></div>
       </div>
       <div class="field">
-        <label for="f-since">Weaving since (year)</label>
+        <label for="f-since">Since (year)</label>
         <input type="number" id="f-since" min="1940" inputmode="numeric">
-        <div class="help" id="h-since"><span id="m-since"></span></div>
       </div>
+      </div>
+      <div class="help" id="h-since" style="margin:-4px 0 9px"><span id="m-since"></span></div>
       <div class="field">
         <label for="f-story">Short story <span class="opt">(optional)</span></label>
         <textarea id="f-story" maxlength="300"></textarea>
-        <div class="help"><span>Two or three sentences in plain words</span><span id="c-story"></span></div>
+        <div class="help"><span>Two or three plain sentences</span><span id="c-story"></span></div>
       </div>
     </div>
     <div class="afoot"><span class="saved" id="saved" hidden>Saved (demo only)</span><button type="button" class="btn" id="f-reset">Reset</button><button type="submit" class="btn save">Save</button></div>
