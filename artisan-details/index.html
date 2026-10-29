@@ -1,4 +1,5 @@
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Artisan Details Prototype</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
@@ -460,6 +461,15 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
     page.scrollTop = Math.max(0, el.offsetTop - 70);
     page.style.scrollBehavior = "";
   }
+  // On a real phone the screen is narrower than the 375px capture, so shrink the whole phone mock to fit
+  // (zoom keeps layout and scroll offsets consistent, unlike transform: scale).
+  function fitPhone() {
+    var d = $(".device"), z = Math.min(1, (document.documentElement.clientWidth - 32) / 375);
+    d.style.zoom = z < 1 ? z : "";
+    d.style.maxWidth = z < 1 ? "none" : "";
+  }
+  fitPhone();
+  window.addEventListener("resize", fitPhone);
   jumpToBlock();
   window.addEventListener("load", jumpToBlock);
   setTimeout(jumpToBlock, 500);
