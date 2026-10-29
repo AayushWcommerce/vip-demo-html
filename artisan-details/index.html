@@ -33,7 +33,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
 /* From 1000px wide, keep all three columns on one row; the side columns shrink before anything wraps. */
 @media (min-width:1000px){
   .stage{display:grid;grid-template-columns:375px minmax(260px,340px) minmax(300px,380px);gap:16px;justify-content:center}
-  .stage .panel,.stage .admin{width:auto}
+  .stage .panel,.stage .col3{width:auto}
   .intro{max-width:1127px}
 }
 
@@ -137,7 +137,48 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
 .jump button{min-height:36px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text);font-size:13px}
 
 /* ── admin form mock (wcommerce-admin-ui: antd + Formik, EditFashionProduct sections) ── */
-.admin{width:380px;max-width:100%;background:var(--card);border-radius:16px;overflow:hidden;font-size:14px}
+.col3{width:380px;max-width:100%;display:flex;flex-direction:column;gap:8px;min-width:0}
+.tabs{display:flex;gap:4px;padding:3px;background:var(--card);border-radius:12px}
+.tabs button{flex:1;border:0;border-radius:9px;padding:6px 0;background:transparent;color:var(--muted);font-size:13px;font-weight:500}
+.tabs button[aria-selected=true]{background:var(--accent-tint);color:var(--accent)}
+.admin{background:var(--card);border-radius:16px;overflow:hidden;font-size:14px}
+
+/* ── partner app product screen (wcommerce-partner-ui ProductView.jsx), read-only artisan card ── */
+.partner{position:relative;height:min(600px,calc(100vh - 120px));min-height:480px;background:#F5F7FA;border-radius:16px;overflow:hidden;color:#192438}
+.pt-scroll{position:absolute;inset:0;overflow-y:auto;padding-bottom:76px;scrollbar-width:thin}
+.pt-top{position:sticky;top:0;z-index:1;display:flex;align-items:center;gap:10px;padding:12px 14px;background:#fff;border-bottom:1px solid #E8EDF6;font-size:15px;font-weight:500;color:#21314A}
+.pt-img{height:200px;background:url("pdp-1.png") center -150px/375px auto no-repeat #eee}
+.pt-body{padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.pt-title{margin:0;font-size:16px;font-weight:500;line-height:1.3;color:#21314A}
+.pt-hsn{align-self:flex-start;background:#ECEFF2;color:#516778;border-radius:999px;padding:4px 10px;font-size:11.5px}
+.pt-hsn b{color:#21314A;font-weight:500;margin-left:4px}
+.pt-var{display:flex;justify-content:space-between;align-items:center;background:#E8EDF6;border-radius:10px;padding:11px 12px;font-size:13px;font-weight:500;color:#21314A}
+.pt-var span{font-size:12px;font-weight:400}
+.pt-price{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 6px;background:#fff;border-radius:8px;padding:12px 8px;text-align:center}
+.pt-price div{font-size:10.5px;color:#425462}
+.pt-price b{display:block;font-size:13.5px;color:#192438;font-weight:500;margin-top:2px}
+.pt-price .g b{color:#1ab188}
+.pt-ex{font-size:10.5px;color:#8A97A6;margin-top:-4px}
+.pt-art{background:#fff;border:1px solid #E8EDF6;border-radius:10px;padding:12px}
+.pt-ahead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+.pt-ahead h3{margin:0;font-size:13px;font-weight:500;color:#21314A}
+.pt-ro{font-size:10px;color:#516778;background:#ECEFF2;border-radius:999px;padding:3px 8px;white-space:nowrap}
+.pt-who{display:flex;gap:10px;align-items:center}
+.pt-ph{width:48px;height:48px;border-radius:50%;overflow:hidden;flex:none}
+.pt-ph .ini{font-size:18px}
+.pt-name{font-size:14px;font-weight:500;overflow-wrap:anywhere}
+.pt-tag{font-size:11.5px;color:#516778}
+.pt-story{margin:10px 0 0;font-size:12px;line-height:1.5;color:#425462}
+.pt-note{margin:10px 0 0;padding-top:8px;border-top:1px dashed #E8EDF6;font-size:10.5px;color:#8A97A6}
+.pt-off{background:#fff;border:1px dashed #C9D3E0;border-radius:10px;padding:12px;font-size:12px;color:#8A97A6;text-align:center}
+.pt-acc{background:#fff;border-radius:8px}
+.pt-acc div{display:flex;justify-content:space-between;padding:12px;font-size:13px;font-weight:500;color:#21314A;border-bottom:1px solid #E8EDF6}
+.pt-acc div:last-child{border:0}
+.pt-acc div::after{content:"⌄";color:#8A97A6}
+.pt-bar{position:absolute;left:0;right:0;bottom:0;display:flex;gap:8px;padding:10px 14px;background:#fff;border-top:1px solid #E8EDF6}
+.pt-bar span{flex:1;text-align:center;border-radius:8px;padding:11px 0;font-size:13px;font-weight:500}
+.pt-bar .o{border:1px solid #4862EE;color:#4862EE}
+.pt-bar .p{background:#4862EE;color:#fff}
 .abar{display:flex;align-items:center;gap:8px;padding:12px 18px;border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}
 .abar b{color:var(--text);font-weight:500}
 .asec{padding:12px 18px 2px}
@@ -239,7 +280,31 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
     </div>
   </div>
 
-  <form class="admin" id="admin" novalidate>
+  <div class="col3">
+  <div class="tabs" role="tablist" aria-label="Who sees it">
+    <button type="button" role="tab" id="t-admin" aria-selected="true" aria-controls="admin">Admin (edits)</button>
+    <button type="button" role="tab" id="t-partner" aria-selected="false" aria-controls="partner">Partner app (read-only)</button>
+  </div>
+  <section class="partner" id="partner" role="tabpanel" aria-labelledby="t-partner" hidden>
+    <div class="pt-scroll">
+      <div class="pt-top"><span aria-hidden="true">‹</span>Product Details</div>
+      <div class="pt-img" role="img" aria-label="Product photo"></div>
+      <div class="pt-body">
+        <h2 class="pt-title">Brown Sambalpuri Baandha Ikat Handloom Cotton Saree with Blouse</h2>
+        <span class="pt-hsn">HSN Code<b>5208</b></span>
+        <div class="pt-var">Brown<span>₹1,630.00</span></div>
+        <div class="pt-price">
+          <div>MRP<b>₹1,630</b></div><div>Selling Price<b>₹1,548.50</b></div><div>B2B Price<b>₹1,316</b></div>
+          <div class="g">Margin<b>15%</b></div><div class="g">Margin Amt.<b>₹232</b></div><div>Size<b>Free</b></div>
+        </div>
+        <div class="pt-ex">B2B price and margin are example numbers.</div>
+        <div id="pt-artisan"></div>
+        <div class="pt-acc"><div>Description</div><div>Manufactured By</div></div>
+      </div>
+    </div>
+    <div class="pt-bar"><span class="o">Add to Store</span><span class="p">Add Product</span></div>
+  </section>
+  <form class="admin" id="admin" role="tabpanel" aria-labelledby="t-admin" novalidate>
     <div class="abar">Products › Edit Fashion Product › <b>Artisan</b></div>
     <div class="asec">
       <div class="atitle">
@@ -285,6 +350,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
     </div>
     <div class="afoot"><span class="saved" id="saved" hidden>Saved (demo only)</span><button type="button" class="btn" id="f-reset">Reset</button><button type="submit" class="btn save">Save</button></div>
   </form>
+  </div>
 </div>
 
 <script>
@@ -370,6 +436,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
   function renderPhone(scroll) {
     $("#slot-promise").innerHTML = st.pos === "promise" ? block() : "";
     $("#slot-seller").innerHTML = st.pos === "seller" ? block() : "";
+    renderPartner();
     var el = $("#artisan");
     if (scroll && el) {
       $("#page").scrollTop = Math.max(0, el.offsetTop - 70);
@@ -377,6 +444,21 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
     }
     document.querySelectorAll("#designs button").forEach(function (b) { b.classList.toggle("on", b.dataset.d === st.design); b.setAttribute("aria-pressed", b.dataset.d === st.design); });
     document.querySelectorAll("#positions button").forEach(function (b) { b.classList.toggle("on", b.dataset.p === st.pos); b.setAttribute("aria-pressed", b.dataset.p === st.pos); });
+  }
+
+  // Partner app: the same artisan data, read-only. Partners can't edit product content there.
+  function renderPartner() {
+    var box = $("#pt-artisan");
+    if (!st.on || !st.name.trim()) {
+      box.innerHTML = '<div class="pt-off">No artisan card: it is switched off or has no name in admin.</div>';
+      return;
+    }
+    var sub = [st.tag.trim(), sinceLine()].filter(Boolean).map(esc).join(" · ");
+    box.innerHTML = '<div class="pt-art"><div class="pt-ahead"><h3>Made by</h3><span class="pt-ro">Set by Wcommerce</span></div>' +
+      '<div class="pt-who">' + photo("pt-ph") + '<div style="min-width:0"><div class="pt-name">' + esc(st.name.trim()) + '</div>' +
+      (sub ? '<div class="pt-tag">' + sub + '</div>' : '') + '</div></div>' +
+      (st.story.trim() ? '<p class="pt-story">' + esc(st.story.trim()) + '</p>' : '') +
+      '<p class="pt-note">Customers see this on the product page. Share it when you sell this saree.</p></div>';
   }
 
   function renderForm() {
@@ -432,6 +514,17 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
     var c = e.target.closest("[data-clamp]");
     if (c) { var box = c.parentElement, o = box.classList.toggle("open"); c.textContent = o ? "Show less" : "Read more"; }
   });
+  // Admin / Partner app tabs
+  function showTab(partner) {
+    $("#t-admin").setAttribute("aria-selected", !partner);
+    $("#t-partner").setAttribute("aria-selected", partner);
+    $("#admin").hidden = partner;
+    $("#partner").hidden = !partner;
+    if (partner) { var a = $("#pt-artisan"); $(".pt-scroll").scrollTop = Math.max(0, a.offsetTop - 120); }
+  }
+  $("#t-admin").addEventListener("click", function () { showTab(false); });
+  $("#t-partner").addEventListener("click", function () { showTab(true); });
+
   $("#scrim").addEventListener("click", closeSheet);
   $("#sclose").addEventListener("click", closeSheet);
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeSheet(); });
