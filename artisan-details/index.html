@@ -144,12 +144,35 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
 .admin{background:var(--card);border-radius:16px;overflow:hidden;font-size:14px}
 
 /* ── partner app product screen (wcommerce-partner-ui ProductView.jsx), read-only artisan card ── */
-.partner{position:relative;height:min(600px,calc(100vh - 120px));min-height:480px;background:#F5F7FA;border-radius:16px;overflow:hidden;color:#192438}
+.partner{position:relative;height:min(560px,calc(100vh - 196px));min-height:420px;background:#F5F7FA;border-radius:16px;overflow:hidden;color:#192438}
 /* The capture is 375px wide; .pt-zoom is scaled by JS so it fills the column's width. */
 .pt-zoom{position:absolute;top:0;left:0;width:375px;height:var(--pt-h,600px);background:#F8F9FB}
 .pt-scroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding-bottom:110px;scrollbar-width:none}
 .pt-scroll::-webkit-scrollbar{display:none}
-#pt-artisan{padding:0 16px 14px}
+.pt-slot{padding:0 16px 14px}
+.pt-slot:empty{display:none}
+#pt-over{position:absolute;left:16px;top:392px;z-index:1}
+#pt-over:empty{display:none}
+.ptctl{display:flex;flex-direction:column;gap:6px;background:var(--card);border-radius:12px;padding:8px}
+.ptrow{display:flex;flex-wrap:wrap;gap:5px}
+.ptrow button{flex:1 1 0;min-width:0;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:8px;padding:5px 4px;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ptrow button.on{border-color:var(--accent);background:var(--accent-tint);color:var(--accent)}
+.ptrow button:disabled{opacity:.45;cursor:default}
+/* partner design 2: compact row */
+.pr-row{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid #E8EDF6;border-radius:10px;padding:10px 12px}
+.pr-row .pt-ph{width:40px;height:40px}
+.pr-more{border:0;background:transparent;color:#4862EE;font-size:12.5px;font-weight:500;padding:0;white-space:nowrap}
+.pr-story{margin:8px 2px 0;font-size:12px;line-height:1.5;color:#425462}
+/* partner design 3: share story */
+.ps-card{background:#fff;border:1px solid #E8EDF6;border-radius:10px;padding:12px}
+.ps-quote{margin:10px 0 0;padding:10px 12px;background:#F2F7F4;border-radius:8px;font-size:12.5px;line-height:1.5;color:#192438}
+.ps-btn{margin-top:10px;width:100%;border:0;border-radius:8px;background:#1ab188;color:#fff;font-size:13px;font-weight:500;padding:10px 0}
+/* partner design 4: badge on the product photo */
+.po-badge{display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.94);border-radius:999px;padding:5px 12px 5px 5px;box-shadow:0 4px 14px rgba(25,36,56,.18)}
+.po-badge .pt-ph{width:30px;height:30px}
+.po-badge .ini{font-size:13px}
+.po-badge b{display:block;font-size:12.5px;font-weight:500;color:#192438}
+.po-badge span{display:block;font-size:10.5px;color:#516778}
 .pt-top{position:sticky;top:0;z-index:1;display:flex;align-items:center;gap:10px;padding:12px 14px;background:#fff;border-bottom:1px solid #E8EDF6;font-size:15px;font-weight:500;color:#21314A}
 .pt-img{height:200px;background:url("pdp-1.png") center -150px/375px auto no-repeat #eee}
 .pt-body{padding:12px 14px;display:flex;flex-direction:column;gap:10px}
@@ -287,14 +310,29 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
     <button type="button" role="tab" id="t-admin" aria-selected="true" aria-controls="admin">Admin (edits)</button>
     <button type="button" role="tab" id="t-partner" aria-selected="false" aria-controls="partner">Partner app (read-only)</button>
   </div>
+  <div class="ptctl" id="ptctl" hidden>
+    <div class="ptrow" id="pdesigns" aria-label="Partner design">
+      <button type="button" data-pd="card" title="Info card with story">1 · Card</button>
+      <button type="button" data-pd="row" title="One compact row, story on tap">2 · Row</button>
+      <button type="button" data-pd="share" title="Ready-to-send story with a copy button">3 · Share</button>
+      <button type="button" data-pd="photo" title="Badge on the product photo">4 · Photo</button>
+    </div>
+    <div class="ptrow" id="pposs" aria-label="Partner position">
+      <button type="button" data-pp="price">After price</button>
+      <button type="button" data-pp="brand">Before “By Lavi”</button>
+    </div>
+  </div>
   <section class="partner" id="partner" role="tabpanel" aria-labelledby="t-partner" hidden>
     <!-- Real dev partner app (partner-ui ProductView), captured 29 Oct at 375px: test saree, product 735.
          Two slices cut right after the price card, where the read-only artisan card goes. -->
     <div class="pt-zoom" id="pt-zoom">
       <div class="pt-scroll" id="pt-scroll">
         <div class="cut" style="height:726px"><img src="partner-1.png" alt="Partner app: Product Details header, photo, title, HSN code, VIP margin, price card"></div>
-        <div id="pt-artisan"></div>
-        <div class="cut" style="height:227px;--y:585px"><img src="partner-2.png" alt="Partner app: sizes, By Lavi, description"></div>
+        <div id="pt-over"></div>
+        <div class="pt-slot" id="pt-slot-price"></div>
+        <div class="cut" style="height:70px;--y:585px"><img src="partner-2.png" alt="Partner app: sizes"></div>
+        <div class="pt-slot" id="pt-slot-brand"></div>
+        <div class="cut" style="height:157px;--y:655px"><img src="partner-2.png" alt="Partner app: By Lavi, description"></div>
       </div>
       <div class="pt-bar"><img src="partner-bar.png" alt="Partner app bottom bar: Buy for your content, Selected"></div>
     </div>
@@ -383,7 +421,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
       story: "Lakshmi has woven on the same pit loom in Kanchipuram for over fifty years. She and her son set up the korvai border by hand, which joins the body and border in contrasting colours, and one saree like this can take her three weeks." }
   };
 
-  var st = Object.assign({ design: "a", pos: "seller" }, PRESETS.hasina);
+  var st = Object.assign({ design: "a", pos: "seller", pdesign: "card", ppos: "price" }, PRESETS.hasina);
 
   function photo(cls) {
     var inner = st.photo ? '<img class="ph" alt="' + esc(st.name) + '" src="' + st.photo + '">'
@@ -442,18 +480,51 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
   }
 
   // Partner app: the same artisan data, read-only. Partners can't edit product content there.
+  // Text a partner can paste into WhatsApp when selling this saree.
+  function shareText() {
+    var y = years(), bits = ["This saree is handwoven by " + st.name.trim()];
+    if (st.tag.trim()) bits[0] += ", " + st.tag.trim().replace(/^./, function (c) { return c.toLowerCase(); });
+    if (y !== null) bits.push("weaving for " + y + " years (since " + st.since + ")");
+    return bits.join(", ") + "." + (st.story.trim() ? " " + st.story.trim() : "");
+  }
+
+  function partnerBlock() {
+    var name = esc(st.name.trim()), story = esc(st.story.trim());
+    var sub = [st.tag.trim(), sinceLine()].filter(Boolean).map(esc).join(" · ");
+    if (st.pdesign === "row") {
+      return '<div class="pr-row">' + photo("pt-ph") + '<div style="flex:1;min-width:0"><div class="pt-name" style="font-size:13px">Made by ' + name + '</div>' +
+        (sub ? '<div class="pt-tag">' + sub + '</div>' : '') + '</div>' +
+        (story ? '<button type="button" class="pr-more" data-prmore aria-expanded="false">Story ›</button>' : '') + '</div>' +
+        (story ? '<p class="pr-story" hidden>' + story + '</p>' : '');
+    }
+    if (st.pdesign === "share") {
+      return '<div class="ps-card"><div class="pt-ahead" style="margin-bottom:8px"><h3>Selling tip: the artisan</h3><span class="pt-ro">Set by Wcommerce</span></div>' +
+        '<div class="pt-who">' + photo("pt-ph") + '<div style="min-width:0"><div class="pt-name">' + name + '</div>' + (sub ? '<div class="pt-tag">' + sub + '</div>' : '') + '</div></div>' +
+        '<p class="ps-quote">' + esc(shareText()) + '</p><button type="button" class="ps-btn" data-copy>Copy for WhatsApp</button></div>';
+    }
+    return '<div class="pt-art"><div class="pt-ahead"><h3>Made by</h3><span class="pt-ro">Set by Wcommerce</span></div>' +
+      '<div class="pt-who">' + photo("pt-ph") + '<div style="min-width:0"><div class="pt-name">' + name + '</div>' +
+      (sub ? '<div class="pt-tag">' + sub + '</div>' : '') + '</div></div>' +
+      (story ? '<p class="pt-story">' + story + '</p>' : '') +
+      '<p class="pt-note">Customers see this on the product page. Share it when you sell this saree.</p></div>';
+  }
+
   function renderPartner() {
-    var box = $("#pt-artisan");
+    var price = $("#pt-slot-price"), brand = $("#pt-slot-brand"), over = $("#pt-over");
+    price.innerHTML = brand.innerHTML = over.innerHTML = "";
+    document.querySelectorAll("#pdesigns button").forEach(function (b) { b.classList.toggle("on", b.dataset.pd === st.pdesign); b.setAttribute("aria-pressed", b.dataset.pd === st.pdesign); });
+    document.querySelectorAll("#pposs button").forEach(function (b) { b.classList.toggle("on", b.dataset.pp === st.ppos); b.setAttribute("aria-pressed", b.dataset.pp === st.ppos); b.disabled = st.pdesign === "photo"; });
     if (!st.on || !st.name.trim()) {
-      box.innerHTML = '<div class="pt-off">No artisan card: it is switched off or has no name in admin.</div>';
+      price.innerHTML = '<div class="pt-off">No artisan card: it is switched off or has no name in admin.</div>';
       return;
     }
-    var sub = [st.tag.trim(), sinceLine()].filter(Boolean).map(esc).join(" · ");
-    box.innerHTML = '<div class="pt-art"><div class="pt-ahead"><h3>Made by</h3><span class="pt-ro">Set by Wcommerce</span></div>' +
-      '<div class="pt-who">' + photo("pt-ph") + '<div style="min-width:0"><div class="pt-name">' + esc(st.name.trim()) + '</div>' +
-      (sub ? '<div class="pt-tag">' + sub + '</div>' : '') + '</div></div>' +
-      (st.story.trim() ? '<p class="pt-story">' + esc(st.story.trim()) + '</p>' : '') +
-      '<p class="pt-note">Customers see this on the product page. Share it when you sell this saree.</p></div>';
+    if (st.pdesign === "photo") {
+      var y = years();
+      over.innerHTML = '<div class="po-badge">' + photo("pt-ph") + '<div><b>Woven by ' + esc(st.name.trim()) + '</b>' +
+        (y !== null ? '<span>' + y + ' years at the loom</span>' : (st.tag.trim() ? '<span>' + esc(st.tag.trim()) + '</span>' : '')) + '</div></div>';
+      return;
+    }
+    (st.ppos === "brand" ? brand : price).innerHTML = partnerBlock();
   }
 
   function renderForm() {
@@ -515,8 +586,25 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
     $("#t-partner").setAttribute("aria-selected", partner);
     $("#admin").hidden = partner;
     $("#partner").hidden = !partner;
-    if (partner) { fitPartner(); $("#pt-scroll").scrollTop = Math.max(0, $("#pt-artisan").offsetTop - 330); }
+    $("#ptctl").hidden = !partner;
+    if (partner) { fitPartner(); scrollPartner(); }
   }
+  // Bring the artisan card into view inside the partner screen.
+  function scrollPartner() {
+    var target = st.pdesign === "photo" ? 230 : (st.ppos === "brand" ? $("#pt-slot-brand") : $("#pt-slot-price")).offsetTop - 300;
+    $("#pt-scroll").scrollTop = Math.max(0, target);
+  }
+  $("#pdesigns").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; st.pdesign = b.dataset.pd; renderPartner(); scrollPartner(); });
+  $("#pposs").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b || b.disabled) return; st.ppos = b.dataset.pp; renderPartner(); scrollPartner(); });
+  $("#partner").addEventListener("click", function (e) {
+    var m = e.target.closest("[data-prmore]");
+    if (m) { var p = m.parentElement.nextElementSibling, open = p.hidden; p.hidden = !open; m.setAttribute("aria-expanded", open); m.textContent = open ? "Hide" : "Story ›"; }
+    var c = e.target.closest("[data-copy]");
+    if (c) {
+      var done = function () { c.textContent = "Copied"; setTimeout(function () { c.textContent = "Copy for WhatsApp"; }, 1500); };
+      try { navigator.clipboard.writeText(shareText()).then(done, done); } catch (_) { done(); }
+    }
+  });
   // Scale the 375px partner capture to the column width, and stretch it to the panel's height.
   function fitPartner() {
     var p = $("#partner"); if (p.hidden || !p.clientWidth) return;
