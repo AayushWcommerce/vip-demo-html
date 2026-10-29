@@ -145,7 +145,11 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
 
 /* ── partner app product screen (wcommerce-partner-ui ProductView.jsx), read-only artisan card ── */
 .partner{position:relative;height:min(600px,calc(100vh - 120px));min-height:480px;background:#F5F7FA;border-radius:16px;overflow:hidden;color:#192438}
-.pt-scroll{position:absolute;inset:0;overflow-y:auto;padding-bottom:76px;scrollbar-width:thin}
+/* The capture is 375px wide; .pt-zoom is scaled by JS so it fills the column's width. */
+.pt-zoom{position:absolute;top:0;left:0;width:375px;height:var(--pt-h,600px);background:#F8F9FB}
+.pt-scroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding-bottom:110px;scrollbar-width:none}
+.pt-scroll::-webkit-scrollbar{display:none}
+#pt-artisan{padding:0 16px 14px}
 .pt-top{position:sticky;top:0;z-index:1;display:flex;align-items:center;gap:10px;padding:12px 14px;background:#fff;border-bottom:1px solid #E8EDF6;font-size:15px;font-weight:500;color:#21314A}
 .pt-img{height:200px;background:url("pdp-1.png") center -150px/375px auto no-repeat #eee}
 .pt-body{padding:12px 14px;display:flex;flex-direction:column;gap:10px}
@@ -175,10 +179,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
 .pt-acc div{display:flex;justify-content:space-between;padding:12px;font-size:13px;font-weight:500;color:#21314A;border-bottom:1px solid #E8EDF6}
 .pt-acc div:last-child{border:0}
 .pt-acc div::after{content:"⌄";color:#8A97A6}
-.pt-bar{position:absolute;left:0;right:0;bottom:0;display:flex;gap:8px;padding:10px 14px;background:#fff;border-top:1px solid #E8EDF6}
-.pt-bar span{flex:1;text-align:center;border-radius:8px;padding:11px 0;font-size:13px;font-weight:500}
-.pt-bar .o{border:1px solid #4862EE;color:#4862EE}
-.pt-bar .p{background:#4862EE;color:#fff}
+.pt-bar{position:absolute;left:0;bottom:0;width:375px;box-shadow:0 -4px 12px rgba(25,36,56,.06)}
+.pt-bar img{display:block;width:375px;max-width:none}
 .abar{display:flex;align-items:center;gap:8px;padding:12px 18px;border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}
 .abar b{color:var(--text);font-weight:500}
 .asec{padding:12px 18px 2px}
@@ -286,23 +288,16 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
     <button type="button" role="tab" id="t-partner" aria-selected="false" aria-controls="partner">Partner app (read-only)</button>
   </div>
   <section class="partner" id="partner" role="tabpanel" aria-labelledby="t-partner" hidden>
-    <div class="pt-scroll">
-      <div class="pt-top"><span aria-hidden="true">‹</span>Product Details</div>
-      <div class="pt-img" role="img" aria-label="Product photo"></div>
-      <div class="pt-body">
-        <h2 class="pt-title">Brown Sambalpuri Baandha Ikat Handloom Cotton Saree with Blouse</h2>
-        <span class="pt-hsn">HSN Code<b>5208</b></span>
-        <div class="pt-var">Brown<span>₹1,630.00</span></div>
-        <div class="pt-price">
-          <div>MRP<b>₹1,630</b></div><div>Selling Price<b>₹1,548.50</b></div><div>B2B Price<b>₹1,316</b></div>
-          <div class="g">Margin<b>15%</b></div><div class="g">Margin Amt.<b>₹232</b></div><div>Size<b>Free</b></div>
-        </div>
-        <div class="pt-ex">B2B price and margin are example numbers.</div>
+    <!-- Real dev partner app (partner-ui ProductView), captured 29 Oct at 375px: test saree, product 735.
+         Two slices cut right after the price card, where the read-only artisan card goes. -->
+    <div class="pt-zoom" id="pt-zoom">
+      <div class="pt-scroll" id="pt-scroll">
+        <div class="cut" style="height:726px"><img src="partner-1.png" alt="Partner app: Product Details header, photo, title, HSN code, VIP margin, price card"></div>
         <div id="pt-artisan"></div>
-        <div class="pt-acc"><div>Description</div><div>Manufactured By</div></div>
+        <div class="cut" style="height:227px;--y:585px"><img src="partner-2.png" alt="Partner app: sizes, By Lavi, description"></div>
       </div>
+      <div class="pt-bar"><img src="partner-bar.png" alt="Partner app bottom bar: Buy for your content, Selected"></div>
     </div>
-    <div class="pt-bar"><span class="o">Add to Store</span><span class="p">Add Product</span></div>
   </section>
   <form class="admin" id="admin" role="tabpanel" aria-labelledby="t-admin" novalidate>
     <div class="abar">Products › Edit Fashion Product › <b>Artisan</b></div>
@@ -520,8 +515,16 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
     $("#t-partner").setAttribute("aria-selected", partner);
     $("#admin").hidden = partner;
     $("#partner").hidden = !partner;
-    if (partner) { var a = $("#pt-artisan"); $(".pt-scroll").scrollTop = Math.max(0, a.offsetTop - 120); }
+    if (partner) { fitPartner(); $("#pt-scroll").scrollTop = Math.max(0, $("#pt-artisan").offsetTop - 330); }
   }
+  // Scale the 375px partner capture to the column width, and stretch it to the panel's height.
+  function fitPartner() {
+    var p = $("#partner"); if (p.hidden || !p.clientWidth) return;
+    var z = p.clientWidth / 375, zw = $("#pt-zoom");
+    zw.style.zoom = z;
+    zw.style.setProperty("--pt-h", (p.clientHeight / z) + "px");
+  }
+  window.addEventListener("resize", fitPartner);
   $("#t-admin").addEventListener("click", function () { showTab(false); });
   $("#t-partner").addEventListener("click", function () { showTab(true); });
 
