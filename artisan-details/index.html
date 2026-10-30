@@ -310,7 +310,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
         <button data-k="nophoto">No photo</button>
         <button data-k="long">Long text</button>
       </div>
-      <span class="note">Empty parts hide themselves. Switch off in the form and the block disappears.</span>
+      <span class="note">Empty parts hide themselves. Clear the name in the form and the block disappears.</span>
     </div>
   </div>
 
@@ -351,9 +351,9 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
     <div class="asec">
       <div class="atitle">
         <h2>Artisan</h2>
-        <div class="swrow"><button type="button" class="sw" id="f-on" role="switch" aria-checked="true" aria-label="Show on this product"></button><span id="onlbl">Show on this product</span></div>
+        
       </div>
-      <p class="asub">Shown on this product's page only. Leave it off if you don't know who made it.</p>
+      <p class="asub">Shown on this product's page when a name is filled in. Leave it empty if you don't know who made it.</p>
 
       <div class="field">
         <span class="flabel">Photo <span class="opt">(optional)</span></span>
@@ -374,19 +374,19 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
       </div>
       <div class="frow">
       <div class="field">
-        <label for="f-tag">Specialty</label>
+        <label for="f-tag">Specialty <span class="opt">(optional)</span></label>
         <input type="text" id="f-tag" maxlength="40" placeholder="e.g. Expert in 9 yards">
         <div class="help"><span></span><span id="c-tag"></span></div>
       </div>
       <div class="field">
-        <label for="f-since">Since (year)</label>
+        <label for="f-since">Since <span class="opt">(optional)</span></label>
         <input type="number" id="f-since" min="1940" inputmode="numeric">
       </div>
       </div>
       <div class="help" id="h-since" style="margin:-4px 0 9px"><span id="m-since"></span></div>
       <div class="field">
         <label for="f-story">Short story <span class="opt">(optional)</span></label>
-        <textarea id="f-story" maxlength="300"></textarea>
+        <textarea id="f-story" maxlength="200"></textarea>
         <div class="help"><span>Two or three plain sentences</span><span id="c-story"></span></div>
       </div>
     </div>
@@ -427,11 +427,11 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
     nophoto: { on: true, photo: "", name: "Ramesh Meher", tag: "Baandha ikat weaver, Sambalpur", since: 1988,
       story: "Ramesh ties and dyes the yarn for every motif before it goes on the loom, a craft his family in Bargarh has kept for three generations. A saree like this takes him about ten days." },
     long: { on: true, photo: PHOTO_HASINA, name: "Lakshmi Venkataraman Subramaniam", tag: "Kanjivaram korvai border specialist", since: 1968,
-      story: "Lakshmi has woven on the same pit loom in Kanchipuram for over fifty years. She and her son set up the korvai border by hand, which joins the body and border in contrasting colours, and one saree like this can take her three weeks." }
+      story: "Lakshmi has woven on the same pit loom in Kanchipuram for over fifty years. She sets up the korvai border by hand, and one saree like this can take her three weeks." }
   };
 
   var DESIGNS = { a: "A · Story card", b: "B · Compact row", c: "C · Photo-led", d: "D · Years first" }, DORDER = ["a", "b", "c", "d"];
-  var st = Object.assign({ design: "a", pos: "seller", pdesign: "card", ppos: "price" }, PRESETS.hasina);
+  var st = Object.assign({ design: "b", pos: "seller", pdesign: "row", ppos: "price" }, PRESETS.hasina);
 
   function photo(cls) {
     var inner = st.photo ? '<img class="ph" alt="' + esc(st.name) + '" src="' + st.photo + '">'
@@ -509,11 +509,11 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
         (story ? '<p class="pr-story" hidden>' + story + '</p>' : '');
     }
     if (st.pdesign === "share") {
-      return '<div class="ps-card"><div class="pt-ahead" style="margin-bottom:8px"><h3>Selling tip: the artisan</h3><span class="pt-ro">Set by Wcommerce</span></div>' +
+      return '<div class="ps-card"><div class="pt-ahead" style="margin-bottom:8px"><h3>Selling tip: the artisan</h3></div>' +
         '<div class="pt-who">' + photo("pt-ph") + '<div style="min-width:0"><div class="pt-name">' + name + '</div>' + (sub ? '<div class="pt-tag">' + sub + '</div>' : '') + '</div></div>' +
         '<p class="ps-quote">' + esc(shareText()) + '</p><button type="button" class="ps-btn" data-copy>Copy for WhatsApp</button></div>';
     }
-    return '<div class="pt-art"><div class="pt-ahead"><h3>Made by</h3><span class="pt-ro">Set by Wcommerce</span></div>' +
+    return '<div class="pt-art"><div class="pt-ahead"><h3>Made by</h3></div>' +
       '<div class="pt-who">' + photo("pt-ph") + '<div style="min-width:0"><div class="pt-name">' + name + '</div>' +
       (sub ? '<div class="pt-tag">' + sub + '</div>' : '') + '</div></div>' +
       (story ? '<p class="pt-story">' + story + '</p>' : '') +
@@ -526,7 +526,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
     document.querySelectorAll("#pdesigns button").forEach(function (b) { b.classList.toggle("on", b.dataset.pd === st.pdesign); b.setAttribute("aria-pressed", b.dataset.pd === st.pdesign); });
     document.querySelectorAll("#pposs button").forEach(function (b) { b.classList.toggle("on", b.dataset.pp === st.ppos); b.setAttribute("aria-pressed", b.dataset.pp === st.ppos); b.disabled = st.pdesign === "photo"; });
     if (!st.on || !st.name.trim()) {
-      price.innerHTML = '<div class="pt-off">No artisan card: it is switched off or has no name in admin.</div>';
+      price.innerHTML = '<div class="pt-off">No artisan card: no artisan name in admin.</div>';
       return;
     }
     if (st.pdesign === "photo") {
@@ -544,15 +544,16 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
     syncFormBits();
   }
   function syncFormBits() {
-    $("#f-on").setAttribute("aria-checked", st.on);
+
     $("#upbox").innerHTML = st.photo ? '<img alt="Artisan photo preview" src="' + st.photo + '">' : "No photo<br>yet";
     $("#c-name").textContent = st.name.length + " / 40";
     $("#c-tag").textContent = st.tag.length + " / 40";
-    $("#c-story").textContent = st.story.length + " / 300";
-    var nameBad = st.on && !st.name.trim();
+    $("#c-story").textContent = st.story.length + " / 200";
+    // No on/off switch: an empty form means "no artisan". A name is only needed once other fields are filled.
+    var nameBad = !st.name.trim() && !!(st.tag.trim() || st.story.trim() || st.photo || st.since);
     $("#f-name").classList.toggle("bad", nameBad);
     $("#h-name").classList.toggle("err", nameBad);
-    $("#h-name span").textContent = nameBad ? "Add a name, or switch the section off" : "";
+    $("#h-name span").textContent = nameBad ? "Name is needed for the artisan to show" : "";
     var raw = $("#f-since").value, sinceBad = raw !== "" && !sinceValid();
     $("#f-since").classList.toggle("bad", sinceBad);
     $("#h-since").classList.toggle("err", sinceBad);
@@ -639,7 +640,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,[role=button]:fo
     $(id).addEventListener("input", function (e) { st[key] = num ? parseInt(e.target.value, 10) || 0 : e.target.value; syncFormBits(); renderPhone(false); });
   }
   bind("#f-name", "name"); bind("#f-tag", "tag"); bind("#f-since", "since", true); bind("#f-story", "story");
-  $("#f-on").addEventListener("click", function () { st.on = !st.on; syncFormBits(); renderPhone(true); });
+
   $("#f-photo").addEventListener("change", function (e) {
     var f = e.target.files && e.target.files[0]; if (!f) return;
     var r = new FileReader(); r.onload = function () { st.photo = r.result; syncFormBits(); renderPhone(true); }; r.readAsDataURL(f);
