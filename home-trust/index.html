@@ -67,6 +67,18 @@ a{color:inherit;text-decoration:none}
 .fab i{width:28px;height:28px;border-radius:50%;background:#25D366;display:block}
 .fab small{display:block;font-weight:400;color:#707078;font-size:9.5px}
 
+/* ---------- NEW 5 · Instagram button above "Ask Satish" ---------- */
+.igfab{position:absolute;right:12px;bottom:68px;z-index:6;background:#fff;border:0;border-radius:999px;box-shadow:0 4px 16px rgba(0,0,0,.18);padding:8px 14px 8px 8px;display:flex;gap:8px;align-items:center;font-size:11.5px;font-weight:500;color:#1F212E;text-align:left}
+.igfab small{display:block;font-weight:400;color:#707078;font-size:9.5px}
+.igic{width:28px;height:28px;border-radius:9px;flex:none;display:grid;place-items:center;background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285AEB 90%)}
+.igfab.round{padding:6px;border-radius:50%}
+.igfab.round .igtxt{display:none}
+.igfab.round .igic{width:34px;height:34px;border-radius:50%}
+.igfab.mark{outline:2px dashed #4862EE;outline-offset:3px}
+.nomark .igfab.mark{outline:none}
+.toast{position:absolute;left:16px;right:16px;bottom:120px;z-index:30;background:#1F212E;color:#fff;font-size:12px;line-height:1.45;border-radius:12px;padding:10px 12px;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+
 /* new-section marker so the reviewer can tell old vs new */
 .new{position:relative;outline:2px dashed #4862EE;outline-offset:4px;border-radius:14px}
 .new::before{content:attr(data-tag);position:absolute;top:-11px;left:10px;z-index:2;background:#4862EE;color:#fff;font-size:9px;letter-spacing:.06em;padding:2px 7px;border-radius:999px;font-weight:500}
@@ -242,7 +254,12 @@ a{color:inherit;text-decoration:none}
 
       <div class="footer"><b>The Crafts Archive</b>A store by Satish Madiraju · Hyderabad, Telangana<br><br>Shop · Jewelry · The Store · Policies …</div>
     </div>
+    <button class="igfab mark" id="igFab" aria-label="Satish on Instagram">
+      <span class="igic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#fff" stroke="none"/></svg></span>
+      <span class="igtxt">Follow Satish<small>New pieces first on Instagram</small></span>
+    </button>
     <div class="fab"><i></i><div>Ask Satish<small>~10 min</small></div></div>
+    <div class="toast" id="toast"></div>
 
     <!-- NEW 1A: first-visit sheet -->
     <div class="dim" id="dim" hidden></div>
@@ -327,6 +344,17 @@ a{color:inherit;text-decoration:none}
         <button data-v="mid">After Newly Arrived</button>
       </div>
       <div class="data">Tiles open the saree list with the occasion filter on (filter already exists). Photos here are stand-ins; the real tile would use a product tagged with that occasion.</div>
+    </div>
+
+    <div class="grp">
+      <h2>5 · Instagram button</h2>
+      <p>Sits just above "Ask Satish" and opens the store owner's Instagram profile.</p>
+      <div class="seg" data-k="ig">
+        <button data-v="a">A · Pill with text</button>
+        <button data-v="b">B · Round icon only</button>
+        <button data-v="off">Off</button>
+      </div>
+      <div class="data">The store has <b>no Instagram field today</b> (not in about_me / store details). The real build needs one Instagram link per store, set by the partner or admin; the button hides when it's empty. In this demo the link is a placeholder.</div>
     </div>
 
     <div class="grp">
@@ -454,7 +482,9 @@ a{color:inherit;text-decoration:none}
   }
 
   // ---- state <-> URL ----
-  var DEF = { w: 'a', r: 'a', rp: 'mid', g: 'a', gp: 'mid', o: 'a', op: 'top' };
+  var DEF = { w: 'a', r: 'a', rp: 'mid', g: 'a', gp: 'mid', o: 'a', op: 'top', ig: 'a' };
+  // Satish's Instagram link goes here once we have it. Empty = demo shows a note instead of opening a page.
+  var IG_URL = '';
   var S = {};
   var q = new URLSearchParams(location.search);
   Object.keys(DEF).forEach(function (k) { S[k] = q.get(k) || DEF[k]; });
@@ -475,6 +505,8 @@ a{color:inherit;text-decoration:none}
     if (S.g !== 'off') $('[data-slot="ap-' + S.gp + '"]').innerHTML = S.g === 'a' ? promiseA() : promiseB();
     $('#oldPromise').hidden = S.g !== 'off';
     $('#welcomeCard').hidden = S.w !== 'b';
+    $('#igFab').hidden = S.ig === 'off';
+    $('#igFab').classList.toggle('round', S.ig === 'b');
 
     $$('.seg').forEach(function (seg) {
       var k = seg.getAttribute('data-k');
@@ -532,6 +564,15 @@ a{color:inherit;text-decoration:none}
     }
     if (t.classList.contains('chip') && t.closest('#wchips')) {
       $$('#wchips .chip').forEach(function (b) { b.classList.toggle('on', b === t); });
+      return;
+    }
+    if (t.id === 'igFab') {
+      if (IG_URL) { window.open(IG_URL, '_blank', 'noopener'); return; }
+      var toast = $('#toast');
+      toast.textContent = 'Opens Satish’s Instagram profile in the Instagram app (or a new tab). Link not added to this demo yet.';
+      toast.classList.add('on');
+      clearTimeout(toast._t);
+      toast._t = setTimeout(function () { toast.classList.remove('on'); }, 2600);
       return;
     }
     if (t.id === 'markBtn') {
