@@ -302,7 +302,6 @@ a{color:inherit;text-decoration:none}
 @media (min-width:840px){
   html,body{height:100%;overflow:hidden}
   .stage{height:100vh;flex-wrap:nowrap}
-  .phone{height:min(812px,calc(100vh - 56px))}
   .panel{max-height:calc(100vh - 56px);overflow-y:auto;overscroll-behavior:contain}
 }
 @media (max-width:420px){
@@ -845,6 +844,15 @@ a{color:inherit;text-decoration:none}
       setTimeout(function () { t.textContent = 'Copy link to this combination'; }, 1500);
     }
   });
+
+  // Keep the phone a true 375 x 812 screen (so "above the fold" is honest) and shrink the whole
+  // phone evenly when the browser window is shorter, instead of cutting its height.
+  function fitPhone() {
+    var ph = $('#phone');
+    ph.style.zoom = innerWidth >= 840 ? Math.min(1, (innerHeight - 56) / 812) : '';
+  }
+  addEventListener('resize', fitPhone);
+  fitPhone();
 
   render();
   replayWelcome();
