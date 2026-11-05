@@ -164,6 +164,106 @@ a{color:inherit;text-decoration:none}
 .refund b{display:block;font-size:15px;color:#F2B544;font-weight:500}
 .seal .aplink{color:#F2B544}
 
+/* 3C · compact promise card (above the fold) */
+.apc{display:flex;gap:12px;align-items:center;width:100%;text-align:left;border:1px solid #CFE5D6;background:#fff;border-radius:16px;padding:12px;box-shadow:0 2px 10px rgba(30,107,69,.08);font-family:inherit;color:#1F212E}
+.apc .ring{width:54px;height:54px;margin:0;border-width:1.5px;border-color:#1E6B45;color:#1E6B45;flex:none;background:#F3F8F4}
+.apc .ring b{font-size:18px}
+.apc .ring small{font-size:7px}
+.apc b.t{display:block;font-size:13.5px;font-weight:500}
+.apc .l{font-size:11px;color:#545454;line-height:1.4;margin-top:2px}
+.apc .mini{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap}
+.apc .mini span{font-size:10px;background:#EEF7F1;color:#1E6B45;border-radius:999px;padding:2px 7px}
+.apc .chev{margin-left:auto;color:#1E6B45;font-size:18px}
+/* 3D · promise band (above the fold) */
+.apd{display:flex;gap:12px;align-items:center;width:100%;text-align:left;border:0;background:#14231A;color:#fff;padding:12px 16px;font-family:inherit}
+.apd .ring{width:46px;height:46px;margin:0;border-width:1.5px;flex:none}
+.apd .ring b{font-size:16px}
+.apd .ring small{font-size:6.5px}
+.apd b.t{display:block;font-size:13px;font-weight:500}
+.apd .l{font-size:11px;opacity:.8;line-height:1.4;margin-top:2px}
+.apd .chev{margin-left:auto;color:#F2B544;font-size:11px;white-space:nowrap;text-decoration:underline}
+
+/* ---------- NEW 5 · Instagram reels ---------- */
+.igring{display:block;width:40px;height:40px;border-radius:50%;padding:2px;background:conic-gradient(from 200deg,#FEDA75,#FA7E1E,#D62976,#962FBF,#4F5BD5,#FEDA75);flex:none}
+.igring>span{display:block;width:100%;height:100%;border-radius:50%;border:2px solid #fff;background:#1B1E33 center/cover}
+.ighead{display:flex;gap:10px;align-items:center;margin:0 14px 10px}
+.ighead b{font-size:14px;font-weight:500;display:block}
+.ighead small{font-size:11px;color:#707078}
+.follow{margin-left:auto;border:0;border-radius:999px;padding:7px 14px;font-size:12px;font-weight:500;color:#fff;background:linear-gradient(90deg,#962FBF,#D62976,#FA7E1E)}
+.reel{flex:none;width:132px;height:234px;border-radius:14px;position:relative;overflow:hidden;border:0;padding:0;background:#222;color:#fff;text-align:left}
+.reel .bg{position:absolute;inset:-6%;background:#333 top/cover;animation:kb 9s ease-in-out infinite alternate}
+.reel:nth-child(2n) .bg{animation-delay:-4s}
+@keyframes kb{from{transform:scale(1)}to{transform:scale(1.08) translateY(-2%)}}
+.reel .shade{position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.25),transparent 30%,transparent 55%,rgba(0,0,0,.75))}
+.reel .ric{position:absolute;top:8px;right:8px}
+.reel .cap{position:absolute;left:9px;right:9px;bottom:9px;font-size:11px;line-height:1.35}
+.reel .shop{display:inline-block;margin-top:6px;background:rgba(255,255,255,.95);color:#1F212E;border-radius:999px;padding:4px 9px;font-size:10px;font-weight:500}
+.stories{display:flex;gap:14px;overflow-x:auto;padding:14px 14px 2px;scrollbar-width:none}
+.stories::-webkit-scrollbar{display:none}
+.story{flex:none;width:66px;border:0;background:none;padding:0;text-align:center;font-size:10.5px;color:#1F212E}
+.story .igring{width:66px;height:66px;padding:2.5px;margin-bottom:5px}
+.story .igring>span{border-width:2.5px}
+.feat{margin:0 14px;border-radius:18px;overflow:hidden;position:relative;height:440px;background:#222;color:#fff}
+.feat .bg{position:absolute;inset:-4%;background:#333 top/cover;animation:kb 10s ease-in-out infinite alternate}
+.feat .shade{position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.35),transparent 25%,transparent 55%,rgba(0,0,0,.8))}
+.feat .top{position:absolute;top:12px;left:12px;right:12px;display:flex;gap:8px;align-items:center;font-size:12px;font-weight:500}
+.feat .top .igring{width:30px;height:30px}
+.feat .mute{margin-left:auto;font-size:11px;background:rgba(0,0,0,.4);border-radius:999px;padding:4px 9px}
+.feat .bot{position:absolute;left:12px;right:12px;bottom:12px}
+.feat .bot p{font-size:12.5px;line-height:1.4;margin:0 0 10px}
+.pchip{display:flex;gap:10px;align-items:center;background:#fff;color:#1F212E;border-radius:12px;padding:7px;width:100%;border:0;text-align:left}
+.pchip img{width:40px;height:52px;object-fit:cover;border-radius:8px}
+.pchip b{font-size:12px;font-weight:500;display:block;line-height:1.3}
+.pchip small{font-size:11px;color:#C8401E;font-weight:500}
+.pchip i{margin-left:auto;font-style:normal;font-size:16px;color:#707078;padding-right:6px}
+.fthumbs{display:flex;gap:8px;padding:10px 14px 0;overflow-x:auto;scrollbar-width:none}
+.fthumbs button{flex:none;width:56px;height:84px;border-radius:10px;border:2px solid transparent;background:#ddd top/cover;padding:0}
+.fthumbs button.on{border-color:#D62976}
+/* full-screen reel viewer */
+.viewer{position:absolute;inset:0;z-index:40;background:#000;color:#fff}
+.viewer .bg{position:absolute;inset:0;background:#111 top/cover}
+.viewer .shade{position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.45),transparent 22%,transparent 60%,rgba(0,0,0,.85))}
+.vbars{position:absolute;top:10px;left:10px;right:10px;display:flex;gap:4px}
+.vbars i{flex:1;height:2.5px;border-radius:2px;background:rgba(255,255,255,.35);overflow:hidden}
+.vbars i b{display:block;height:100%;width:0;background:#fff}
+.vbars i.done b{width:100%}
+.vbars i.cur b{animation:fill 6s linear forwards}
+@keyframes fill{to{width:100%}}
+.vhead{position:absolute;top:22px;left:12px;right:12px;display:flex;gap:8px;align-items:center;font-size:12.5px;font-weight:500}
+.vhead .igring{width:32px;height:32px}
+.vhead small{display:block;font-weight:400;font-size:10.5px;opacity:.8}
+.vx{margin-left:auto;border:0;background:none;color:#fff;font-size:24px;width:36px;height:36px}
+.vtap{position:absolute;top:70px;bottom:170px;width:40%;border:0;background:transparent}
+.vtap.l{left:0}.vtap.r{right:0}
+.vbot{position:absolute;left:12px;right:12px;bottom:16px}
+.vbot p{font-size:13px;line-height:1.45;margin:0 0 10px}
+.vig{display:block;text-align:center;font-size:11.5px;opacity:.8;margin-top:10px}
+
+/* ---------- 2C · reviews, summary + cards ---------- */
+.rc{background:#FCF8F4;border-radius:18px;padding:18px 14px}
+.rc .h2{margin:0}
+.rc .hsub{margin:2px 0 14px}
+.rcsum{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;background:#fff;border-radius:14px;padding:14px;border:1px solid #F0E4DA}
+.rcsum .big{font-size:40px}
+.dist{display:grid;gap:4px}
+.dist div{display:grid;grid-template-columns:22px 1fr 30px;gap:6px;align-items:center;font-size:10.5px;color:#545454}
+.dist .bar i{background:#F2A900}
+.dist b{font-weight:400;text-align:right}
+.rcards{display:flex;gap:10px;overflow-x:auto;margin:12px -14px 0;padding:0 14px 2px;scrollbar-width:none}
+.rcards::-webkit-scrollbar{display:none}
+.rcard{flex:none;width:250px;background:#fff;border-radius:14px;border:1px solid #F0E4DA;padding:14px;display:flex;flex-direction:column;gap:9px;font-size:12.5px;line-height:1.5}
+.rcard .qm{font-family:Georgia,serif;font-size:30px;line-height:.6;color:#C8401E;height:12px}
+.rcard .who{display:flex;gap:9px;align-items:center;margin-top:auto}
+.av{width:34px;height:34px;border-radius:50%;background:#C8401E;color:#fff;display:grid;place-items:center;font-size:12px;font-weight:500;flex:none}
+.rcard .who b{display:block;font-weight:500;font-size:12.5px}
+.rcard .who small{font-size:10.5px;color:#707078}
+.vf{margin-left:auto;font-size:10px;color:#1E6B45;background:#EEF7F1;border-radius:999px;padding:3px 7px;white-space:nowrap}
+.tag{display:none;align-self:flex-start;font-size:9.5px;font-weight:500;border-radius:6px;padding:2px 6px;letter-spacing:.03em}
+.showtags .tag{display:inline-block}
+.tag.pos{background:#E4F4EA;color:#1E6B45}.tag.neu{background:#FFF4D6;color:#8A6200}.tag.neg{background:#FDE7E7;color:#B42318}
+.tag.src{background:#EEF0FF;color:#3346B8}
+.tag.def{background:#F1F1F3;color:#545454}
+
 /* promise sheet (same copy as the live AuthenticityPromiseModal) */
 .psheet{max-height:80%;overflow-y:auto}
 .psheet h4{font-size:17px;font-weight:500;margin:0 0 10px}
@@ -219,6 +319,7 @@ a{color:inherit;text-decoration:none}
       <div class="trust"><div><b>7-day</b>easy returns</div><div><b>COD</b>available</div><div><b>100%</b>secure pay</div></div>
       <div class="strip s1">🚚 Free shipping on prepaid orders over ₹499 · 🌏 Ships worldwide</div>
       <div class="strip s2" id="oldPromise">✓ Fabric, yarn, silk &amp; zari — verified on every saree. <b>The Crafts Archive's Authenticity Promise.</b></div>
+      <div data-slot="ap-top"></div>
 
       <!-- NEW 1B: inline welcome card -->
       <div class="wcard new" data-tag="NEW · WELCOME (CARD)" id="welcomeCard" hidden>
@@ -228,7 +329,9 @@ a{color:inherit;text-decoration:none}
       </div>
 
       <div class="owner"><div class="oav">S</div><div><b style="font-weight:500">Curated by Satish</b><small>✓ Verified · Fulfilled by Wcommerce</small></div><a>Meet the owner →</a></div>
+      <div data-slot="ig-top"></div>
       <div class="hsearch">🔍 Search sarees, kurtas, "kota doria"…</div>
+      <div data-slot="ap-search"></div>
       <div class="fest"><div class="e">THE DIWALI EDIT</div><div class="h">Dress for the festival of lights</div><div class="s">Sarees and jewelry from Indian craft clusters, handpicked by Satish.</div><div class="r"><span>Shop now</span><span>DIWALI10 · 10% off</span></div></div>
 
       <!-- NEW 4: shop by occasion (slot: after the festival banner) -->
@@ -238,6 +341,7 @@ a{color:inherit;text-decoration:none}
       <div class="hsub">Recently added by Satish</div>
       <div class="rail" id="newRail"></div>
 
+      <div data-slot="ig-mid"></div>
       <div data-slot="occ-mid"></div>
       <div data-slot="rev-mid"></div>
       <div data-slot="ap-mid"></div>
@@ -249,17 +353,14 @@ a{color:inherit;text-decoration:none}
       <div class="hsub">Weaves, prints &amp; embroidery from India's craft clusters</div>
       <div class="rail" id="craftRail"></div>
 
+      <div data-slot="ig-low"></div>
       <div data-slot="ap-low"></div>
       <div data-slot="rev-low"></div>
 
       <div class="footer"><b>The Crafts Archive</b>A store by Satish Madiraju · Hyderabad, Telangana<br><br>Shop · Jewelry · The Store · Policies …</div>
     </div>
-    <button class="igfab mark" id="igFab" aria-label="Satish on Instagram">
-      <span class="igic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#fff" stroke="none"/></svg></span>
-      <span class="igtxt">Follow Satish<small>New pieces first on Instagram</small></span>
-    </button>
     <div class="fab"><i></i><div>Ask Satish<small>~10 min</small></div></div>
-    <div class="toast" id="toast"></div>
+    <div class="viewer" id="viewer" hidden></div>
 
     <!-- NEW 1A: first-visit sheet -->
     <div class="dim" id="dim" hidden></div>
@@ -303,8 +404,10 @@ a{color:inherit;text-decoration:none}
 
     <div class="grp">
       <h2>2 · Customer reviews <a href="#" data-jump="rev">See it ↓</a></h2>
-      <p>Proof from real buyers, on the home page instead of only on /reviews.</p>
+      <p>Proof from real buyers, on the home page instead of only on /reviews. C takes its layout idea from dattagurusarees.com (score + star split + cards with name, city and what they bought), redrawn in our style.</p>
       <div class="seg" data-k="r">
+        <button data-v="c">C · Summary + review cards</button>
+        <button data-v="d">D · Review + the saree they bought</button>
         <button data-v="a">A · Rating summary card</button>
         <button data-v="b">B · Swipeable quote cards</button>
         <button data-v="off">Off</button>
@@ -313,18 +416,34 @@ a{color:inherit;text-decoration:none}
         <button data-v="mid">After Newly Arrived</button>
         <button data-v="low">Lower, after crafts</button>
       </div>
-      <div class="data">Live data from <b>get_reviews</b>: 4.6 overall · Packaging 4.8 · Delivery 4.6 · As described 4.5. Quotes are real review text.</div>
+      <p style="margin:12px 0 6px"><b style="font-weight:500">Which reviews show (try both):</b></p>
+      <div class="seg" data-k="pool">
+        <button data-v="rich">Store has many reviews</button>
+        <button data-v="thin">Store has few reviews</button>
+      </div>
+      <div class="seg" data-k="tags" style="margin-top:6px">
+        <button data-v="on">Show labels (team view)</button>
+        <button data-v="off">Hide labels (shopper view)</button>
+      </div>
+      <div class="data">
+        <b>Picking rule:</b> 1) this store's own reviews first (its orders + pool reviews that name this store) · 2) positive first, then neutral, never negative on the home page · 3) fewer than 4? fill from the <b>default pool</b> (general positive reviews that name no store). A review that names a store never shows on another store.<br><br>
+        "Few reviews" uses real default-pool quotes and the real 4.6 / 161. "Many reviews" uses sample store reviews and numbers.
+      </div>
     </div>
 
     <div class="grp">
       <h2>3 · Authenticity guarantee <a href="#" data-jump="ap">See it ↓</a></h2>
-      <p>Replaces the one-line green strip with a full section. Tap "Read the full promise" to see the existing promise sheet.</p>
+      <p>Sir: must be <b>above the fold</b> (seen without scrolling). C and D are short so they fit in the first screen; A and B are full sections for lower down. All replace the one-line green strip. Tap any of them to see the existing promise sheet.</p>
       <div class="seg" data-k="g">
+        <button data-v="c">C · Compact card (above fold)</button>
+        <button data-v="d">D · Dark promise band (above fold)</button>
         <button data-v="a">A · How it works (3 steps)</button>
         <button data-v="b">B · Certificate seal</button>
         <button data-v="off">Off (keep strip)</button>
       </div>
       <div class="seg" data-k="gp" style="margin-top:6px">
+        <button data-v="top">Top, under the strips</button>
+        <button data-v="search">After the search bar</button>
         <button data-v="mid">After Newly Arrived</button>
         <button data-v="low">Lower, after crafts</button>
       </div>
@@ -347,13 +466,20 @@ a{color:inherit;text-decoration:none}
     </div>
 
     <div class="grp">
-      <h2>5 · Instagram button</h2>
-      <p>Sits just above "Ask Satish" and opens the store owner's Instagram profile.</p>
+      <h2>5 · Instagram reels <a href="#" data-jump="igsec">See it ↓</a></h2>
+      <p>The owner connects Instagram in the partner portal and picks which reels show on the store. Tap any reel to open the full-screen player with "Shop this saree".</p>
       <div class="seg" data-k="ig">
-        <button data-v="a">A · Pill with text</button>
-        <button data-v="b">B · Round icon only</button>
+        <button data-v="a">A · Reels row</button>
+        <button data-v="b">B · Story circles</button>
+        <button data-v="c">C · One big reel + thumbnails</button>
         <button data-v="off">Off</button>
       </div>
+      <div class="seg" data-k="igp" style="margin-top:6px">
+        <button data-v="top">Top, under the owner card</button>
+        <button data-v="mid">After Newly Arrived</button>
+        <button data-v="low">Lower, after crafts</button>
+      </div>
+      <div class="data">Reel pictures and captions are stand-ins (store photos). In the real build they come from the reels the owner picked.</div>
     </div>
 
     <div class="grp">
@@ -390,16 +516,47 @@ a{color:inherit;text-decoration:none}
     { k: 'Daily', label: 'Everyday', sub: 'Breathable cottons', img: POCH, items: [['Pochampally Ikat Saree', POCH], ['Mangalagiri Cotton Saree', MANGALAGIRI], NEW[0]] }
   ];
 
-  // Real review text from get_reviews (thecraftsarchive.com, 5 Nov). Only service/quality comments;
-  // the feed also has comments about food and soap from other stores, which are left out on purpose.
-  var QUOTES = [
-    ['Ishita', 5, 'Products were packed in good condition and items arrived in good condition.'],
-    ['Bhavana', 5, 'Delivered before the committed date.'],
-    ['Yogesh', 5, 'Excellent products and easy to order. Delivery experience was also very good.'],
-    ['Anupama', 5, 'Extremely happy with the quality and delivery time. Glad to be a Wcommerce customer.'],
-    ['Nisha', 5, 'I really like the products — better than my expectations. Good packaging, nice quantity and trustworthy products.']
+  // Review pool logic (proposal):
+  //  1. Store's own reviews first = reviews on this store's orders + pool reviews that name this store.
+  //  2. Positive first, then neutral. Negative never on the home page.
+  //  3. Not enough store reviews (< 4)? Fill with the DEFAULT pool: general positive reviews that
+  //     name no store. A review that names a store never shows on any other store.
+  // DEFAULT pool quotes are real seeded reviews (get_reviews, 5 Nov), word for word.
+  // STORE quotes are sample text: the store has only a handful of real order reviews today.
+  var POOL_DEFAULT = [
+    { n: 'Ishita', r: 5, s: 'pos', t: 'Products were packed in good condition and items arrived in good condition.' },
+    { n: 'Yogesh', r: 5, s: 'pos', t: 'Excellent products and easy to order. Delivery experience was also very good.' },
+    { n: 'Bhavana', r: 5, s: 'pos', t: 'Delivered before the committed date.' },
+    { n: 'Nisha', r: 5, s: 'pos', t: 'I really like the products — better than my expectations. Good packaging, nice quantity and trustworthy products.' },
+    { n: 'Anupama', r: 5, s: 'pos', t: 'Extremely happy with the quality and delivery time. Glad to be a Wcommerce customer.' }
   ];
-  var R = { overall: 4.6, total: 161, packaging: 4.8, delivery: 4.6, described: 4.5 };
+  var POOL_STORE = [
+    { n: 'Lakshmi P.', c: 'Hyderabad', r: 5, s: 'pos', p: 0, t: 'The Gadwal checks saree is exactly like the photos. Zari is neat and the fall and pico were already done.' },
+    { n: 'Priya S.', c: 'Bengaluru', r: 5, s: 'pos', p: 3, t: 'The peach katan silk looks even richer in person. Beautifully packed and it came in 4 days.' },
+    { n: 'Ramya K.', c: 'Vijayawada', r: 4.7, s: 'pos', p: 2, t: 'Loved that the authenticity card came with it. Ordering again from The Crafts Archive for Diwali.' },
+    { n: 'Sunitha R.', c: 'Chennai', r: 4.3, s: 'neu', p: 1, t: 'Colour is a little darker than the photo, but the weave is lovely.' }
+  ];
+  // Summaries: default = real platform numbers; store = sample.
+  var SUM_DEFAULT = { overall: 4.6, total: 161, packaging: 4.8, delivery: 4.6, described: 4.5, dist: [74, 19, 4, 2, 1], label: 'verified Wcommerce deliveries' };
+  var SUM_STORE = { overall: 4.8, total: 46, packaging: 4.9, delivery: 4.7, described: 4.8, dist: [82, 12, 4, 1, 1], label: 'reviews from buyers of this store' };
+  var R = SUM_DEFAULT;
+  function pool() {
+    var store = S.pool === 'rich' ? POOL_STORE : POOL_STORE.slice(0, 1);
+    var picked = store.map(function (x) { return Object.assign({ src: 'store' }, x); });
+    picked.sort(function (a, b) { return (a.s === 'pos' ? 0 : 1) - (b.s === 'pos' ? 0 : 1) || b.r - a.r; });
+    var fill = POOL_DEFAULT.map(function (x) { return Object.assign({ src: 'def' }, x); });
+    while (picked.length < 4 && fill.length) picked.push(fill.shift());
+    return { sum: S.pool === 'rich' ? SUM_STORE : SUM_DEFAULT, list: picked };
+  }
+  function tags(q) {
+    return '<span class="tag ' + q.s + '">' + { pos: 'POSITIVE', neu: 'NEUTRAL', neg: 'NEGATIVE' }[q.s] + '</span> ' +
+      '<span class="tag ' + (q.src === 'store' ? 'src">THIS STORE' : 'def">DEFAULT POOL') + '</span>';
+  }
+  function whoLine(q) {
+    var bits = [q.c, q.p != null ? 'Bought: ' + NEW[q.p][0].split(' Saree')[0] : null].filter(Boolean);
+    return bits.length ? bits.join(' · ') : 'Verified buyer';
+  }
+  function initials(n) { return n.split(/\s+/).map(function (w) { return w[0]; }).join('').slice(0, 2).toUpperCase(); }
 
   var WHY = [
     ['#FDF1EC', '🧵', 'Handpicked by Satish', 'Sarees and jewelry from India’s craft clusters, mostly one of a kind.'],
@@ -427,23 +584,53 @@ a{color:inherit;text-decoration:none}
 
   // ---- builders for the new sections ----
   function reviewsA() {
+    var P = pool(), R = P.sum;
     var asp = [['Packaging', R.packaging], ['Delivery', R.delivery], ['As described', R.described]].map(function (a) {
       return '<div><span>' + a[0] + '</span><span class="bar"><i style="width:' + (a[1] / 5 * 100) + '%"></i></span><b>' + a[1] + '</b></div>';
     }).join('');
     return '<div class="sec new" data-tag="NEW · REVIEWS (A)" id="rev">' +
       '<h2 class="h2" style="margin:0 0 2px">What buyers <em>say</em></h2><div class="hsub" style="margin:0 0 10px">Ratings from verified deliveries</div>' +
       '<div class="rv"><div class="rvtop"><div class="big">' + R.overall + '</div><div><div class="stars">' + stars(R.overall) + '</div>' +
-      '<div class="rvcount">' + R.total + ' reviews from verified buyers</div><span class="vb">✓ Only people who received an order can rate</span></div></div>' +
+      '<div class="rvcount">' + R.total + ' ' + R.label + '</div><span class="vb">✓ Only people who received an order can rate</span></div></div>' +
       '<div class="asp">' + asp + '</div>' +
-      QUOTES.slice(0, 2).map(function (q) { return '<div class="quote">“' + esc(q[2]) + '”<small>' + q[0] + ' · Verified buyer · ' + stars(q[1]) + '</small></div>'; }).join('') +
-      '<div class="more"><span>Read all ' + R.total + ' reviews</span><span>→</span></div></div></div>';
+      P.list.slice(0, 2).map(function (q) { return '<div class="quote">' + tags(q) + '“' + esc(q.t) + '”<small>' + esc(q.n) + ' · ' + esc(whoLine(q)) + ' · ' + stars(q.r) + '</small></div>'; }).join('') +
+      '<div class="more"><span>Read all reviews</span><span>→</span></div></div></div>';
   }
   function reviewsB() {
+    var P = pool(), R = P.sum;
     return '<div class="new" data-tag="NEW · REVIEWS (B)" id="rev" style="margin:26px 0 0">' +
-      '<h2 class="h2" style="margin-top:0">Loved by <em>buyers</em></h2><div class="hsub">' + R.overall + '★ average · ' + R.total + ' verified deliveries</div>' +
+      '<h2 class="h2" style="margin-top:0">Loved by <em>buyers</em></h2><div class="hsub">' + R.overall + '★ average · ' + R.total + ' ' + R.label + '</div>' +
       '<div class="rail"><div class="sumcard"><div class="big">' + R.overall + '★</div><small>' + R.total + ' reviews<br>Packaging ' + R.packaging + ' · Delivery ' + R.delivery + '</small><small style="margin-top:auto;color:#F2B544">See all →</small></div>' +
-      QUOTES.map(function (q) { return '<div class="qcard"><div class="stars">' + stars(q[1]) + '</div>“' + esc(q[2]) + '”<div class="who"><i>' + q[0][0] + '</i><div><b>' + q[0] + '</b>Verified buyer</div></div></div>'; }).join('') +
+      P.list.map(function (q) { return '<div class="qcard">' + tags(q) + '<div class="stars">' + stars(q.r) + '</div>“' + esc(q.t) + '”<div class="who"><i>' + q.n[0] + '</i><div><b>' + esc(q.n) + '</b>' + esc(whoLine(q)) + '</div></div></div>'; }).join('') +
       '</div></div>';
+  }
+  // C: inspired by the reference store's layout (summary + distribution + cards), in our own style.
+  function reviewsC() {
+    var P = pool(), R = P.sum;
+    var dist = R.dist.map(function (p, i) { return '<div><span>' + (5 - i) + '★</span><span class="bar"><i style="width:' + p + '%"></i></span><b>' + p + '%</b></div>'; }).join('');
+    return '<div class="sec new" data-tag="NEW · REVIEWS (C)" id="rev"><div class="rc">' +
+      '<h2 class="h2">What our <em>customers</em> say</h2><div class="hsub">Real reviews from verified buyers</div>' +
+      '<div class="rcsum"><div style="text-align:center"><div class="big">' + R.overall + '</div><div class="stars">' + stars(R.overall) + '</div>' +
+      '<div class="rvcount" style="font-size:10.5px">' + R.total + ' reviews</div></div><div class="dist">' + dist + '</div></div>' +
+      '<div class="rcards">' + P.list.map(function (q) {
+        return '<div class="rcard">' + (S.tags === 'on' ? '<div>' + tags(q) + '</div>' : '') + '<div class="stars">' + stars(q.r) + '</div><div class="qm">“</div>' + esc(q.t) +
+          '<div class="who"><span class="av">' + initials(q.n) + '</span><div><b>' + esc(q.n) + '</b><small>' + esc(whoLine(q)) + '</small></div><span class="vf">✓ Verified</span></div></div>';
+      }).join('') + '</div>' +
+      '<div class="more" style="margin-top:14px"><span>Read all reviews</span><span>→</span></div></div></div>';
+  }
+  // D: each review linked to the piece the buyer bought (store reviews only have a product).
+  function reviewsD() {
+    var P = pool(), R = P.sum;
+    return '<div class="sec new" data-tag="NEW · REVIEWS (D)" id="rev">' +
+      '<h2 class="h2" style="margin:0 0 2px">Bought &amp; <em>loved</em></h2><div class="hsub" style="margin:0 0 10px">' + R.overall + '★ · ' + R.total + ' ' + R.label + '</div>' +
+      P.list.slice(0, 3).map(function (q) {
+        var pr = q.p != null ? NEW[q.p] : null;
+        return '<div class="rv" style="display:flex;gap:12px;padding:12px;margin-bottom:10px">' +
+          (pr ? '<img alt="" src="' + img(pr[1], 'w-120,h-160,fo-top') + '" style="width:64px;height:86px;object-fit:cover;border-radius:10px;flex:none">' : '<span class="av" style="width:64px;height:64px;font-size:18px">' + initials(q.n) + '</span>') +
+          '<div style="font-size:12px;line-height:1.45;min-width:0">' + tags(q) + '<div class="stars">' + stars(q.r) + '</div>“' + esc(q.t) + '”' +
+          '<div style="font-size:10.5px;color:#707078;margin-top:4px">' + esc(q.n) + ' · ' + esc(whoLine(q)) + '</div>' +
+          (pr ? '<div style="font-size:11px;color:#C8401E;font-weight:500;margin-top:4px">Shop this saree →</div>' : '') + '</div></div>';
+      }).join('') + '<div class="more"><span>Read all reviews</span><span>→</span></div></div>';
   }
   var FOUR = '<div class="four"><span>Fabric</span><span>Yarn</span><span>Silk</span><span>Zari</span></div>';
   function promiseA() {
@@ -465,6 +652,71 @@ a{color:inherit;text-decoration:none}
       '<div class="refund"><div><b>100%</b>saree price</div><div><b>+ lab fee</b>up to ₹2,000</div></div>' +
       '<button class="aplink" data-open-promise>Read the full promise</button></div></div>';
   }
+  var RING = '<div class="ring"><div><b>45</b><small>DAY<br>PROMISE</small></div></div>';
+  function promiseC() {
+    return '<div class="new" data-tag="NEW · AUTHENTICITY (C)" id="ap" style="margin:12px 14px 0"><button class="apc" data-open-promise>' + RING +
+      '<div><b class="t">Authenticity Promise on every saree</b><div class="l">Verified before it ships. Lab mismatch in 45 days = full refund.</div>' +
+      '<div class="mini"><span>✓ Fabric</span><span>✓ Yarn</span><span>✓ Silk</span><span>✓ Zari</span></div></div><span class="chev">›</span></button></div>';
+  }
+  function promiseD() {
+    return '<div class="new" data-tag="NEW · AUTHENTICITY (D)" id="ap" style="margin-top:14px"><button class="apd" data-open-promise>' + RING +
+      '<div><b class="t">Every saree verified · 45-day promise</b><div class="l">Fabric, yarn, silk &amp; zari checked. Lab finds a mismatch? Full refund.</div></div><span class="chev">How it works</span></button></div>';
+  }
+
+  // Instagram reels (stand-in pictures: store photos; real build = the reels the owner picked).
+  var BTS = 'https://ik.imagekit.io/3quk5czhx/temp/';
+  var REELS = [
+    { t: 'Behind the loom', img: BTS + '5913aa47-88e7-4cb7-affc-b56cb25ef834_Thumbnail%202.webp', cap: 'Inside a Lucknow chikankari karkhana. Every stitch by hand.', p: NEW[1] },
+    { t: 'New in', img: img(NEW[3][1], 'w-400,h-700,fo-top'), cap: 'Peach coral katan silk, just in. One piece only.', p: NEW[3] },
+    { t: 'Banarasi', img: img(NEW[2][1], 'w-400,h-700,fo-top'), cap: 'Jet black Banarasi with gold zari. How to drape it for a wedding.', p: NEW[2] },
+    { t: 'Sourcing', img: BTS + 'ceac3ba8-b7e4-469a-8ce5-78242cdf239a_Janapada%20Khadi%20(1).webp', cap: 'Block printing at Janapada Khadi, Melkote.', p: NEW[0] },
+    { t: 'Styling', img: img(NEW[4][1], 'w-400,h-700,fo-top'), cap: 'Pastel blue katan silk, 3 ways to style it.', p: NEW[4] },
+    { t: 'Kanchipuram', img: BTS + '1f8800a6-c303-476c-8858-f74e61f6f07b_Kanchipuram.webp', cap: 'Kanchipuram weavers at work.', p: NEW[2] }
+  ];
+  var LOGO = 'https://ik.imagekit.io/3quk5czhx/store/0b571484-fe75-423f-8070-90bc4de4cb4c_TheCraftsArchive_profile_stacked_1080.png?tr=w-96,c-at_max';
+  var ringAv = '<span class="igring"><span style="background-image:url(\'' + LOGO + '\')"></span></span>';
+  var REELIC = '<svg class="ric" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M3 8h18M8 3l3 5M14 3l3 5"/><path d="M10 11.5v5l4.5-2.5z" fill="#fff" stroke="none"/></svg>';
+  function igHead(sub) {
+    return '<div class="ighead">' + ringAv + '<div><b>Satish on Instagram</b><small>' + sub + '</small></div><button class="follow">Follow</button></div>';
+  }
+  function igA() {
+    return '<div class="new" data-tag="NEW · REELS (A)" id="igsec" style="margin:26px 0 0">' + igHead('Reels picked by Satish') +
+      '<div class="rail">' + REELS.map(function (r, i) {
+        return '<button class="reel" data-reel="' + i + '"><span class="bg" style="background-image:url(\'' + r.img + '\')"></span><span class="shade"></span>' + REELIC +
+          '<span class="cap">' + esc(r.cap) + '<br><span class="shop">Shop the look</span></span></button>';
+      }).join('') + '</div></div>';
+  }
+  function igB() {
+    return '<div class="new" data-tag="NEW · REELS (B)" id="igsec" style="margin:14px 0 0"><div class="stories">' + REELS.map(function (r, i) {
+      return '<button class="story" data-reel="' + i + '"><span class="igring"><span style="background-image:url(\'' + r.img + '\')"></span></span>' + r.t + '</button>';
+    }).join('') + '</div></div>';
+  }
+  function igC() {
+    var r = REELS[0];
+    return '<div class="new" data-tag="NEW · REELS (C)" id="igsec" style="margin:26px 0 0">' + igHead('Watch, then shop the saree') +
+      '<div class="feat" id="feat" data-reel="0" role="button"><span class="bg" style="background-image:url(\'' + r.img + '\')"></span><span class="shade"></span>' +
+      '<div class="top">' + ringAv.replace('igring', 'igring') + '<span>The Crafts Archive</span><span class="mute">🔇 Tap to watch</span></div>' +
+      '<div class="bot"><p id="featCap">' + esc(r.cap) + '</p>' + pchip(r.p) + '</div></div>' +
+      '<div class="fthumbs">' + REELS.map(function (x, i) { return '<button class="' + (i ? '' : 'on') + '" data-feat="' + i + '" style="background-image:url(\'' + x.img + '\')" aria-label="' + esc(x.t) + '"></button>'; }).join('') + '</div></div>';
+  }
+  function pchip(p) {
+    return '<button class="pchip"><img alt="" src="' + img(p[1], 'w-80,h-104,fo-top') + '"><span><b>' + esc(p[0]) + '</b><small>Shop this saree →</small></span><i>›</i></button>';
+  }
+  var cur = 0;
+  function openViewer(i) {
+    cur = (i + REELS.length) % REELS.length;
+    var r = REELS[cur], v = $('#viewer');
+    v.innerHTML = '<span class="bg" style="background-image:url(\'' + r.img + '\')"></span><span class="shade"></span>' +
+      '<div class="vbars">' + REELS.map(function (x, k) { return '<i class="' + (k < cur ? 'done' : k === cur ? 'cur' : '') + '"><b></b></i>'; }).join('') + '</div>' +
+      '<div class="vhead">' + ringAv + '<div>The Crafts Archive<small>Reel · from Instagram</small></div><button class="vx" data-vclose aria-label="Close">×</button></div>' +
+      '<button class="vtap l" data-vprev aria-label="Previous"></button><button class="vtap r" data-vnext aria-label="Next"></button>' +
+      '<div class="vbot"><p>' + esc(r.cap) + '</p>' + pchip(r.p) + '<a class="vig">View on Instagram ↗</a></div>';
+    v.hidden = false;
+    clearTimeout(v._t);
+    v._t = setTimeout(function () { if (!v.hidden) openViewer(cur + 1); }, 6000);
+  }
+  function closeViewer() { var v = $('#viewer'); v.hidden = true; clearTimeout(v._t); }
+
   function occA() {
     return '<div class="sec new" data-tag="NEW · OCCASION (A)" id="occ">' +
       '<h2 class="h2" style="margin:0 0 2px">Shop by <em>Occasion</em></h2><div class="hsub" style="margin:0 0 10px">Sarees for every day of your calendar</div>' +
@@ -481,9 +733,7 @@ a{color:inherit;text-decoration:none}
   }
 
   // ---- state <-> URL ----
-  var DEF = { w: 'a', r: 'a', rp: 'mid', g: 'a', gp: 'mid', o: 'a', op: 'top', ig: 'a' };
-  // Satish's Instagram link goes here once we have it. Empty = demo shows a note instead of opening a page.
-  var IG_URL = '';
+  var DEF = { w: 'a', r: 'c', rp: 'mid', g: 'c', gp: 'top', o: 'a', op: 'top', ig: 'a', igp: 'mid', pool: 'rich', tags: 'off' };
   var S = {};
   var q = new URLSearchParams(location.search);
   Object.keys(DEF).forEach(function (k) { S[k] = q.get(k) || DEF[k]; });
@@ -500,19 +750,19 @@ a{color:inherit;text-decoration:none}
     $$('[data-slot]').forEach(function (el) { el.innerHTML = ''; });
     // order inside the "mid" area: occasion, then reviews, then promise
     if (S.o !== 'off') $('[data-slot="occ-' + S.op + '"]').innerHTML = S.o === 'a' ? occA() : occB();
-    if (S.r !== 'off') $('[data-slot="rev-' + S.rp + '"]').innerHTML = S.r === 'a' ? reviewsA() : reviewsB();
-    if (S.g !== 'off') $('[data-slot="ap-' + S.gp + '"]').innerHTML = S.g === 'a' ? promiseA() : promiseB();
+    if (S.r !== 'off') $('[data-slot="rev-' + S.rp + '"]').innerHTML = { a: reviewsA, b: reviewsB, c: reviewsC, d: reviewsD }[S.r]();
+    if (S.g !== 'off') $('[data-slot="ap-' + S.gp + '"]').innerHTML = { a: promiseA, b: promiseB, c: promiseC, d: promiseD }[S.g]();
+    if (S.ig !== 'off') $('[data-slot="ig-' + S.igp + '"]').innerHTML = { a: igA, b: igB, c: igC }[S.ig]();
     $('#oldPromise').hidden = S.g !== 'off';
     $('#welcomeCard').hidden = S.w !== 'b';
-    $('#igFab').hidden = S.ig === 'off';
-    $('#igFab').classList.toggle('round', S.ig === 'b');
+    document.body.classList.toggle('showtags', S.tags === 'on');
 
     $$('.seg').forEach(function (seg) {
       var k = seg.getAttribute('data-k');
       $$('button', seg).forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-v') === S[k])); });
     });
     // position rows only matter when the section is on
-    [['rp', 'r'], ['gp', 'g'], ['op', 'o']].forEach(function (x) { $('.seg[data-k="' + x[0] + '"]').hidden = S[x[1]] === 'off'; });
+    [['rp', 'r'], ['gp', 'g'], ['op', 'o'], ['igp', 'ig']].forEach(function (x) { $('.seg[data-k="' + x[0] + '"]').hidden = S[x[1]] === 'off'; });
     writeUrl();
   }
 
@@ -535,7 +785,7 @@ a{color:inherit;text-decoration:none}
   }
 
   document.addEventListener('click', function (e) {
-    var t = e.target.closest('button,a,#dim');
+    var t = e.target.closest('button,a,#dim,[data-reel]');
     if (!t) return;
     var seg = t.parentElement && t.parentElement.classList.contains('seg') ? t.parentElement : null;
     if (seg) {
@@ -565,10 +815,19 @@ a{color:inherit;text-decoration:none}
       $$('#wchips .chip').forEach(function (b) { b.classList.toggle('on', b === t); });
       return;
     }
-    if (t.id === 'igFab') {
-      if (IG_URL) window.open(IG_URL, '_blank', 'noopener');
+    if (t.hasAttribute('data-vclose')) { closeViewer(); return; }
+    if (t.hasAttribute('data-vnext')) { openViewer(cur + 1); return; }
+    if (t.hasAttribute('data-vprev')) { openViewer(cur - 1); return; }
+    if (t.hasAttribute('data-feat')) {
+      var fi = +t.getAttribute('data-feat'), fr = REELS[fi], feat = $('#feat');
+      $$('[data-feat]').forEach(function (b) { b.classList.toggle('on', b === t); });
+      feat.setAttribute('data-reel', fi);
+      $('.bg', feat).style.backgroundImage = 'url(\'' + fr.img + '\')';
+      $('#featCap').textContent = fr.cap;
+      $('.pchip', feat).outerHTML = pchip(fr.p);
       return;
     }
+    if (t.hasAttribute('data-reel')) { openViewer(+t.getAttribute('data-reel')); return; }
     if (t.id === 'markBtn') {
       var off = document.body.classList.toggle('nomark');
       t.textContent = off ? 'Show blue outlines' : 'Hide blue outlines';
