@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Crafts Archive · Home Trust Sections Prototype</title>
+<style>
+@font-face{font-family:"Geomanist";src:url("../password-login/Geomanist-Light.woff2") format("woff2");font-weight:300}
+@font-face{font-family:"Geomanist";src:url("../password-login/Geomanist-Regular.woff2") format("woff2");font-weight:400}
+@font-face{font-family:"Geomanist";src:url("../password-login/Geomanist-Medium.woff2") format("woff2");font-weight:500}
+*{box-sizing:border-box}
+body{margin:0;background:#ECEFF2;font-family:Geomanist,Manrope,system-ui,"Segoe UI",sans-serif;color:#1F212E}
+button{font-family:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:2px solid #4862EE;outline-offset:2px}
+[hidden]{display:none!important}
+a{color:inherit;text-decoration:none}
+
+.stage{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;justify-content:center;padding:28px 16px}
+.phone{position:relative;width:375px;max-width:100%;height:812px;flex-shrink:0;background:#fff;overflow:hidden;border-radius:28px;box-shadow:0 10px 40px rgba(31,33,46,.18)}
+.page{position:absolute;inset:0;overflow-y:auto;scrollbar-width:none;scroll-behavior:smooth}
+.page::-webkit-scrollbar{display:none}
+
+/* ---------- existing home (MyStore.jsx order) ---------- */
+.coupon{position:sticky;top:0;z-index:5;background:#FFF8E7;font-size:11.5px;text-align:center;padding:9px 12px;font-weight:500}
+.coupon i{display:inline-block;width:12px;height:8px;border-radius:2px;background:#E5484D;margin-right:6px;vertical-align:middle}
+.hdr{display:flex;align-items:center;gap:10px;padding:14px 14px 10px}
+.logo{width:40px;height:40px;border-radius:50%;flex:none;background:#1B1E33 url("https://ik.imagekit.io/3quk5czhx/store/0b571484-fe75-423f-8070-90bc4de4cb4c_TheCraftsArchive_profile_stacked_1080.png?tr=w-96,c-at_max") center/cover}
+.sname{font-size:17px;font-weight:500}
+.ssub{font-size:11px;color:#707078;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ibtn{width:36px;height:36px;border-radius:10px;background:#F2F3F5;display:grid;place-items:center;flex:none;border:0}
+.trust{display:grid;grid-template-columns:repeat(3,1fr);background:#1F212E;color:#fff;text-align:center;font-size:10px;padding:7px 0}
+.trust b{display:block;color:#F2B544;font-weight:500;font-size:10.5px}
+.trust div+div{border-left:1px solid #3a3d50}
+.strip{font-size:11px;padding:9px 16px;line-height:1.45}
+.s1{background:#F4F5FF;color:#1F212E}
+.s2{background:#EEF7F1;color:#1F212E}
+.s2 b{font-weight:500}
+.owner{display:flex;gap:10px;align-items:center;margin:14px 14px 0;padding:11px 12px;border:1px solid #E8EAF0;border-radius:999px;font-size:12px}
+.oav{width:30px;height:30px;border-radius:50%;background:#4862EE;color:#fff;display:grid;place-items:center;font-weight:500;flex:none}
+.owner small{display:block;color:#4862EE;font-size:10.5px}
+.owner a{margin-left:auto;color:#4862EE;font-weight:500;font-size:11.5px}
+.hsearch{margin:12px 14px 0;border:1px solid #E8EAF0;border-radius:12px;padding:12px;color:#8a8a92;font-size:13px}
+.fest{margin:14px 14px 0;border-radius:16px;background:#2A0E14;color:#fff;padding:18px 16px}
+.fest .e{font-size:10px;letter-spacing:.14em;color:#F2B544}
+.fest .h{font-family:Georgia,serif;font-size:22px;margin:6px 0}
+.fest .s{font-size:11.5px;opacity:.85}
+.fest .r{display:flex;gap:8px;margin-top:12px}
+.fest .r span{font-size:11px;padding:7px 12px;border-radius:999px;background:#F2B544;color:#2A0E14;font-weight:500}
+.fest .r span+span{background:none;border:1px dashed #F2B544;color:#F2B544}
+.h2{font-size:18px;font-weight:500;margin:22px 14px 2px}
+.h2 em{font-style:normal;color:#C8401E}
+.hsub{font-size:11.5px;color:#707078;margin:0 14px 10px}
+.rail{display:flex;gap:10px;overflow-x:auto;padding:0 14px 4px;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.pcard{flex:none;width:150px}
+.pcard img{width:150px;height:200px;object-fit:cover;border-radius:12px;display:block;background:#F2F3F5}
+.pcard p{font-size:11.5px;margin:6px 0 0;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0 14px}
+.cats div{text-align:center;font-size:10.5px;text-decoration:underline}
+.cats img{width:100%;aspect-ratio:1;object-fit:contain;background:#F2F3F5;border-radius:12px;display:block;margin-bottom:5px}
+.craft{flex:none;width:150px;height:190px;border-radius:14px;background:#ddd center/cover;position:relative;overflow:hidden}
+.craft span{position:absolute;left:0;right:0;bottom:0;padding:24px 10px 9px;color:#fff;font-size:13px;font-weight:500;background:linear-gradient(transparent,rgba(0,0,0,.7))}
+.craft small{display:block;font-weight:400;font-size:10px;opacity:.85}
+.footer{margin-top:26px;background:#1F212E;color:#fff;padding:22px 16px 90px;font-size:11px}
+.footer b{font-weight:500;font-size:14px;display:block}
+.fab{position:absolute;right:12px;bottom:18px;z-index:6;background:#fff;border-radius:999px;box-shadow:0 4px 16px rgba(0,0,0,.18);padding:8px 14px 8px 8px;display:flex;gap:8px;align-items:center;font-size:11.5px;font-weight:500}
+.fab i{width:28px;height:28px;border-radius:50%;background:#25D366;display:block}
+.fab small{display:block;font-weight:400;color:#707078;font-size:9.5px}
+
+/* new-section marker so the reviewer can tell old vs new */
+.new{position:relative;outline:2px dashed #4862EE;outline-offset:4px;border-radius:14px}
+.new::before{content:attr(data-tag);position:absolute;top:-11px;left:10px;z-index:2;background:#4862EE;color:#fff;font-size:9px;letter-spacing:.06em;padding:2px 7px;border-radius:999px;font-weight:500}
+.nomark .new{outline:none}.nomark .new::before{display:none}
+.sec{margin:26px 14px 0}
+
+/* ---------- NEW 1 · welcome ---------- */
+.dim{position:absolute;inset:0;background:rgba(15,16,24,.5);z-index:20;opacity:0;transition:opacity .25s}
+.dim.on{opacity:1}
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:21;background:#fff;border-radius:22px 22px 0 0;padding:10px 18px 20px;transform:translateY(100%);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.sheet.on{transform:none}
+.grab{width:40px;height:4px;border-radius:4px;background:#D9DBE1;margin:0 auto 14px}
+.wtop{display:flex;gap:12px;align-items:center}
+.wtop .logo{width:48px;height:48px}
+.wtitle{font-size:18px;font-weight:500;line-height:1.2}
+.wsub{font-size:11.5px;color:#707078;margin-top:2px}
+.wlist{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:12px}
+.wlist li{display:flex;gap:12px;align-items:flex-start;font-size:12.5px;line-height:1.4}
+.wlist li b{display:block;font-weight:500;font-size:13px}
+.wlist li span{color:#545454}
+.wic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none;font-size:15px}
+.wq{font-size:11.5px;color:#707078;margin:16px 0 8px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid #E1E3EA;background:#fff;border-radius:999px;padding:8px 13px;font-size:12px}
+.chip.on{background:#1F212E;color:#fff;border-color:#1F212E}
+.cta{display:block;width:100%;margin-top:16px;border:0;border-radius:12px;background:#C8401E;color:#fff;font-size:14px;font-weight:500;padding:14px}
+.skip{display:block;margin:10px auto 0;background:none;border:0;color:#707078;font-size:12px}
+.wcard{margin:12px 14px 0;border-radius:16px;padding:14px;background:linear-gradient(135deg,#FFF6EF,#FDF1F4);border:1px solid #F6DCD2;position:relative}
+.wcard .x{position:absolute;right:8px;top:8px;border:0;background:none;font-size:16px;color:#707078;width:28px;height:28px}
+.wcard .wlist{margin-top:10px;gap:8px}
+.wcard .wlist li{font-size:11.5px}
+.wcard .wic{width:26px;height:26px;font-size:12px;border-radius:8px}
+
+/* ---------- NEW 2 · reviews ---------- */
+.rv{border:1px solid #E8EAF0;border-radius:16px;padding:16px;background:#fff}
+.rvtop{display:flex;gap:16px;align-items:center}
+.big{font-size:38px;font-weight:500;line-height:1}
+.stars{color:#F2A900;letter-spacing:1px;font-size:13px}
+.rvcount{font-size:11.5px;color:#545454;margin-top:3px}
+.vb{display:inline-flex;gap:4px;align-items:center;font-size:10px;color:#1E6B45;background:#EEF7F1;border-radius:999px;padding:3px 8px;margin-top:6px}
+.asp{display:grid;gap:7px;margin-top:14px}
+.asp div{display:grid;grid-template-columns:86px 1fr 30px;align-items:center;gap:8px;font-size:11.5px;color:#545454}
+.bar{height:6px;border-radius:6px;background:#EEF0F4;overflow:hidden}
+.bar i{display:block;height:100%;background:#1E6B45;border-radius:6px}
+.asp b{font-weight:500;color:#1F212E;text-align:right}
+.quote{background:#F7F8FA;border-radius:12px;padding:11px 12px;font-size:12px;line-height:1.45;margin-top:10px}
+.quote small{display:block;color:#707078;font-size:10.5px;margin-top:5px}
+.more{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:12px;color:#4862EE;font-weight:500}
+.qcard{flex:none;width:230px;border:1px solid #E8EAF0;border-radius:14px;padding:13px;font-size:12.5px;line-height:1.45;display:flex;flex-direction:column;gap:8px;background:#fff}
+.qcard .who{display:flex;gap:8px;align-items:center;font-size:11px;color:#707078;margin-top:auto}
+.qcard .who i{width:26px;height:26px;border-radius:50%;background:#E8EAFD;color:#4862EE;font-style:normal;font-weight:500;display:grid;place-items:center;font-size:11px}
+.qcard .who b{display:block;color:#1F212E;font-weight:500}
+.sumcard{flex:none;width:150px;border-radius:14px;padding:14px;background:#1F212E;color:#fff;display:flex;flex-direction:column;gap:4px}
+.sumcard .big{font-size:34px}
+.sumcard small{font-size:11px;opacity:.8;line-height:1.4}
+
+/* ---------- NEW 3 · authenticity promise ---------- */
+.ap{border-radius:18px;padding:18px 16px;background:#F3F8F4;border:1px solid #D6E9DC}
+.ap .eb{font-size:10px;letter-spacing:.14em;color:#1E6B45;font-weight:500}
+.ap h3{font-size:18px;font-weight:500;margin:6px 0 4px;line-height:1.25}
+.ap p{font-size:12px;color:#545454;margin:0;line-height:1.45}
+.four{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:14px 0}
+.four span{background:#fff;border:1px solid #D6E9DC;border-radius:10px;padding:9px 0;text-align:center;font-size:11.5px;font-weight:500}
+.four span::before{content:"✓";display:block;color:#1E6B45;font-size:13px}
+.steps{display:grid;gap:0;margin-top:4px;counter-reset:s}
+.step{display:flex;gap:12px;position:relative;padding-bottom:14px}
+.step:last-child{padding-bottom:0}
+.step::before{counter-increment:s;content:counter(s);width:24px;height:24px;flex:none;border-radius:50%;background:#1E6B45;color:#fff;font-size:11.5px;font-weight:500;display:grid;place-items:center;position:relative;z-index:1}
+.step:not(:last-child)::after{content:"";position:absolute;left:11.5px;top:24px;bottom:0;width:1px;background:#B8D8C3}
+.step b{display:block;font-size:12.5px;font-weight:500}
+.step span{font-size:11.5px;color:#545454;line-height:1.4}
+.aplink{display:inline-block;margin-top:14px;font-size:12px;font-weight:500;color:#1E6B45;background:none;border:0;padding:0;text-decoration:underline}
+.seal{border-radius:18px;padding:20px 16px;background:#14231A;color:#fff;text-align:center;position:relative;overflow:hidden}
+.seal::after{content:"";position:absolute;inset:6px;border:1px solid rgba(242,181,68,.35);border-radius:13px;pointer-events:none}
+.ring{width:86px;height:86px;border-radius:50%;margin:0 auto 10px;border:2px solid #F2B544;display:grid;place-items:center;text-align:center;color:#F2B544;line-height:1.05}
+.ring b{font-size:26px;font-weight:500;display:block}
+.ring small{font-size:9px;letter-spacing:.1em}
+.seal h3{font-size:17px;font-weight:500;margin:0 0 6px}
+.seal p{font-size:11.5px;opacity:.85;margin:0 auto;max-width:290px;line-height:1.5}
+.seal .four span{background:transparent;border-color:rgba(242,181,68,.4);color:#fff}
+.seal .four span::before{color:#F2B544}
+.refund{display:flex;justify-content:center;gap:18px;font-size:11px;opacity:.9;margin-top:4px}
+.refund b{display:block;font-size:15px;color:#F2B544;font-weight:500}
+.seal .aplink{color:#F2B544}
+
+/* promise sheet (same copy as the live AuthenticityPromiseModal) */
+.psheet{max-height:80%;overflow-y:auto}
+.psheet h4{font-size:17px;font-weight:500;margin:0 0 10px}
+.psheet p{font-size:12.5px;line-height:1.55;color:#2C2C2C;margin:0 0 10px}
+.psheet p.fine{font-size:11px;color:#707078}
+
+/* ---------- NEW 4 · occasion ---------- */
+.occ{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:150px 150px;gap:10px}
+.otile{border-radius:14px;background:#ddd top/cover;position:relative;overflow:hidden;color:#fff}
+.otile:first-child{grid-row:span 2}
+.otile span{position:absolute;left:0;right:0;bottom:0;padding:30px 12px 11px;background:linear-gradient(transparent,rgba(0,0,0,.72));font-size:15px;font-weight:500}
+.otile small{display:block;font-size:10.5px;font-weight:400;opacity:.9}
+.otabs{display:flex;gap:8px;margin-bottom:12px}
+.otabs .chip{font-size:12.5px;padding:8px 14px}
+.otabs .chip small{opacity:.7;margin-left:3px}
+.oall{display:inline-block;margin:10px 14px 0;font-size:12px;color:#4862EE;font-weight:500}
+
+/* ---------- side panel ---------- */
+.panel{width:400px;max-width:100%;background:#fff;border-radius:18px;padding:20px;box-shadow:0 4px 20px rgba(31,33,46,.08);font-size:13px;line-height:1.45}
+.panel h1{font-size:18px;font-weight:500;margin:0 0 4px}
+.panel .lead{color:#545454;margin:0 0 14px;font-size:12.5px}
+.grp{border-top:1px solid #EEF0F4;padding:14px 0}
+.grp h2{font-size:13.5px;font-weight:500;margin:0 0 3px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.grp h2 a{font-size:11px;color:#4862EE;font-weight:400}
+.grp p{margin:0 0 8px;color:#545454;font-size:12px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{border:1px solid #E1E3EA;background:#fff;border-radius:10px;padding:7px 10px;font-size:12px;text-align:left}
+.seg button[aria-pressed=true]{border-color:#4862EE;background:#F4F5FF;color:#2C3EB8;font-weight:500}
+.data{font-size:11px;color:#707078;margin-top:8px;background:#F7F8FA;border-radius:8px;padding:7px 9px}
+.data b{font-weight:500;color:#1F212E}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.tools button{border:1px solid #E1E3EA;background:#fff;border-radius:999px;padding:7px 12px;font-size:12px}
+.link{font-size:11.5px;color:#707078;margin-top:10px;word-break:break-all}
+
+@media (max-width:420px){
+  .stage{padding:0 0 24px;gap:16px}
+  .phone{width:100%;height:100svh;border-radius:0;box-shadow:none}
+  .panel{border-radius:0;margin:0 16px;width:calc(100% - 32px)}
+}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="phone" id="phone">
+    <div class="page" id="page">
+      <div class="coupon"><i></i>DIWALI10 — 10% off · till 10 Nov →</div>
+      <div class="hdr">
+        <span class="ibtn" aria-hidden="true">≡</span>
+        <div class="logo" aria-hidden="true"></div>
+        <div style="min-width:0;flex:1"><div class="sname">The Crafts Archive</div><div class="ssub">A store by Satish Madiraju, Hyderabad</div></div>
+        <span class="ibtn" aria-hidden="true">🛒</span>
+      </div>
+      <div class="trust"><div><b>7-day</b>easy returns</div><div><b>COD</b>available</div><div><b>100%</b>secure pay</div></div>
+      <div class="strip s1">🚚 Free shipping on prepaid orders over ₹499 · 🌏 Ships worldwide</div>
+      <div class="strip s2" id="oldPromise">✓ Fabric, yarn, silk &amp; zari — verified on every saree. <b>The Crafts Archive's Authenticity Promise.</b></div>
+
+      <!-- NEW 1B: inline welcome card -->
+      <div class="wcard new" data-tag="NEW · WELCOME (CARD)" id="welcomeCard" hidden>
+        <button class="x" aria-label="Close" data-close-card>×</button>
+        <div class="wtitle" style="font-size:15px">New here? Here's why people shop with Satish</div>
+        <ul class="wlist" id="wlistCard"></ul>
+      </div>
+
+      <div class="owner"><div class="oav">S</div><div><b style="font-weight:500">Curated by Satish</b><small>✓ Verified · Fulfilled by Wcommerce</small></div><a>Meet the owner →</a></div>
+      <div class="hsearch">🔍 Search sarees, kurtas, "kota doria"…</div>
+      <div class="fest"><div class="e">THE DIWALI EDIT</div><div class="h">Dress for the festival of lights</div><div class="s">Sarees and jewelry from Indian craft clusters, handpicked by Satish.</div><div class="r"><span>Shop now</span><span>DIWALI10 · 10% off</span></div></div>
+
+      <!-- NEW 4: shop by occasion (slot: after the festival banner) -->
+      <div data-slot="occ-top"></div>
+
+      <h2 class="h2">Newly <em>Arrived</em></h2>
+      <div class="hsub">Recently added by Satish</div>
+      <div class="rail" id="newRail"></div>
+
+      <div data-slot="occ-mid"></div>
+      <div data-slot="rev-mid"></div>
+      <div data-slot="ap-mid"></div>
+
+      <h2 class="h2">Women's Fashion</h2>
+      <div class="cats" id="cats"></div>
+
+      <h2 class="h2">Shop Clothing by <em>Craft</em></h2>
+      <div class="hsub">Weaves, prints &amp; embroidery from India's craft clusters</div>
+      <div class="rail" id="craftRail"></div>
+
+      <div data-slot="ap-low"></div>
+      <div data-slot="rev-low"></div>
+
+      <div class="footer"><b>The Crafts Archive</b>A store by Satish Madiraju · Hyderabad, Telangana<br><br>Shop · Jewelry · The Store · Policies …</div>
+    </div>
+    <div class="fab"><i></i><div>Ask Satish<small>~10 min</small></div></div>
+
+    <!-- NEW 1A: first-visit sheet -->
+    <div class="dim" id="dim" hidden></div>
+    <div class="sheet" id="welcomeSheet" hidden role="dialog" aria-label="Welcome">
+      <div class="grab"></div>
+      <div class="wtop"><div class="logo"></div><div><div class="wtitle">Welcome to The Crafts Archive</div><div class="wsub">A store by Satish Madiraju · Hyderabad</div></div></div>
+      <ul class="wlist" id="wlistSheet"></ul>
+      <div class="wq">What are you shopping for today?</div>
+      <div class="chips" id="wchips"></div>
+      <button class="cta" data-close-sheet>Start shopping</button>
+      <button class="skip" data-close-sheet>Just browsing</button>
+    </div>
+
+    <!-- promise sheet: copy is verbatim from en.json authSheet -->
+    <div class="sheet psheet" id="promiseSheet" hidden role="dialog" aria-label="Authenticity Promise">
+      <div class="grab"></div>
+      <h4>The Crafts Archive's Authenticity Promise</h4>
+      <p>We verify four things on every saree before it reaches you — <b>fabric, yarn, silk, and zari</b> — exactly as listed on this product's Authenticity Card.</p>
+      <p>If an <b>NABL-accredited lab report</b> shows a mismatch on any of these four details within 45 days of delivery, we'll refund the full price of the saree plus your testing cost, up to ₹2,000.</p>
+      <p>This promise applies to sarees, and covers fabric, yarn, silk, and zari composition only.</p>
+      <p class="fine"><b>Fine print:</b> Fulfilled on The Crafts Archive's behalf by Wcommerce. To claim this promise, call the store's support number and return the saree along with your original purchase invoice and the NABL lab report within 45 days of delivery. The Crafts Archive reserves the right to have the item retested at another NABL-accredited lab before processing the refund.</p>
+      <button class="cta" style="background:#1F212E" data-close-sheet>Got it</button>
+    </div>
+  </div>
+
+  <!-- ---------- control panel ---------- -->
+  <div class="panel">
+    <h1>Home page: 4 new sections</h1>
+    <p class="lead">Pick an option for each section. Blue dashed boxes are new; everything else is the live home page today. Each choice changes the page link, so you can send one link per combination.</p>
+
+    <div class="grp">
+      <h2>1 · Welcome on first visit <a href="#" data-replay>Show again ↺</a></h2>
+      <p>What a new shopper sees the moment they land.</p>
+      <div class="seg" data-k="w">
+        <button data-v="a">A · Bottom sheet on landing</button>
+        <button data-v="b">B · Card under the strips</button>
+        <button data-v="off">Off</button>
+      </div>
+      <div class="data">Shown once per browser (remembered on the device). Uses only real store facts: <b>4.6★ from 161 verified deliveries</b>, 45-day promise, COD + 7-day returns. Chips are the store's 3 occasion tags.</div>
+    </div>
+
+    <div class="grp">
+      <h2>2 · Customer reviews <a href="#" data-jump="rev">See it ↓</a></h2>
+      <p>Proof from real buyers, on the home page instead of only on /reviews.</p>
+      <div class="seg" data-k="r">
+        <button data-v="a">A · Rating summary card</button>
+        <button data-v="b">B · Swipeable quote cards</button>
+        <button data-v="off">Off</button>
+      </div>
+      <div class="seg" data-k="rp" style="margin-top:6px">
+        <button data-v="mid">After Newly Arrived</button>
+        <button data-v="low">Lower, after crafts</button>
+      </div>
+      <div class="data">Live data from <b>get_reviews</b>: 4.6 overall · Packaging 4.8 · Delivery 4.6 · As described 4.5. Quotes are real review text.</div>
+    </div>
+
+    <div class="grp">
+      <h2>3 · Authenticity guarantee <a href="#" data-jump="ap">See it ↓</a></h2>
+      <p>Replaces the one-line green strip with a full section. Tap "Read the full promise" to see the existing promise sheet.</p>
+      <div class="seg" data-k="g">
+        <button data-v="a">A · How it works (3 steps)</button>
+        <button data-v="b">B · Certificate seal</button>
+        <button data-v="off">Off (keep strip)</button>
+      </div>
+      <div class="seg" data-k="gp" style="margin-top:6px">
+        <button data-v="mid">After Newly Arrived</button>
+        <button data-v="low">Lower, after crafts</button>
+      </div>
+      <div class="data">Copy taken from the live promise (en.json <b>authSheet</b>): 4 checks, NABL lab, 45 days, refund + testing cost up to ₹2,000. No new claims.</div>
+    </div>
+
+    <div class="grp">
+      <h2>4 · Shop by occasion <a href="#" data-jump="occ">See it ↓</a></h2>
+      <p>Uses the occasion tags products already have: <b>Daily</b>, <b>Work</b>, <b>Occasion</b>.</p>
+      <div class="seg" data-k="o">
+        <button data-v="a">A · Big photo tiles</button>
+        <button data-v="b">B · Tabs + product row</button>
+        <button data-v="off">Off</button>
+      </div>
+      <div class="seg" data-k="op" style="margin-top:6px">
+        <button data-v="top">After the festival banner</button>
+        <button data-v="mid">After Newly Arrived</button>
+      </div>
+      <div class="data">Tiles open the saree list with the occasion filter on (filter already exists). Photos here are stand-ins; the real tile would use a product tagged with that occasion.</div>
+    </div>
+
+    <div class="grp">
+      <div class="tools">
+        <button id="markBtn">Hide blue outlines</button>
+        <button id="copyBtn">Copy link to this combination</button>
+      </div>
+      <div class="link" id="linkOut"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var IK = 'https://ik.imagekit.io/3quk5czhx/temp/';
+  var CAT = 'https://ik.imagekit.io/3quk5czhx/health_concerns/';
+  var img = function (f, tr) { return IK + f + '?tr=' + (tr || 'w-369,h-492,fo-top'); };
+
+  // Real products from the live Newly Arrived row (5 Nov).
+  var NEW = [
+    ['Handwoven Gadwal Saree in Black Checks with Silk Zari', '7a9e0bc5-244d-4171-aa2a-74c33923a77a_60744%20(AI%20Fashion%20Models).webp'],
+    ['Gadwal Cotton-Silk Saree with Temple Border', '29fd721f-7ebc-4543-9cd0-657ddd58bd1a_AI%20Fashion%20Models-84656387-b522-468b-8e69-56e731734078.webp'],
+    ['Jet Black Banarasi Katan Silk Saree with Gold Zari', '835d12f9-25dd-4761-b116-b46a55cc06ff_AI%20Fashion%20Models-6077013e-51cd-4ed7-ab2b-d74290527359.webp'],
+    ['Peach Coral Katan Silk Saree with Floral Zari Brocade', 'c82c60b0-f753-4b64-9084-58ff63cbcf11_AI%20Fashion%20Models-33588988-fef9-4272-89d5-30bad565f0b0.webp'],
+    ['Pastel Blue Katan Silk Saree with Floral Zari', '96aae6ed-f6b4-4a47-8d5c-8999b9ebe748_AI%20Fashion%20Models-6e18b65b-9610-469b-87c6-4f5ee0f06955.webp']
+  ];
+  var POCH = '345cc0e4-40a3-4549-8ee0-2f225d273d0d_IMG_20260729_142950__01%20(AI%20Fashion%20Models).webp';
+  var NARAYANPET = '6191d993-bbad-4deb-8fc1-40a95bce2fc2_IMG_20260730_102650%20(AI%20Fashion%20Models).webp';
+  var MANGALAGIRI = '413309cf-0020-41f5-b665-42a8e67876f7_Padmavathi.webp';
+
+  var OCC = [
+    { k: 'Occasion', label: 'Festive & wedding', sub: 'Silk, zari, brocade', img: NEW[3][1], items: [NEW[3], NEW[2], NEW[4]] },
+    { k: 'Work', label: 'Work wear', sub: 'Light, easy drapes', img: NEW[1][1], items: [NEW[1], NEW[0], ['Narayanpet Cotton Saree', NARAYANPET]] },
+    { k: 'Daily', label: 'Everyday', sub: 'Breathable cottons', img: POCH, items: [['Pochampally Ikat Saree', POCH], ['Mangalagiri Cotton Saree', MANGALAGIRI], NEW[0]] }
+  ];
+
+  // Real review text from get_reviews (thecraftsarchive.com, 5 Nov). Only service/quality comments;
+  // the feed also has comments about food and soap from other stores, which are left out on purpose.
+  var QUOTES = [
+    ['Ishita', 5, 'Products were packed in good condition and items arrived in good condition.'],
+    ['Bhavana', 5, 'Delivered before the committed date.'],
+    ['Yogesh', 5, 'Excellent products and easy to order. Delivery experience was also very good.'],
+    ['Anupama', 5, 'Extremely happy with the quality and delivery time. Glad to be a Wcommerce customer.'],
+    ['Nisha', 5, 'I really like the products — better than my expectations. Good packaging, nice quantity and trustworthy products.']
+  ];
+  var R = { overall: 4.6, total: 161, packaging: 4.8, delivery: 4.6, described: 4.5 };
+
+  var WHY = [
+    ['#FDF1EC', '🧵', 'Handpicked by Satish', 'Sarees and jewelry from India’s craft clusters, mostly one of a kind.'],
+    ['#EEF7F1', '✓', 'Every saree is checked', 'Fabric, yarn, silk & zari verified, with a 45-day lab-tested promise.'],
+    ['#FFF8E7', '★', R.overall + '★ from ' + R.total + ' verified deliveries', 'COD available · 7-day easy returns · fulfilled by Wcommerce.']
+  ];
+
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return [].slice.call((r || document).querySelectorAll(s)); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var stars = function (n) { var f = Math.round(n); return '★★★★★'.slice(0, f) + '☆☆☆☆☆'.slice(0, 5 - f); };
+  var pcard = function (p) { return '<div class="pcard"><img loading="lazy" alt="" src="' + img(p[1]) + '"><p>' + esc(p[0]) + '</p></div>'; };
+
+  // ---- static parts of the existing home ----
+  $('#newRail').innerHTML = NEW.map(pcard).join('');
+  $('#cats').innerHTML = [['Sarees', 'f_sarees_v2_comp.webp'], ['Ready to Wear Sarees', 'f_ready_to_wear_sarees_v2_comp.webp'], ['Kurti Tops', 'f_kurti_tops_v1_comp.webp'], ['Kurti Sets', 'f_kurti_sets_v1_comp.webp']]
+    .map(function (c) { return '<div><img alt="" src="' + CAT + c[1] + '?tr=w-160,c-at_max">' + c[0] + '</div>'; }).join('');
+  $('#craftRail').innerHTML = [['Banarasi', 'Varanasi, Uttar Pradesh', 'd75448c2-acff-4046-94c8-5fb0431da9f0_9c6fe71a-72a8-41b8-80ba-dafd11c0ba83_AI%20Fashion%20Models-69a208a3-8049-4be2-95ec-4fc9f9ab9af6.webp'], ['Gadwal', 'Gadwal, Telangana', 'b808f72b-6b9f-4037-ba89-c74d0e108a74_AI%20Fashion%20Models-e011d369-ca3e-4e66-b2ae-f30490c03c21.webp'], ['Pochampally', 'Bhuvanagiri, Telangana', POCH]]
+    .map(function (c) { return '<div class="craft" style="background-image:url(\'' + img(c[2], 'w-320,h-400,fo-top') + '\')"><span>' + c[0] + '<small>' + c[1] + '</small></span></div>'; }).join('');
+
+  var whyList = WHY.map(function (w) { return '<li><span class="wic" style="background:' + w[0] + '">' + w[1] + '</span><div><b>' + esc(w[2]) + '</b><span>' + esc(w[3]) + '</span></div></li>'; }).join('');
+  $('#wlistSheet').innerHTML = whyList;
+  $('#wlistCard').innerHTML = whyList;
+  $('#wchips').innerHTML = OCC.map(function (o) { return '<button class="chip">' + o.label + '</button>'; }).join('') + '<button class="chip">Jewelry</button>';
+
+  // ---- builders for the new sections ----
+  function reviewsA() {
+    var asp = [['Packaging', R.packaging], ['Delivery', R.delivery], ['As described', R.described]].map(function (a) {
+      return '<div><span>' + a[0] + '</span><span class="bar"><i style="width:' + (a[1] / 5 * 100) + '%"></i></span><b>' + a[1] + '</b></div>';
+    }).join('');
+    return '<div class="sec new" data-tag="NEW · REVIEWS (A)" id="rev">' +
+      '<h2 class="h2" style="margin:0 0 2px">What buyers <em>say</em></h2><div class="hsub" style="margin:0 0 10px">Ratings from verified deliveries</div>' +
+      '<div class="rv"><div class="rvtop"><div class="big">' + R.overall + '</div><div><div class="stars">' + stars(R.overall) + '</div>' +
+      '<div class="rvcount">' + R.total + ' reviews from verified buyers</div><span class="vb">✓ Only people who received an order can rate</span></div></div>' +
+      '<div class="asp">' + asp + '</div>' +
+      QUOTES.slice(0, 2).map(function (q) { return '<div class="quote">“' + esc(q[2]) + '”<small>' + q[0] + ' · Verified buyer · ' + stars(q[1]) + '</small></div>'; }).join('') +
+      '<div class="more"><span>Read all ' + R.total + ' reviews</span><span>→</span></div></div></div>';
+  }
+  function reviewsB() {
+    return '<div class="new" data-tag="NEW · REVIEWS (B)" id="rev" style="margin:26px 0 0">' +
+      '<h2 class="h2" style="margin-top:0">Loved by <em>buyers</em></h2><div class="hsub">' + R.overall + '★ average · ' + R.total + ' verified deliveries</div>' +
+      '<div class="rail"><div class="sumcard"><div class="big">' + R.overall + '★</div><small>' + R.total + ' reviews<br>Packaging ' + R.packaging + ' · Delivery ' + R.delivery + '</small><small style="margin-top:auto;color:#F2B544">See all →</small></div>' +
+      QUOTES.map(function (q) { return '<div class="qcard"><div class="stars">' + stars(q[1]) + '</div>“' + esc(q[2]) + '”<div class="who"><i>' + q[0][0] + '</i><div><b>' + q[0] + '</b>Verified buyer</div></div></div>'; }).join('') +
+      '</div></div>';
+  }
+  var FOUR = '<div class="four"><span>Fabric</span><span>Yarn</span><span>Silk</span><span>Zari</span></div>';
+  function promiseA() {
+    return '<div class="sec new" data-tag="NEW · AUTHENTICITY (A)" id="ap"><div class="ap">' +
+      '<div class="eb">THE CRAFTS ARCHIVE’S AUTHENTICITY PROMISE</div>' +
+      '<h3>Exactly as described. Or your money back.</h3>' +
+      '<p>We verify four things on every saree before it reaches you.</p>' + FOUR +
+      '<div class="steps">' +
+      '<div class="step"><div><b>We check before it ships</b><span>Each saree is matched to its Authenticity Card.</span></div></div>' +
+      '<div class="step"><div><b>You can test it too</b><span>Get it checked at any NABL-accredited lab within 45 days of delivery.</span></div></div>' +
+      '<div class="step"><div><b>Mismatch? Full refund</b><span>Full price of the saree plus your testing cost, up to ₹2,000.</span></div></div>' +
+      '</div><button class="aplink" data-open-promise>Read the full promise</button></div></div>';
+  }
+  function promiseB() {
+    return '<div class="sec new" data-tag="NEW · AUTHENTICITY (B)" id="ap"><div class="seal">' +
+      '<div class="ring"><div><b>45</b><small>DAY<br>PROMISE</small></div></div>' +
+      '<h3>Authenticity Promise on every saree</h3>' +
+      '<p>Verified before it ships. If an NABL-accredited lab finds a mismatch within 45 days, you get your money back.</p>' + FOUR +
+      '<div class="refund"><div><b>100%</b>saree price</div><div><b>+ lab fee</b>up to ₹2,000</div></div>' +
+      '<button class="aplink" data-open-promise>Read the full promise</button></div></div>';
+  }
+  function occA() {
+    return '<div class="sec new" data-tag="NEW · OCCASION (A)" id="occ">' +
+      '<h2 class="h2" style="margin:0 0 2px">Shop by <em>Occasion</em></h2><div class="hsub" style="margin:0 0 10px">Sarees for every day of your calendar</div>' +
+      '<div class="occ">' + OCC.map(function (o) {
+        return '<a class="otile" style="background-image:url(\'' + img(o.img, 'w-400,h-560,fo-top') + '\')"><span>' + o.label + '<small>' + o.sub + ' →</small></span></a>';
+      }).join('') + '</div></div>';
+  }
+  function occB() {
+    return '<div class="new" data-tag="NEW · OCCASION (B)" id="occ" style="margin:26px 0 0">' +
+      '<h2 class="h2" style="margin-top:0">Shop by <em>Occasion</em></h2><div class="hsub">What are you dressing for?</div>' +
+      '<div class="otabs" style="padding:0 14px">' + OCC.map(function (o, i) { return '<button class="chip' + (i ? '' : ' on') + '" data-occ="' + i + '">' + o.label + '</button>'; }).join('') + '</div>' +
+      '<div class="rail" id="occRail">' + OCC[0].items.map(pcard).join('') + '</div>' +
+      '<a class="oall" id="occAll">See all ' + OCC[0].label.toLowerCase() + ' sarees →</a></div>';
+  }
+
+  // ---- state <-> URL ----
+  var DEF = { w: 'a', r: 'a', rp: 'mid', g: 'a', gp: 'mid', o: 'a', op: 'top' };
+  var S = {};
+  var q = new URLSearchParams(location.search);
+  Object.keys(DEF).forEach(function (k) { S[k] = q.get(k) || DEF[k]; });
+
+  function writeUrl() {
+    var p = new URLSearchParams();
+    Object.keys(DEF).forEach(function (k) { if (S[k] !== DEF[k]) p.set(k, S[k]); });
+    var s = p.toString();
+    history.replaceState(null, '', location.pathname + (s ? '?' + s : ''));
+    $('#linkOut').textContent = location.href;
+  }
+
+  function render() {
+    $$('[data-slot]').forEach(function (el) { el.innerHTML = ''; });
+    // order inside the "mid" area: occasion, then reviews, then promise
+    if (S.o !== 'off') $('[data-slot="occ-' + S.op + '"]').innerHTML = S.o === 'a' ? occA() : occB();
+    if (S.r !== 'off') $('[data-slot="rev-' + S.rp + '"]').innerHTML = S.r === 'a' ? reviewsA() : reviewsB();
+    if (S.g !== 'off') $('[data-slot="ap-' + S.gp + '"]').innerHTML = S.g === 'a' ? promiseA() : promiseB();
+    $('#oldPromise').hidden = S.g !== 'off';
+    $('#welcomeCard').hidden = S.w !== 'b';
+
+    $$('.seg').forEach(function (seg) {
+      var k = seg.getAttribute('data-k');
+      $$('button', seg).forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-v') === S[k])); });
+    });
+    // position rows only matter when the section is on
+    [['rp', 'r'], ['gp', 'g'], ['op', 'o']].forEach(function (x) { $('.seg[data-k="' + x[0] + '"]').hidden = S[x[1]] === 'off'; });
+    writeUrl();
+  }
+
+  // ---- sheets ----
+  function openSheet(el) {
+    var dim = $('#dim');
+    dim.hidden = false; el.hidden = false;
+    requestAnimationFrame(function () { requestAnimationFrame(function () { dim.classList.add('on'); el.classList.add('on'); }); });
+  }
+  function closeSheets() {
+    var dim = $('#dim');
+    dim.classList.remove('on');
+    $$('.sheet').forEach(function (s) { s.classList.remove('on'); });
+    setTimeout(function () { dim.hidden = true; $$('.sheet').forEach(function (s) { s.hidden = true; }); }, 300);
+  }
+  function replayWelcome() {
+    $('#page').scrollTop = 0;
+    if (S.w === 'a') setTimeout(function () { openSheet($('#welcomeSheet')); }, 700);
+    if (S.w === 'b') $('#welcomeCard').hidden = false;
+  }
+
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('button,a,#dim');
+    if (!t) return;
+    var seg = t.parentElement && t.parentElement.classList.contains('seg') ? t.parentElement : null;
+    if (seg) {
+      S[seg.getAttribute('data-k')] = t.getAttribute('data-v');
+      render();
+      if (seg.getAttribute('data-k') === 'w') replayWelcome();
+      return;
+    }
+    if (t.id === 'dim' || t.hasAttribute('data-close-sheet')) { closeSheets(); return; }
+    if (t.hasAttribute('data-close-card')) { $('#welcomeCard').hidden = true; return; }
+    if (t.hasAttribute('data-open-promise')) { openSheet($('#promiseSheet')); return; }
+    if (t.hasAttribute('data-replay')) { e.preventDefault(); replayWelcome(); return; }
+    if (t.hasAttribute('data-jump')) {
+      e.preventDefault();
+      var el = document.getElementById(t.getAttribute('data-jump'));
+      if (el) { $('#page').scrollTop = el.offsetTop - 50; }
+      return;
+    }
+    if (t.hasAttribute('data-occ')) {
+      var i = +t.getAttribute('data-occ');
+      $$('[data-occ]').forEach(function (b) { b.classList.toggle('on', b === t); });
+      $('#occRail').innerHTML = OCC[i].items.map(pcard).join('');
+      $('#occAll').textContent = 'See all ' + OCC[i].label.toLowerCase() + ' sarees →';
+      return;
+    }
+    if (t.classList.contains('chip') && t.closest('#wchips')) {
+      $$('#wchips .chip').forEach(function (b) { b.classList.toggle('on', b === t); });
+      return;
+    }
+    if (t.id === 'markBtn') {
+      var off = document.body.classList.toggle('nomark');
+      t.textContent = off ? 'Show blue outlines' : 'Hide blue outlines';
+      return;
+    }
+    if (t.id === 'copyBtn') {
+      try { navigator.clipboard.writeText(location.href); t.textContent = 'Copied ✓'; } catch (err) { t.textContent = 'Copy failed'; }
+      setTimeout(function () { t.textContent = 'Copy link to this combination'; }, 1500);
+    }
+  });
+
+  render();
+  replayWelcome();
+})();
+</script>
+</body>
+</html>
