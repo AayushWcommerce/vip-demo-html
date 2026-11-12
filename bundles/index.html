@@ -1,0 +1,764 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bundled Offers Prototype</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:"Geomanist";src:url("../password-login/Geomanist-Light.woff2") format("woff2");font-weight:300}
+@font-face{font-family:"Geomanist";src:url("../password-login/Geomanist-Regular.woff2") format("woff2");font-weight:400}
+@font-face{font-family:"Geomanist";src:url("../password-login/Geomanist-Medium.woff2") format("woff2");font-weight:500}
+
+/* Layout: same as the other demos in vip-demo-repo — phone, tester panel, admin / partner column side by side.
+   Stage tokens follow the viewer's theme; the phone and partner screens are the real (light) apps, so they use each repo's colours directly. */
+:root{
+  --stage:#ECEFF2; --card:#FFFFFF; --text:#1F212E; --muted:#707078; --line:#D5DDE2; --accent:#4862EE; --accent-tint:#F4F5FF; --ok:#1E6B45; --err:#C73F21;
+  --font:Geomanist,Manrope,system-ui,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --stage:#14161F; --card:#1E2130; --text:#E9EAF0; --muted:#A0A3B1; --line:#343850; --accent:#8A9BFF; --accent-tint:#262B45; --ok:#6BCB93; --err:#FF8A70; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --stage:#14161F; --card:#1E2130; --text:#E9EAF0; --muted:#A0A3B1; --line:#343850; --accent:#8A9BFF; --accent-tint:#262B45; --ok:#6BCB93; --err:#FF8A70; color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--stage);color:var(--text);font-family:var(--font);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px}
+button,input{font-family:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,[role=button]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+.intro{max-width:1143px;margin:0 auto 12px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+.intro h1{font-size:18px;font-weight:500;margin:0}
+.intro p{margin:0;color:var(--muted);font-size:13px;line-height:1.4}
+.stage{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start;justify-content:center}
+@media (min-width:1000px){
+  .stage{display:grid;grid-template-columns:375px minmax(260px,320px) minmax(340px,400px);gap:16px;justify-content:center}
+  .stage .panel,.stage .col3{width:auto}
+}
+body.hidepanel .panel{display:none}
+@media (min-width:1000px){body.hidepanel .stage{grid-template-columns:375px minmax(340px,400px)}}
+
+/* ── phone ── */
+.device{display:flex;flex-direction:column;gap:8px;width:375px;max-width:100%}
+.switch{display:flex;align-items:center;gap:8px;background:var(--card);border-radius:999px;padding:3px}
+.switch button{flex:none;width:30px;height:30px;border:0;border-radius:50%;background:var(--accent);color:#fff;font-size:20px;line-height:1;display:grid;place-items:center}
+.swlabel{flex:1;min-width:0;text-align:center;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.swlabel span{color:var(--muted);margin-right:6px}
+.swlabel b{font-weight:500}
+.phone{position:relative;width:375px;max-width:100%;height:min(812px,calc(100vh - 110px));min-height:560px;background:#fff;overflow:hidden;border-radius:28px;box-shadow:0 10px 40px rgba(31,33,46,.18);color:#1F212E}
+.page{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;scroll-behavior:smooth}
+.page::-webkit-scrollbar{display:none}
+.page.pdp{padding-bottom:240px}
+.page.pad{padding-bottom:150px}
+/* Live screens captured at 375px, shown as slices so the new parts can sit between them.
+   .cut shows `height` px of a screenshot starting `--y` px down. */
+.cut{width:375px;overflow:hidden}
+.cut img{display:block;width:375px;max-width:none;margin-top:calc(var(--y,0px) * -1)}
+.bar{position:absolute;left:0;bottom:0;width:375px;height:236px;overflow:hidden;z-index:2;pointer-events:none}
+.bar img{display:block;width:375px;max-width:none;margin-top:-16px}
+.flash{animation:flash 1.4s ease-out}
+@keyframes flash{0%,40%{box-shadow:0 0 0 3px #4862EE}100%{box-shadow:0 0 0 3px rgba(72,98,238,0)}}
+/* product photo crops taken from the live screenshots */
+.crop{display:block;flex:none;background-repeat:no-repeat;background-color:#F5F5F5}
+.newtag{position:absolute;z-index:3;right:8px;background:#4862EE;color:#fff;font-size:9px;font-weight:500;letter-spacing:.06em;padding:2px 6px;border-radius:4px;pointer-events:none}
+
+/* consumer-ui tokens: ink-900 #1F212E, ink-700 #2C2C2C, ink-500 #545454, ink-400 #707078, s-primary #4862EE, s-tint #F4F5FF,
+   wc-border #E8EAF0, wc-gray #F5F5F5, coral #FC7750, coral-ink #C73F21, success-ink #1E863B, surface-peach #FEEFEB, surface-tan #F4C99B */
+/* PDP card A · pair card */
+.ba{margin:2px 16px 16px;border-radius:14px;border:1px solid rgba(72,98,238,.22);background:#F4F5FF;padding:14px}
+.bhd{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px;font-weight:500}
+.bsave{font-size:11.5px;font-weight:500;color:#1E863B;white-space:nowrap}
+.brow{display:flex;align-items:center;gap:8px;margin:10px 0 12px}
+.brow .crop{border-radius:12px}
+.bplus{color:#707078;font-size:14px}
+.btxt{margin-left:4px;font-size:12px;color:#545454;line-height:1.4;min-width:0}
+.btxt b{display:block;font-size:16px;font-weight:500;color:#1F212E}
+.btxt s{color:#707078;font-size:11.5px;font-weight:400;margin-left:4px}
+.ghost{width:100%;padding:12px;border-radius:12px;font-size:15px;font-weight:500;background:#fff;color:#4862EE;border:1.5px solid #4862EE}
+/* PDP card B · compact row (PDPSellerCard shape) */
+.bb{margin:2px 16px 16px;padding:12px;border:1px solid #E8EAF0;border-radius:14px;display:flex;align-items:center;gap:12px;width:calc(100% - 32px);background:#fff;text-align:left;color:#1F212E}
+.bb .stack{position:relative;width:62px;height:54px;flex:none}
+.bb .stack .crop{position:absolute;border-radius:10px;border:2px solid #fff}
+.bb .eye{font-size:10px;letter-spacing:.1em;color:#707078;font-weight:500}
+.bb .nm{font-size:13.5px;font-weight:500;line-height:1.3}
+.bb .pr{font-size:12px;color:#545454;margin-top:2px}
+.bb .pr b{color:#1F212E;font-weight:500}
+.bb .chev{margin-left:auto;color:#4862EE;font-size:18px}
+/* PDP card C · first tile in Complete the look */
+.ctl{padding:22px 16px 18px;border-top:8px solid #F5F5F5}
+.ctl h3{margin:0 0 12px;font-size:17px;font-weight:500;display:flex;align-items:baseline;gap:10px}
+.ctl h3 small{font-size:12px;font-weight:500;color:#545454}
+.rail{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none}
+.tile{width:133px;flex:none;text-align:left;border:0;background:transparent;padding:0;color:#1F212E}
+.tile .img{position:relative;width:133px;height:177px;border-radius:12px;overflow:hidden;display:flex;gap:2px;background:#F5F5F5}
+.tile .badge{position:absolute;top:8px;left:8px;border-radius:999px;padding:4px 7px 2px;font-size:9px;font-weight:500;letter-spacing:.03em;color:#fff;background:#4862EE}
+.tile .n{font-size:12px;margin-top:8px;line-height:1.35;height:32px;overflow:hidden}
+.tile .p{font-size:13px;font-weight:500;margin-top:6px}
+.tile .p s{font-size:10.5px;color:#707078;font-weight:400;margin-right:4px}
+
+/* bundle page + cart + listing (built from consumer-ui code) */
+.info{padding:16px 16px 0}
+.tagline{display:inline-block;background:#F4C99B;font-size:11px;padding:7px 11px 5px;border-radius:999px}
+.ttl{font-size:19px;font-weight:500;line-height:1.22;letter-spacing:-.01em;margin:10px 0 4px}
+.sold{font-size:11.5px;color:#545454;margin:0 0 10px}
+.sold b{color:#1F212E;font-weight:500}
+.price{display:flex;align-items:baseline;gap:9px;margin-bottom:13px;flex-wrap:wrap}
+.price b{font-size:22px;font-weight:500}
+.price s{font-size:13px;color:#707078}
+.price i{font-style:normal;font-size:12px;font-weight:500;color:#1E863B}
+.item{display:flex;gap:11px;align-items:flex-start;padding:12px 0;border-top:1px solid #F5F5F5}
+.item .crop{border-radius:12px}
+.item .n{font-size:13px;font-weight:500;line-height:1.3}
+.item .m{font-size:11px;color:#545454;margin-top:3px}
+.szl{display:flex;justify-content:space-between;font-size:12px;font-weight:500;color:#2C2C2C;margin:10px 0 8px}
+.szl.err{color:#C73F21}
+.szl a{font-size:11px;color:#4862EE;text-decoration:none}
+.sizes{display:flex;gap:8px;flex-wrap:wrap}
+.sizes button{min-width:44px;padding:10px 11px;border:1.5px solid #E8EAF0;border-radius:12px;background:#fff;font-size:13px;font-weight:500;color:#1F212E}
+.sizes button[aria-pressed=true]{border-color:#4862EE;background:#F4F5FF;color:#3B4FC9}
+.sizes button:disabled{border-style:dashed;background:#F5F5F5;color:#707078;text-decoration:line-through;cursor:not-allowed}
+.sum{border:1px solid #E8EAF0;border-radius:12px;padding:12px 14px;margin-top:8px}
+.sum .r{display:flex;justify-content:space-between;font-size:12px;color:#545454;padding:3px 0}
+.sum .r.d span:last-child{color:#1E863B}
+.sum .r.t{border-top:1px dashed #E8EAF0;margin-top:6px;padding-top:9px;font-size:14px;font-weight:500;color:#1F212E}
+.peach{margin-top:12px;border-radius:14px;border:1px solid rgba(252,119,80,.22);background:#FEEFEB;padding:12px 14px;font-size:12.5px;line-height:1.5;display:flex;gap:9px}
+.peach i{width:9px;height:9px;border-radius:50%;background:#FC7750;flex:none;margin-top:5px}
+.sbar{position:absolute;left:0;right:0;bottom:0;z-index:2;background:#fff;box-shadow:0 -4px 18px rgba(31,33,46,.08);padding:12px 16px 16px}
+.sbar .r1{display:flex;gap:9px;align-items:center}
+.sbar .pr span{display:block;font-size:10px;color:#545454}
+.sbar .pr b{font-size:18px;font-weight:500}
+.sbar .note{font-size:10.5px;color:#545454;margin:8px 0 0;text-align:center}
+.prim{flex:1;padding:14px;border-radius:12px;font-size:15px;font-weight:500;background:#4862EE;color:#fff;border:0;box-shadow:0 8px 22px rgba(194,96,58,.28)}
+.prim:disabled{background:#F5F5F5;color:#707078;box-shadow:none;cursor:not-allowed}
+.prim.go{background:#24A046;box-shadow:0 8px 22px rgba(36,160,70,.30)}
+.cart{background:#F9FAFB}
+.ccard{margin:9px 16px;border:1px solid #E8EAF0;border-radius:14px;overflow:hidden;box-shadow:0 4px 18px rgba(31,33,46,.08);background:#fff}
+.held{background:#FFF1EC;border-bottom:1px solid #FFE0D5;padding:7px 11px;font-size:11.5px;display:flex;align-items:center;gap:6px;color:#C73F21;font-weight:500}
+.held span{color:#545454;font-weight:400}
+.bhead{display:flex;align-items:center;gap:8px;padding:11px 11px 0}
+.bhead .lbl{font-size:12px;font-weight:500;flex:1;display:flex;align-items:center;gap:6px}
+.chip{font-size:10px;font-weight:500;color:#4862EE;background:#F4F5FF;border:1px solid rgba(72,98,238,.25);border-radius:999px;padding:2px 8px;white-space:nowrap}
+.rm{width:28px;height:28px;border-radius:50%;background:#F5F5F5;color:#545454;border:0;font-size:12px;flex:none}
+.line{display:flex;gap:11px;padding:11px;align-items:flex-start}
+.line + .line{border-top:1px solid #F5F5F5}
+.line .crop{border-radius:12px}
+.line .n{font-size:13px;font-weight:500;line-height:1.25}
+.line .s{font-size:10px;color:#545454;margin:3px 0}
+.line .v{font-size:11px;color:#2C2C2C}
+.line .p{font-size:14px;font-weight:500;margin-top:6px}
+.line .p s{font-size:12px;color:#707078;font-weight:400;margin-right:6px}
+.line .sc{font-size:10.5px;font-weight:500;color:#C73F21;font-style:italic;margin-top:4px}
+.bfoot{display:flex;justify-content:space-between;align-items:center;padding:9px 11px;background:#F4F5FF;font-size:12px}
+.bfoot b{font-weight:500}
+.bfoot .g{font-size:11.5px;font-weight:500;color:#1E863B}
+.osum{margin:12px 16px;border:1px solid #E8EAF0;border-radius:12px;padding:12px 14px;background:#fff}
+.osum h4{margin:0 0 6px;font-size:14px;font-weight:500}
+.cbar{position:absolute;left:0;right:0;bottom:0;z-index:2;background:#fff;border-top:1px solid #E8EAF0;padding:10px 14px 14px;display:flex;align-items:center;gap:12px}
+.cbar .t span{display:block;font-size:10px;color:#545454}
+.cbar .t b{font-size:16px;font-weight:500}
+.cbar button{flex:1;border:0;background:#4862EE;color:#fff;font-size:14px;font-weight:500;padding:14px;border-radius:12px;box-shadow:0 8px 22px rgba(72,98,238,.28)}
+.empty{text-align:center;color:#545454;font-size:13px;padding:36px 16px}
+.sheet{position:absolute;inset:0;z-index:5}
+.scrim{position:absolute;inset:0;border:0;width:100%;background:rgba(31,33,46,.45)}
+.sbox{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:20px 20px 0 0;padding:10px 18px 22px}
+.grab{width:40px;height:4px;border-radius:4px;background:#D5DDE2;margin:0 auto 14px}
+.sbox h3{margin:0;font-size:17px;font-weight:500}
+.sbox p{font-size:13px;line-height:1.5;color:#545454;margin:8px 0 16px}
+.sbox .two{display:flex;gap:9px}
+.sbox .two button{flex:1}
+.lhead{position:relative;overflow:hidden;padding:16px;background:linear-gradient(to bottom right,#F4C99B,#EAD3AE)}
+.lhead .wm{position:absolute;right:-6px;top:-8px;font-size:62px;font-weight:500;color:rgba(0,0,0,.05)}
+.lhead h1{margin:0;font-size:24px;font-weight:500}
+.lhead .sub{font-size:11.5px;font-weight:500;color:#C73F21;margin-top:4px}
+.lhead p{font-size:11.5px;color:#2C2C2C;line-height:1.55;margin:6px 0 8px}
+.gtag{display:inline-block;background:#E8F6EC;border:1px solid #b6e3c4;color:#1c7a45;padding:4px 10px;border-radius:999px;font-size:10px}
+.grid{margin:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pc{border:1px solid #E8EAF0;border-radius:12px;box-shadow:0 4px 18px rgba(31,33,46,.08);background:#fff;overflow:hidden;text-align:left;padding:0;color:#1F212E}
+.pc .img{position:relative;display:flex;gap:2px;height:220px;background:#F5F5F5}
+.pc .badge{position:absolute;top:8px;left:8px;border-radius:999px;padding:4px 7px 2px;font-size:9px;font-weight:500;color:#fff;background:#FF512A}
+.pc .bd{padding:8px 10px 10px}
+.pc .o{font-size:9px;font-weight:500;color:#C73F21}
+.pc .n{font-size:11.5px;height:30px;line-height:15px;overflow:hidden;margin-top:2px}
+.pc .p{font-size:12.5px;font-weight:500;margin-top:4px}
+.pc .p s{font-size:10.5px;color:#707078;font-weight:400;margin-left:4px}
+
+/* ── tester panel ── */
+.panel{width:320px;max-width:100%;display:flex;flex-direction:column;gap:12px}
+.pcard{background:var(--card);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:1.4;min-width:0}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.note{font-size:12px;color:var(--muted)}
+.pos{display:flex;flex-direction:column;gap:8px}
+.pos.g2{display:grid;grid-template-columns:1fr 1fr}
+.pos button{text-align:left;min-height:40px;padding:6px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text);font-size:14px;line-height:1.35}
+.pos button span{display:block;font-size:12px;color:var(--muted)}
+.pos button.on{border-color:var(--accent);background:var(--accent-tint);color:var(--accent)}
+.pos button.on span{color:var(--accent)}
+.pos button:disabled{opacity:.45;cursor:default}
+.swrow{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:14px}
+.sw{position:relative;width:44px;height:22px;border-radius:999px;border:0;background:#BFC3CF;flex:none;padding:0}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .15s}
+.sw[aria-checked=true]{background:var(--accent)}
+.sw[aria-checked=true]::after{left:24px}
+.linkbox{display:flex;gap:6px}
+.linkbox input{flex:1;min-width:0;border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-size:11.5px;background:var(--stage);color:var(--text)}
+.linkbox button{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:8px;padding:0 10px;font-size:12px}
+
+/* ── third column: admin form + partner app ── */
+.col3{width:400px;max-width:100%;display:flex;flex-direction:column;gap:8px;min-width:0}
+.tabs{display:flex;gap:4px;padding:3px;background:var(--card);border-radius:12px}
+.tabs button{flex:1;border:0;border-radius:9px;padding:6px 0;background:transparent;color:var(--muted);font-size:13px;font-weight:500}
+.tabs button[aria-selected=true]{background:var(--accent-tint);color:var(--accent)}
+/* admin (wcommerce-admin-ui: antd Drawer + NextUI fields; primary #21314A, blueberryBlue #4862EE, tealBlue #668091,
+   darkSlateGray #516778, lightMist #ECEFF2, lightSteelBlue #D5DDE2, lightPink #FFE2E8, labelText #F31260) */
+.admin{background:#fff;border-radius:16px;overflow:hidden;font-size:14px;color:#21314A}
+.abar{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid #ECEFF2;font-size:12px;color:#668091}
+.abar b{color:#21314A;font-weight:400}
+.ahead{display:flex;justify-content:space-between;align-items:center;padding:12px 16px 2px}
+.ahead h2{margin:0;font-size:18px;font-weight:400}
+.ax{width:30px;height:30px;border:0;border-radius:8px;background:transparent;color:#F31260;font-size:18px}
+.abody{padding:0 16px 10px}
+.alb{display:block;font-size:12px;color:#516778;padding:4px 0;margin-top:8px}
+.alb em{color:#F31260;font-style:normal}
+.ain{width:100%;height:38px;border-radius:8px;background:#ECEFF2;border:1px solid #D5DDE2;padding:0 10px;font-size:14px;font-weight:300;color:#21314A}
+.ain.white{background:#fff}
+select.ain{appearance:auto;cursor:pointer}
+.anrow{display:flex;justify-content:space-between;align-items:flex-end;gap:8px}
+.anmode{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:#668091;padding-bottom:4px}
+.anmode .sw{width:34px;height:18px}
+.anmode .sw::after{width:14px;height:14px}
+.anmode .sw[aria-checked=true]::after{left:18px}
+.anmode .sw[aria-checked=true]{background:#4862EE}
+.arow.cur .nm{color:#4862EE}
+.ain.bad{border-color:#F31260}
+.agrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.apc{display:flex;gap:8px;padding:8px;border-radius:8px;border:1px solid #ECEFF2;box-shadow:0 4px 6px -1px rgba(0,0,0,.08);margin:8px 0;background:#f4f6fb;align-items:center}
+.apc .crop{border-radius:6px}
+.apc .t{flex:1;min-width:0}
+.apc .n{font-size:11px;line-height:13px;font-weight:400}
+.apc .m{font-size:11px;color:#668091;margin-top:3px}
+.apc .c{display:inline-block;font-size:10px;color:#425462;background:#ECEFF2;padding:3px 7px;border-radius:6px;margin-top:5px}
+.apc .r{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.apc .p{font-size:13px}
+.arm{border:0;background:#FFE2E8;color:#F31260;border-radius:4px;width:24px;height:24px;font-size:12px}
+.ahint{font-size:11.5px;color:#668091;margin:4px 0 0}
+.aerr{color:#F31260;font-size:12px;margin-top:6px}
+.asum{margin-top:12px;border-radius:8px;background:#fff;box-shadow:0 1px 15px #0000000a;border:1px solid #ECEFF2;padding:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.asum span{display:block;font-size:11px;color:#668091}
+.asum b{display:block;font-size:15px;font-weight:400;margin-top:3px}
+.asum b.g{color:#0DAC52}
+.asplit{font-size:11.5px;color:#668091;margin-top:8px}
+.afoot{display:flex;justify-content:flex-end;align-items:center;gap:8px;padding:10px 16px;border-top:1px solid #ECEFF2}
+.saved{font-size:12px;color:#0DAC52;margin-right:auto}
+.abtn{height:36px;border-radius:8px;padding:0 16px;border:0;background:#4862EE;color:#fff;font-size:13px;font-weight:300}
+.abtn:disabled{background:#D5DDE2}
+.alist{border-top:6px solid #F9FAFB;padding:10px 16px 14px}
+.alist h3{margin:0 0 6px;font-size:13px;font-weight:400;color:#859BAB}
+.arow{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #ECEFF2;font-size:12.5px;color:#516778}
+.arow:last-child{border-bottom:0}
+.arow .nm{flex:1;min-width:0;color:#21314A;font-weight:400}
+.arow .why{display:block;font-size:10.5px;color:#CD034E;font-weight:300}
+.tag{display:inline-flex;align-items:center;height:20px;border-radius:999px;padding:0 10px;font-size:10px;white-space:nowrap}
+.tag.green{background:#DAFEE8;color:#0DAC52}
+.tag.red{background:#FFC9D7;color:#CD034E}
+/* partner app (wcommerce-partner-ui: buttonColor #4862EE, secondary #21314A, textColor #192438, greyText #668091, VIP teal #1AB188) */
+.partner{position:relative;height:min(640px,calc(100vh - 150px));min-height:460px;background:#ECEFF2;border-radius:16px;overflow:hidden;color:#192438}
+.pscroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding-bottom:90px;scrollbar-width:none}
+.pscroll::-webkit-scrollbar{display:none}
+.pstep{padding:18px 16px 0;background:#F9FAFB}
+.pstep small{display:block;color:#4862EE;font-size:12px;font-weight:500}
+.pstep h1{margin:4px 0 0;font-size:22px;font-weight:500;line-height:30px}
+.pstep p{margin:2px 0 0;font-size:14px;color:#668091}
+.ptiles{display:flex;gap:10px;overflow-x:auto;padding:14px 16px 12px;border-bottom:1px solid #1F212E;background:#F9FAFB;scrollbar-width:none}
+.ptile{position:relative;flex:none;width:84px;height:96px;border-radius:14px;padding:10px 6px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;background:#F5F5F5;color:#1F212E;border:0}
+.ptile .crop,.ptile .ic{width:34px;height:34px;border-radius:50%}
+.ptile .l{margin-top:auto;font-size:11px;font-weight:500;line-height:1.15}
+.ptile .cnt{position:absolute;top:6px;right:6px;font-size:10px;font-weight:500;padding:1px 6px;border-radius:999px;background:rgba(255,255,255,.9)}
+.ptile.on{background:#4862EE;color:#fff;box-shadow:0 8px 22px rgba(72,98,238,.30)}
+.ptile.on .cnt{background:rgba(255,255,255,.2);color:#fff}
+.plist{padding:12px 12px}
+.pcd{background:#fff;border-radius:14px;padding:12px;margin-bottom:8px}
+.pcd.sel{background:#eceff2;border:1px solid #b0bfc9}
+.pch{display:flex;gap:8px}
+.pch .thumb{width:65px;height:65px;border-radius:8px;overflow:hidden;display:flex;gap:1px;flex:none}
+.pch .t{flex:1;min-width:0}
+.pch .n{font-size:14px;line-height:20px}
+.pch .b{font-size:12px;margin-top:2px}
+.pch .c{display:inline-block;font-size:9px;background:#ECEFF2;color:#21314A;padding:1px 6px;border-radius:6px;margin-left:4px}
+.pch .s{font-size:12px;color:#668091}
+.pcb{width:20px;height:20px;border-radius:6px;border:2px solid #D5DDE2;background:#fff;display:grid;place-items:center;color:#fff;font-size:12px;flex:none}
+.pcb.on{background:#4862EE;border-color:#4862EE}
+.phr{height:1px;background:#E5E7EB;margin:10px 0}
+.pcols{display:flex;justify-content:space-around;text-align:center}
+.pcols span{display:block;font-size:9px;color:rgba(25,36,56,.6)}
+.pcols b{display:block;font-size:12px;font-weight:400;margin-top:2px}
+.pcols.vip span{color:#1AB188}
+.plink{margin-top:8px;width:100%;border:0;background:transparent;color:#4862EE;font-size:12px}
+.pdp{background:#fff;padding:0 16px 20px}
+.pgal{margin:0 -16px 14px;height:300px;display:flex;gap:2px;position:relative}
+.pdots{position:absolute;left:0;right:0;bottom:10px;display:flex;justify-content:center;gap:5px}
+.pdots i{width:6px;height:6px;border-radius:50%;background:rgba(31,33,46,.22)}
+.pdots i.on{background:#1F212E}
+.pname{font-size:22px;font-weight:500;line-height:30px;color:#21314A;margin:0}
+.pbadges{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.pcombo{display:inline-flex;border-radius:16px;border:1px solid #17C964;color:#17C964;padding:3px 8px;font-size:12px}
+.pvipb{display:inline-flex;align-items:center;gap:4px;border:1.5px dashed #17C964;color:#17C964;padding:3px 6px;border-radius:999px;font-size:10px}
+.pprice{display:flex;padding:12px 0;border-radius:8px;box-shadow:0 0 4px #00000026;text-align:center;margin:10px 0}
+.pprice div{flex:1;min-width:0}
+.pprice span{display:block;font-size:9px;font-weight:300;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pprice b{display:block;font-size:10px;font-weight:400;line-height:18px}
+.pprice.vip span{font-weight:400;color:#1AB188}
+.ph3{font-size:15px;font-weight:400;color:#21314A;margin:16px 0 6px}
+.psku{display:flex;justify-content:space-between;align-items:center;background:#ECEFF2;border-radius:12px;padding:10px 12px;margin:8px 0;gap:10px}
+.psku .crop{border-radius:8px}
+.psku .n{flex:1;font-size:13px;color:#21314A;min-width:0}
+.psku .v{font-size:12px;white-space:nowrap;color:#21314A}
+.psku .v b{font-weight:500;color:#4776B0}
+.pitem{background:#fff;border:1px solid #E8EDF6;border-radius:12px;padding:10px;margin:8px 0;display:flex;gap:10px}
+.pitem .crop{border-radius:8px}
+.pitem .n{font-size:13px;line-height:1.3}
+.pitem .v{font-size:11.5px;color:#668091;margin-top:4px}
+.pdesc{font-size:13px;font-weight:300;line-height:22px;color:#516778;margin:0}
+.pbar{position:absolute;left:0;right:0;bottom:0;background:#fff;padding:12px 16px;box-shadow:0 -4px 12px rgba(25,36,56,.06)}
+.pbar small{display:block;font-size:12px;color:#668091;margin-bottom:6px}
+.pbtn{width:100%;height:44px;border-radius:8px;border:0;background:#4862EE;color:#fff;font-size:15px}
+.psel{background:#D5DDE2;color:#21314A;border-radius:4px;padding:10px;text-align:center;font-size:14px}
+.pctl{display:flex;gap:5px;background:var(--card);border-radius:12px;padding:6px;flex-wrap:wrap}
+.pctl button{flex:1 1 0;min-width:0;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:8px;padding:5px 4px;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pctl button.on{border-color:var(--accent);background:var(--accent-tint);color:var(--accent)}
+</style>
+
+<div class="intro">
+  <h1>Bundled offers</h1>
+  <p>Phone = live Crafts Archive screens (saree page 28 Oct, cart). Only the bundle parts are new. Bundle prices are examples.</p>
+</div>
+
+<div class="stage">
+  <div class="device">
+    <div class="switch" role="group" aria-label="Change screen">
+      <button type="button" id="s-prev" aria-label="Previous screen">‹</button>
+      <div class="swlabel"><span>Screen</span><b id="s-name"></b></div>
+      <button type="button" id="s-next" aria-label="Next screen">›</button>
+    </div>
+    <div class="phone" id="phone"></div>
+  </div>
+
+  <div class="panel">
+    <div class="pcard">
+      <div class="eyebrow">Product page card</div>
+      <div class="pos" id="designs">
+        <button data-d="a">A · Pair card<span>Both photos, price, View bundle</span></button>
+        <button data-d="b">B · Compact row<span>One line, seller-card shape</span></button>
+        <button data-d="c">C · In "Complete the look"<span>Bundle as the first tile of the rail</span></button>
+      </div>
+    </div>
+    <div class="pcard">
+      <div class="eyebrow">Position on the product page</div>
+      <div class="pos" id="positions">
+        <button data-p="size">1 · Below size (plan)<span>Above "Only 1 piece left"</span></button>
+        <button data-p="seller">2 · After the seller card<span>Before Description</span></button>
+        <button data-p="look">3 · Before "Complete the look"<span>Near the bottom</span></button>
+      </div>
+      <span class="note" id="posnote">Design C always sits in "Complete the look".</span>
+    </div>
+    <div class="pcard">
+      <div class="eyebrow">Cart</div>
+      <div class="pos g2" id="carts">
+        <button data-c="a">A · One card<span>Grouped, one ✕</span></button>
+        <button data-c="b">B · Two cards<span>Tagged "Bundle"</span></button>
+      </div>
+      <span class="note">Removing any piece removes the whole bundle (sir's choice A).</span>
+    </div>
+    <div class="pcard">
+      <div class="eyebrow">Try with</div>
+      <div class="pos g2" id="tries">
+        <button data-t="saree">Saree + Earrings<span>No size to pick</span></button>
+        <button data-t="kurti">Kurti + Earrings<span>Needs a size</span></button>
+      </div>
+      <div class="swrow"><span>Earrings sold out</span><button class="sw" id="oos" role="switch" aria-checked="false" aria-label="Earrings sold out"></button></div>
+      <span class="note">Sold out = bundles with the earrings hide everywhere; admin shows why.</span>
+    </div>
+    <div class="pcard">
+      <div class="eyebrow">Link to this view</div>
+      <div class="linkbox"><input id="link" readonly aria-label="Link to this view"><button type="button" id="copy">Copy</button></div>
+      <span class="note">Add <b>&amp;hidepanel</b> for testers.</span>
+    </div>
+  </div>
+
+  <div class="col3">
+    <div class="tabs" role="tablist" aria-label="Who sees it">
+      <button type="button" role="tab" id="t-admin" aria-selected="true">Admin (creates)</button>
+      <button type="button" role="tab" id="t-partner" aria-selected="false">Partner app</button>
+    </div>
+    <div class="pctl" id="pctl" hidden>
+      <button type="button" data-ps="tile">Bundles tile</button>
+      <button type="button" data-ps="d1">Details · 1 Collage</button>
+      <button type="button" data-ps="d2">Details · 2 Item by item</button>
+    </div>
+    <section class="partner" id="partner" hidden></section>
+
+    <form class="admin" id="admin" novalidate>
+      <div class="abar">Products › <b>Bundles</b> › Create Bundle</div>
+      <div class="ahead"><h2>Create Bundle</h2><button type="button" class="ax" aria-label="Close">✕</button></div>
+      <div class="abody">
+        <div class="anrow">
+          <label class="alb" for="f-name" id="l-name">Bundle Name <em>*</em></label>
+          <span class="anmode">Type<button type="button" class="sw" id="f-mode" role="switch" aria-checked="false" aria-label="Pick bundle name from dropdown"></button>Dropdown</span>
+        </div>
+        <input class="ain" id="f-name">
+        <select class="ain white" id="f-pick" aria-labelledby="l-name" hidden></select>
+        <label class="alb" for="f-search">Products (2–3) <em>*</em></label>
+        <input class="ain white" id="f-search" placeholder="Search by product, brand or SKU">
+        <div id="a-items"></div>
+        <p class="ahint" id="a-totals"></p>
+        <div class="agrid">
+          <div><label class="alb" for="f-price">Bundle Price <em>*</em></label><input class="ain" id="f-price" type="number" step="1"></div>
+          <div><label class="alb" for="f-b2b">B2B Price <em>*</em></label><input class="ain" id="f-b2b" type="number" step="1"></div>
+          <div><label class="alb" for="f-vip">VIP B2B <em>*</em></label><input class="ain" id="f-vip" type="number" step="1"></div>
+        </div>
+        <p class="ahint" id="a-sugg"></p>
+        <div class="aerr" id="a-err" hidden></div>
+        <div class="asum">
+          <div><span>Customer saves</span><b id="m-save"></b></div>
+          <div><span>Partner margin</span><b class="g" id="m-margin"></b></div>
+          <div><span>VIP margin</span><b class="g" id="m-vip"></b></div>
+        </div>
+        <p class="asplit" id="a-split"></p>
+      </div>
+      <div class="afoot"><span class="saved" id="saved" hidden>Saved (demo only)</span><button type="submit" class="abtn" id="f-save">Publish Bundle</button></div>
+      <div class="alist">
+        <h3>All bundles (Products › Bundles list)</h3>
+        <div id="a-list"></div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+  function money(n) { var r = Math.round(n * 100) / 100; return "₹" + r.toLocaleString("en-IN", { minimumFractionDigits: r % 1 ? 2 : 0, maximumFractionDigits: 2 }); }
+
+  // Drawn stand-in for the kurti (the live cart shows no photo for it).
+  var KURTI = "data:image/svg+xml;charset=utf-8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400"><rect width="300" height="400" fill="#E9E6DF"/><path d="M110 40 L190 40 L200 70 L250 95 L235 180 L210 170 L215 370 L85 370 L90 170 L65 180 L50 95 L100 70 Z" fill="#FBFAF6" stroke="#CFC8BA" stroke-width="3"/><path d="M128 40 L150 92 L172 40" fill="none" stroke="#CFC8BA" stroke-width="3"/><g fill="#2F3E66">' + [130, 175, 220, 265, 310].map(function (y) { return '<path d="M100 ' + y + ' l12 -10 l12 10 l12 -10 l12 10 l12 -10 l12 10 l12 -10 l12 10 l12 -10 l12 10 l0 4 l-120 0z" opacity=".75"/>'; }).join("") + '</g></svg>');
+
+  // Crops from the live screenshots (x, y, w, h in the 375-px capture).
+  var CROPS = {
+    saree: { src: "pdp-1.png", x: 100, y: 150, w: 175, h: 350 },
+    earrings: { src: "pdp-4.png", x: 30, y: 296, w: 105, h: 132 },
+    beige: { src: "pdp-4.png", x: 22, y: 606, w: 121, h: 146 },
+    ivory: { src: "pdp-4.png", x: 167, y: 606, w: 121, h: 146 },
+    kurti: { src: KURTI, x: 0, y: 0, w: 375, h: 500, iw: 375 },
+    ctlcard: { src: "pdp-4.png", x: 16, y: 255, w: 133, h: 240 }
+  };
+  function crop(k, W, H, extra) {
+    var c = CROPS[k], iw = c.iw || 375, s = Math.max(W / c.w, H / c.h);
+    var px = -(c.x * s - (W - c.w * s) / 2), py = -(c.y * s - (H - c.h * s) / 2);
+    return '<span class="crop" role="img" aria-label="' + esc(ITEMS[k] ? ITEMS[k].name : "product photo") + '" style="width:' + W + 'px;height:' + H + 'px;background-image:url(\'' + c.src + '\');background-size:' + (iw * s) + 'px auto;background-position:' + px + 'px ' + py + 'px;' + (extra || "") + '"></span>';
+  }
+
+  var ITEMS = {
+    saree: { name: "Brown Sambalpuri Baandha Ikat Handloom Cotton Saree with Blouse", short: "Brown Sambalpuri Saree", price: 1548.5, mrp: 1630, b2b: 1200, cat: "Sarees", variant: "Brown · Free Size", note: "Only this one — one-of-a-kind", sku: "SAR-0963", stock: 1 },
+    earrings: { name: "Yellow Suhani Earrings", short: "Yellow Suhani Earrings", price: 427.5, mrp: 450, b2b: 300, cat: "Jewelry", variant: "Yellow · One size", note: "", sku: "JWL-0442", stock: 12 },
+    kurti: { name: "Sambalpuri Ikat White Cotton Kurti", short: "White Ikat Kurti", price: 900, mrp: 999, b2b: 650, cat: "Kurthis", variant: "White", note: "", sku: "KUR-0310", stock: 3, sizes: ["S", "M", "L", "XL"], out: ["XL"] },
+    beige: { name: "Handwoven Sambalpuri Cotton Saree in Beige", short: "Beige Sambalpuri Saree", price: 1548.5, mrp: 1630, b2b: 1200, cat: "Sarees", variant: "Beige · Free Size", note: "Only this one — one-of-a-kind", sku: "SAR-0971", stock: 1 },
+    ivory: { name: "Sambalpuri Baandha Ikat Cotton Saree in Ivory", short: "Ivory Baandha Saree", price: 1548.5, mrp: 1630, b2b: 1200, cat: "Sarees", variant: "Ivory · Free Size", note: "Only this one — one-of-a-kind", sku: "SAR-0974", stock: 1 }
+  };
+  var BUNDLES = {
+    saree: { name: "Saree + Earrings", items: ["saree", "earrings"], price: 1799, b2b: 1400, vip: 1350 },
+    kurti: { name: "Kurti + Earrings", items: ["kurti", "earrings"], price: 1199, b2b: 900, vip: 860 },
+    beige: { name: "Beige Saree + Earrings", items: ["beige", "earrings"], price: 1799, b2b: 1400, vip: 1350 },
+    pair: { name: "Saree pair", items: ["beige", "ivory"], price: 2799, b2b: 2150, vip: 2080 }
+  };
+  function total(b, f) { return b.items.reduce(function (s, k) { return s + ITEMS[k][f || "price"]; }, 0); }
+  function hidden(b) { return st.oos && b.items.indexOf("earrings") >= 0; }
+  // Proportional split of the bundle price over the lines; the last line takes the rounding remainder.
+  function split(b) {
+    var t = total(b), left = b.price;
+    return b.items.map(function (k, i) {
+      var v = i === b.items.length - 1 ? left : Math.round(ITEMS[k].price * b.price / t);
+      left -= v; return v;
+    });
+  }
+
+  var SCREENS = { pdp: "Product page", bundle: "Bundle page", cart: "Cart", list: "Bundle offers" }, SORDER = ["pdp", "bundle", "cart", "list"];
+  var st = { screen: "pdp", d: "a", pos: "size", cart: "a", t: "saree", edit: "saree", oos: false, tab: "admin", ps: "tile", size: "", added: false, removed: false, ask: false, padded: false };
+  function cur() { return BUNDLES[st.edit]; }
+
+  // ---------- URL ----------
+  var q = new URLSearchParams(location.search);
+  if (SCREENS[q.get("screen")]) st.screen = q.get("screen");
+  if (/^[abc]$/.test(q.get("d") || "")) st.d = q.get("d");
+  if (/^(size|seller|look)$/.test(q.get("pos") || "")) st.pos = q.get("pos");
+  if (/^[ab]$/.test(q.get("cart") || "")) st.cart = q.get("cart");
+  if (BUNDLES[q.get("try")]) st.t = q.get("try");
+  if (BUNDLES[q.get("edit")]) st.edit = q.get("edit");
+  if (q.get("oos") === "1") st.oos = true;
+  if (q.get("tab") === "partner") st.tab = "partner";
+  if (/^(tile|d1|d2)$/.test(q.get("ps") || "")) st.ps = q.get("ps");
+  if (q.has("hidepanel")) document.body.classList.add("hidepanel");
+  function syncUrl() {
+    var p = new URLSearchParams({ screen: st.screen, d: st.d, pos: st.pos, cart: st.cart, try: st.t, edit: st.edit });
+    if (st.oos) p.set("oos", "1");
+    if (st.tab === "partner") { p.set("tab", "partner"); p.set("ps", st.ps); }
+    var url = location.pathname + "?" + p.toString();
+    try { history.replaceState(null, "", url); } catch (e) {}
+    $("#link").value = location.origin + url;
+  }
+
+  // ---------- consumer: product page ----------
+  function cardA(b) {
+    return '<section class="ba" id="bundle-card"><div class="bhd"><span>Complete the look as a bundle</span><span class="bsave">Save ' + money(total(b) - b.price) + '</span></div>' +
+      '<div class="brow">' + crop("saree", 56, 72) + '<span class="bplus">+</span>' + crop("earrings", 56, 72) +
+      '<div class="btxt">With ' + esc(ITEMS.earrings.short) + '<b>' + money(b.price) + '<s>' + money(total(b)) + '</s></b></div></div>' +
+      '<button type="button" class="ghost" data-goto="bundle">View bundle →</button></section>';
+  }
+  function cardB(b) {
+    return '<button type="button" class="bb" id="bundle-card" data-goto="bundle"><span class="stack">' + crop("saree", 40, 52, "left:0;top:0") + crop("earrings", 40, 52, "left:20px;top:2px") + '</span>' +
+      '<span style="min-width:0"><span class="eye" style="display:block">BUNDLE OFFER</span><span class="nm" style="display:block">Buy with ' + esc(ITEMS.earrings.short) + '</span>' +
+      '<span class="pr" style="display:block"><b>' + money(b.price) + '</b> for both · <span style="color:#1E863B;font-weight:500">Save ' + money(total(b) - b.price) + '</span></span></span><span class="chev">›</span></button>';
+  }
+  function cardC(b) {
+    return '<section class="ctl" id="bundle-card"><h3>Complete the look <small>Jewelry to pair</small></h3><div class="rail">' +
+      '<button type="button" class="tile" data-goto="bundle"><span class="img">' + crop("saree", 65, 177) + crop("earrings", 66, 177) + '<span class="badge">BUNDLE · SAVE ' + money(total(b) - b.price).replace("₹", "₹") + '</span></span>' +
+      '<div class="n">This saree + ' + esc(ITEMS.earrings.short) + '</div><div class="p"><s>' + money(total(b)) + '</s>' + money(b.price) + '</div></button>' +
+      '<span class="tile" style="position:relative">' + crop("ctlcard", 133, 240) + '</span></div></section>';
+  }
+  function pdp() {
+    var b = BUNDLES.saree, show = !hidden(b);
+    var card = !show ? "" : st.d === "a" ? cardA(b) : st.d === "b" ? cardB(b) : "";
+    var pos = st.d === "c" ? "look" : st.pos;
+    var slot = function (p) { return pos === p ? card : ""; };
+    var lookBlock = (st.d === "c" && show) ? cardC(b) :
+      '<div class="cut" style="height:320px;--y:200px"><img src="pdp-4.png" alt="Live PDP: Complete the look, Yellow Suhani Earrings"></div>';
+    return '<div class="page pdp" id="page">' +
+      '<div class="cut" style="height:812px"><img src="pdp-1.png" alt="Live PDP: header, gallery, title, price, colour and size"></div>' +
+      '<div class="cut" style="height:44px"><img src="pdp-2.png" alt="Live PDP: size note"></div>' + slot("size") +
+      '<div class="cut" style="height:631px;--y:44px"><img src="pdp-2.png" alt="Live PDP: stock note, pincode, trust row, authenticity, seller card"></div>' + slot("seller") +
+      '<div class="cut" style="height:137px;--y:675px"><img src="pdp-2.png" alt="Live PDP: description"></div>' +
+      '<div class="cut" style="height:812px"><img src="pdp-3.png" alt="Live PDP: description, size and fit, material, shipping and returns"></div>' +
+      '<div class="cut" style="height:200px"><img src="pdp-4.png" alt="Live PDP: returns policy"></div>' + slot("look") + lookBlock +
+      '<div class="cut" style="height:292px;--y:520px"><img src="pdp-4.png" alt="Live PDP: Similar pieces"></div>' +
+      '</div><div class="bar"><img src="pdp-bar.png" alt="Live PDP sticky bar: price, Add to cart, Buy now"></div>';
+  }
+
+  // ---------- consumer: bundle page ----------
+  function bundlePage() {
+    var b = BUNDLES[st.t];
+    if (hidden(b)) return '<div class="page"><div class="cut" style="height:98px"><img src="pdp-1.png" alt="Store header"></div><div class="empty"><b style="color:#1F212E;font-weight:500">This bundle is not available right now</b><br><br>One of its pieces is sold out. The bundle comes back when it is in stock.</div></div>';
+    var needs = b.items.some(function (k) { return ITEMS[k].sizes; });
+    var ready = !needs || st.size;
+    var gal = '<div style="display:flex;gap:2px;height:300px">' + b.items.map(function (k) { return crop(k, Math.floor((375 - 2 * (b.items.length - 1)) / b.items.length), 300); }).join("") + '</div>';
+    var rows = b.items.map(function (k) {
+      var it = ITEMS[k], sz = "";
+      if (it.sizes) {
+        sz = '<div class="szl' + (st.padded && !st.size ? " err" : "") + '"><span>' + (st.size ? 'Size · <b style="font-weight:500">' + st.size + '</b> selected' : (st.padded ? "Please select a Size" : "Select a Size")) + '</span><a href="#" onclick="return false">Size guide</a></div><div class="sizes">' +
+          it.sizes.map(function (s) { var out = it.out.indexOf(s) >= 0; return '<button type="button" data-size="' + s + '" aria-pressed="' + (st.size === s) + '"' + (out ? " disabled" : "") + '>' + s + '</button>'; }).join("") + '</div>';
+      }
+      return '<div class="item">' + crop(k, 64, 82) + '<div style="flex:1;min-width:0"><div class="n">' + esc(it.name) + '</div><div class="m">' + money(it.price) + ' if bought alone' + (it.sizes ? "" : " · " + esc((it.variant || "").split(" · ")[1] || "One size")) + '</div>' + sz + '</div></div>';
+    }).join("");
+    var btn = st.added ? '<button type="button" class="prim go" data-goto="cart">Go to Cart →</button>'
+      : '<button type="button" class="prim" id="add"' + (ready ? "" : ' aria-disabled="true" style="background:#F5F5F5;color:#707078;box-shadow:none"') + '>' + (ready ? "Add bundle to cart" : "Select a size") + '</button>';
+    return '<div class="page pad" id="page"><div class="cut" style="height:98px"><img src="pdp-1.png" alt="Store header"></div><span class="newtag" style="top:106px">NEW SCREEN</span>' + gal +
+      '<div class="info"><span class="tagline">✶ Bundle · ' + b.items.length + ' pieces</span><div class="ttl">' + esc(b.name) + '</div><p class="sold">Sold by <b>Satish Madiraju</b> · The Crafts Archive</p>' +
+      '<div class="price"><b>' + money(b.price) + '</b><s>' + money(total(b)) + '</s><i>Save ' + money(total(b) - b.price) + '</i></div>' + rows +
+      '<div class="sum"><div class="r"><span>Pieces bought separately</span><span>' + money(total(b)) + '</span></div><div class="r d"><span>Bundle discount</span><span>− ' + money(total(b) - b.price) + '</span></div><div class="r t"><span>Bundle price</span><span>' + money(b.price) + '</span></div></div>' +
+      '<div class="peach"><i></i><div><b style="font-weight:500">Both pieces are held for you together</b> once added. If one sells out, the bundle is gone.</div></div></div></div>' +
+      '<div class="sbar"><div class="r1"><div class="pr"><span>Bundle price</span><b>' + money(b.price) + '</b></div>' + btn + '</div><p class="note">' + (needs && !ready ? "Pick a size for the kurti first." : "One bundle per cart.") + '</p></div>';
+  }
+
+  // ---------- consumer: cart ----------
+  function cartPage() {
+    var b = BUNDLES[st.t], parts = split(b), head = '<div class="cut" style="height:212px"><img src="../password-login/cart.jpg" style="width:375px" alt="Live cart: header, steps, Held for you timer"></div>';
+    if (st.removed || hidden(b)) return '<div class="page cart">' + head + '<div class="empty">' + (hidden(b) ? "The bundle was removed: one piece sold out." : "Bundle removed. Both pieces were released for other shoppers.") + '<br><br><button type="button" class="ghost" style="width:auto;padding:10px 18px" id="reset">Reset demo</button></div></div>';
+    var line = function (k, i, tagged) {
+      var it = ITEMS[k], v = k === "kurti" ? "White · " + (st.size || "M") : it.variant;
+      return '<div class="line">' + crop(k, 74, 96) + '<div style="flex:1;min-width:0">' + (tagged ? '<span class="chip">Bundle · ' + esc(b.name) + '</span>' : "") +
+        '<div class="n" style="margin-top:' + (tagged ? 6 : 0) + 'px">' + esc(it.name) + '</div><div class="s">The Crafts Archive · ' + esc(it.cat) + '</div><div class="v">' + esc(v) + ' · Qty 1</div>' +
+        '<div class="p"><s>' + money(it.price) + '</s>' + money(parts[i]) + '</div>' + (it.note ? '<div class="sc">' + it.note + '</div>' : "") + '</div>' +
+        (tagged ? '<button type="button" class="rm" data-ask aria-label="Remove">✕</button>' : "") + '</div>';
+    };
+    var body;
+    if (st.cart === "a") {
+      body = '<div class="ccard"><div class="held">🔒 Held for you <span>· both pieces reserved together</span></div>' +
+        '<div class="bhead"><span class="lbl">Bundle · ' + esc(b.name) + ' <span class="chip">' + b.items.length + ' pieces</span></span><button type="button" class="rm" data-ask aria-label="Remove bundle">✕</button></div>' +
+        b.items.map(function (k, i) { return line(k, i, false); }).join("") +
+        '<div class="bfoot"><span>Bundle price <b>' + money(b.price) + '</b></span><span class="g">You save ' + money(total(b) - b.price) + '</span></div></div>';
+    } else {
+      body = b.items.map(function (k, i) { return '<div class="ccard"><div class="held">🔒 Held for you</div>' + line(k, i, true) + '</div>'; }).join("") +
+        '<div class="ccard" style="padding:10px 12px;font-size:12px;color:#545454;display:flex;justify-content:space-between"><span>Bundle saving</span><b style="color:#1E863B;font-weight:500">− ' + money(total(b) - b.price) + '</b></div>';
+    }
+    return '<div class="page cart pad" id="page">' + head + '<span class="newtag" style="top:220px">NEW CARD</span>' + body +
+      '<div class="osum"><h4>Order summary</h4><div class="sum" style="border:0;padding:0;margin:0"><div class="r"><span>Items (' + b.items.length + ')</span><span>' + money(total(b)) + '</span></div><div class="r d"><span>Bundle discount</span><span>− ' + money(total(b) - b.price) + '</span></div><div class="r t"><span>Total</span><span>' + money(b.price) + '</span></div></div></div></div>' +
+      '<div class="cbar"><div class="t"><span>Total</span><b>' + money(b.price) + '</b></div><button type="button">Proceed to checkout →</button></div>' +
+      (st.ask ? '<div class="sheet"><button class="scrim" data-cancel aria-label="Keep the bundle"></button><div class="sbox" role="dialog" aria-label="Remove the bundle?"><div class="grab"></div><h3>Remove the bundle?</h3><p>Both pieces are removed and released, and the ' + money(total(b) - b.price) + ' bundle saving is lost.</p><div class="two"><button type="button" class="ghost" data-cancel>Keep bundle</button><button type="button" class="prim" id="confirm-rm">Remove</button></div></div></div>' : "");
+  }
+
+  // ---------- consumer: listing ----------
+  function listPage() {
+    var list = ["saree", "beige", "pair"].filter(function (k) { return !hidden(BUNDLES[k]); });
+    var cards = list.map(function (k) {
+      var b = BUNDLES[k], w = Math.floor((163 - 2) / b.items.length);
+      return '<button type="button" class="pc" ' + (k === "saree" ? 'data-goto="bundle"' : "") + '><span class="img">' + b.items.map(function (i) { return crop(i, w, 220); }).join("") + '<span class="badge">SAVE ' + money(total(b) - b.price) + '</span></span>' +
+        '<span class="bd" style="display:block"><span class="o" style="display:block">' + b.items.length + ' PIECES</span><span class="n" style="display:block">' + esc(b.items.map(function (i) { return ITEMS[i].short; }).join(" + ")) + '</span><span class="p" style="display:block">' + money(b.price) + '<s>' + money(total(b)) + '</s></span></span></button>';
+    }).join("");
+    return '<div class="page" id="page"><div class="cut" style="height:98px"><img src="pdp-1.png" alt="Store header"></div><span class="newtag" style="top:106px">NEW PAGE</span>' +
+      '<div class="lhead"><span class="wm">Bundle</span><h1>Bundle offers</h1><div class="sub">Handpicked sets · save more together</div><p>Pieces picked to go together, at one lower price. Once a piece sells out, its set is gone.</p><span class="gtag">' + list.length + ' sets in this store</span></div>' +
+      '<div class="grid">' + cards + '</div>' + (list.length < 3 ? '<p class="note" style="padding:0 16px;color:#707078;font-size:11.5px">Bundles with the sold-out earrings are hidden.</p>' : "") + '</div>';
+  }
+
+  function renderPhone() {
+    var html = st.screen === "pdp" ? pdp() : st.screen === "bundle" ? bundlePage() : st.screen === "cart" ? cartPage() : listPage();
+    $("#phone").innerHTML = html;
+    $("#s-name").textContent = SCREENS[st.screen];
+  }
+
+  // ---------- partner app ----------
+  function partner() {
+    var b = cur(), hid = hidden(b), h = "";
+    if (st.ps === "tile") {
+      var list = ["saree", "beige", "pair"].filter(function (k) { return !hidden(BUNDLES[k]); });
+      h = '<div class="pscroll"><div class="pstep"><small>Step 3 of 3</small><h1>Review Products</h1><p>Browse products &amp; add them to your store.</p></div>' +
+        '<div class="ptiles"><span class="ptile"><span class="ic" style="background:#D5DDE2"></span><span class="l">All</span><span class="cnt">240</span></span>' +
+        '<span class="ptile on"><span style="display:flex;width:34px;height:34px;border-radius:50%;overflow:hidden">' + crop("saree", 17, 34) + crop("earrings", 17, 34) + '</span><span class="l">Bundles</span><span class="cnt">' + list.length + '</span></span>' +
+        '<span class="ptile" style="background:#FCE7EC">' + crop("saree", 34, 34, "border-radius:50%") + '<span class="l">Sarees</span><span class="cnt">82</span></span>' +
+        '<span class="ptile" style="background:#FBF1DE">' + crop("earrings", 34, 34, "border-radius:50%") + '<span class="l">Jewelry</span><span class="cnt">40</span></span></div>' +
+        '<div class="plist">' + list.map(function (k) {
+          var x = BUNDLES[k];
+          return '<div class="pcd' + (k === st.edit ? " sel" : "") + '"><div class="pch"><span class="thumb">' + x.items.map(function (it) { return crop(it, Math.floor(65 / x.items.length), 65); }).join("") + '</span>' +
+            '<div class="t"><div class="n">' + esc(x.name) + '</div><div class="b">' + x.items.length + ' items <span class="c">Bundle</span></div><div class="s">' + esc(x.items.map(function (it) { return ITEMS[it].short; }).join(" · ")) + '</div></div><span class="pcb' + (k === st.edit ? " on" : "") + '">' + (k === st.edit ? "✓" : "") + '</span></div>' +
+            '<div class="phr"></div><div class="pcols"><div><span>Selling Price</span><b>' + money(x.price) + '</b></div><div><span>B2B Price</span><b>' + money(x.b2b) + '</b></div><div><span>Margin</span><b>' + ((x.price - x.b2b) / x.price * 100).toFixed(1) + '%</b></div><div><span>Margin Amount</span><b>' + money(x.price - x.b2b) + '</b></div></div>' +
+            '<button type="button" class="plink" data-ps-go="d1" data-pk="' + k + '">View bundle details ›</button></div>';
+        }).join("") + (hid ? '<p style="font-size:12px;color:#668091;margin:4px 4px 0">Bundles with the sold-out earrings are not listed.</p>' : "") + '</div></div>' +
+        '<div class="pbar"><small>18 products in your store</small><button type="button" class="pbtn">Launch Store</button></div>';
+    } else {
+      var m = b.price - b.b2b, vm = b.price - b.vip;
+      var priceRows = '<div class="pprice"><div><span>MRP</span><b>' + money(total(b, "mrp")) + '</b></div><div><span>Selling Price</span><b>' + money(b.price) + '</b></div><div><span>B2B Price</span><b>' + money(b.b2b) + '</b></div><div><span>Margin</span><b>' + (m / b.price * 100).toFixed(1) + '%</b></div><div><span>Margin Amt.</span><b>' + money(m) + '</b></div></div>' +
+        '<div class="pprice vip"><div><span>MRP</span><b>' + money(total(b, "mrp")) + '</b></div><div><span>Selling Price</span><b>' + money(b.price) + '</b></div><div><span>VIP B2B Price</span><b>' + money(b.vip) + '</b></div><div><span>VIP Margin</span><b>' + (vm / b.price * 100).toFixed(1) + '%</b></div><div><span>VIP Margin Amt.</span><b>' + money(vm) + '</b></div></div>';
+      var inside = st.ps === "d1"
+        ? '<h3 class="ph3">What\'s inside</h3>' + b.items.map(function (k) { var it = ITEMS[k]; return '<div class="psku">' + crop(k, 40, 40) + '<span class="n">' + esc(it.short) + '</span><span class="v">' + money(it.mrp) + ' | <b>' + money(it.b2b) + '</b></span></div>'; }).join("") + '<p class="pdesc" style="font-size:11.5px;color:#668091">MRP | B2B of each piece if sold alone.</p>'
+        : b.items.map(function (k) { var it = ITEMS[k]; return '<div class="pitem">' + crop(k, 64, 80) + '<div><div class="n">' + esc(it.name) + '</div><div class="v">Alone: MRP ' + money(it.mrp) + ' · Selling ' + money(it.price) + ' · B2B ' + money(it.b2b) + '</div></div></div>'; }).join("");
+      var gw = Math.floor((375 - 2 * (b.items.length - 1)) / b.items.length);
+      var gal = st.ps === "d1" ? '<div class="pgal">' + b.items.map(function (k) { return crop(k, gw, 300); }).join("") + '<div class="pdots"><i class="on"></i><i></i></div></div>' : '<div style="height:14px"></div>';
+      h = '<div class="pscroll" style="background:#fff"><div class="cut" style="height:80px"><img src="partner-1.png" alt="Partner app header: Product Details"></div>' +
+        '<div class="pdp">' + gal + '<h2 class="pname">' + esc(b.name) + '</h2><div class="pbadges"><span class="pcombo">Bundle · ' + b.items.length + ' items</span><span class="pvipb">♛ VIP Margin</span>' + (hid ? '<span class="tag red">Hidden – earrings sold out</span>' : "") + '</div>' +
+        (st.ps === "d2" ? '<h3 class="ph3" style="margin-top:4px">In this bundle</h3>' + inside + '<h3 class="ph3">Bundle price</h3>' + priceRows : priceRows + inside) +
+        '<h3 class="ph3">Description</h3><p class="pdesc">Your customers get both pieces for ' + money(b.price) + ' instead of ' + money(total(b)) + '. Adding the bundle also adds both pieces to your store. If a piece sells out, the bundle hides from your store until it is back.</p></div></div>' +
+        '<div class="pbar" id="pbar">' + (st.pAdded ? '<div class="psel">Selected</div>' : '<button type="button" class="pbtn" id="p-add">Add to Store</button>') + '</div>';
+    }
+    $("#partner").innerHTML = h;
+  }
+
+  // ---------- admin ----------
+  function adminItems() {
+    var b = cur();
+    $("#f-pick").innerHTML = Object.keys(BUNDLES).map(function (k) { return '<option value="' + k + '"' + (k === st.edit ? " selected" : "") + '>' + esc(BUNDLES[k].name) + (hidden(BUNDLES[k]) ? "  (hidden – out of stock)" : "") + '</option>'; }).join("");
+    $("#a-items").innerHTML = b.items.map(function (k) {
+      var it = ITEMS[k], oos = st.oos && k === "earrings";
+      return '<div class="apc">' + crop(k, 55, 70) + '<div class="t"><div class="n">' + esc(it.name) + '</div><div class="m">The Crafts Archive • ' + esc(it.sku) + ' • ' + (oos ? '<b style="color:#CD034E;font-weight:400">stock 0</b>' : 'stock ' + it.stock) + '</div><span class="c">' + esc(it.cat) + '</span></div><div class="r"><span class="p">' + money(it.price) + '</span><button type="button" class="arm" aria-label="Remove ' + esc(it.short) + '">✕</button></div></div>';
+    }).join("");
+    $("#a-totals").textContent = "Items total: MRP " + money(total(b, "mrp")) + " · Selling " + money(total(b)) + " · B2B " + money(total(b, "b2b")) + "." + (b.items.length < 3 ? " You can add 1 more product." : " Maximum 3 products.");
+  }
+  function loadForm() {
+    var b = cur();
+    $("#f-name").value = b.name; $("#f-price").value = b.price; $("#f-b2b").value = b.b2b; $("#f-vip").value = b.vip;
+    $("#saved").hidden = true;
+  }
+  function adminCalc() {
+    var b = cur(), t = total(b), e = "";
+    $("#f-price").classList.remove("bad"); $("#f-b2b").classList.remove("bad"); $("#f-vip").classList.remove("bad");
+    if (!(b.price > 0) || b.price >= t) { e = "Bundle price must be lower than the items total (" + money(t) + ")."; $("#f-price").classList.add("bad"); }
+    else if (!(b.b2b > 0) || b.b2b >= b.price) { e = "B2B price must be lower than the bundle price."; $("#f-b2b").classList.add("bad"); }
+    else if (!(b.vip > 0) || b.vip > b.b2b) { e = "VIP B2B price cannot be higher than the B2B price."; $("#f-vip").classList.add("bad"); }
+    $("#a-err").hidden = !e; $("#a-err").textContent = e; $("#f-save").disabled = !!e;
+    $("#m-save").textContent = money(t - b.price);
+    $("#m-margin").textContent = money(b.price - b.b2b) + " (" + ((b.price - b.b2b) / b.price * 100).toFixed(1) + "%)";
+    $("#m-vip").textContent = money(b.price - b.vip) + " (" + ((b.price - b.vip) / b.price * 100).toFixed(1) + "%)";
+    $("#a-sugg").textContent = "Suggested B2B " + money(Math.round(total(b, "b2b") * b.price / t)) + " (items B2B with the same discount).";
+    var parts = split(b);
+    $("#a-split").textContent = "On the order, the price is split per piece: " + b.items.map(function (k, i) { return ITEMS[k].short + " " + money(parts[i]); }).join(" + ") + " = " + money(b.price) + ". A return refunds that piece's share.";
+    $("#a-list").innerHTML = Object.keys(BUNDLES).map(function (k) {
+      var x = BUNDLES[k], hid = hidden(x);
+      return '<div class="arow' + (k === st.edit ? " cur" : "") + '"><span class="nm">' + esc(x.name || "Untitled") + (hid ? '<span class="why">Yellow Suhani Earrings · out of stock</span>' : "") + '</span><span>' + money(x.price) + '</span>' + (hid ? '<span class="tag red">Hidden – out of stock</span>' : '<span class="tag green">Live</span>') + '</div>';
+    }).join("");
+  }
+  function openBundle(k) { st.edit = k; loadForm(); adminItems(); adminCalc(); partner(); syncUrl(); }
+
+  // ---------- panel + wiring ----------
+  function renderPanel() {
+    $$("#designs button").forEach(function (b) { b.classList.toggle("on", b.dataset.d === st.d); });
+    $$("#positions button").forEach(function (b) { b.classList.toggle("on", st.d !== "c" && b.dataset.p === st.pos); b.disabled = st.d === "c"; });
+    $("#posnote").hidden = st.d !== "c";
+    $$("#carts button").forEach(function (b) { b.classList.toggle("on", b.dataset.c === st.cart); });
+    $$("#tries button").forEach(function (b) { b.classList.toggle("on", b.dataset.t === st.t); });
+    $("#oos").setAttribute("aria-checked", st.oos);
+    $("#t-admin").setAttribute("aria-selected", st.tab === "admin"); $("#t-partner").setAttribute("aria-selected", st.tab === "partner");
+    $("#admin").hidden = st.tab !== "admin"; $("#partner").hidden = st.tab !== "partner"; $("#pctl").hidden = st.tab !== "partner";
+    $$("#pctl button").forEach(function (b) { b.classList.toggle("on", b.dataset.ps === st.ps); });
+  }
+  function all() { renderPanel(); renderPhone(); partner(); adminItems(); adminCalc(); syncUrl(); }
+  function flashCard() {
+    var c = $("#bundle-card"); if (!c || st.screen !== "pdp") return;
+    var page = $("#page"); page.scrollTop = Math.max(0, c.offsetTop - 160);
+    c.classList.remove("flash"); void c.offsetWidth; c.classList.add("flash");
+  }
+  function go(screen) { st.screen = screen; st.ask = false; all(); var p = $("#page"); if (p) p.scrollTop = 0; }
+
+  $("#designs").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; st.d = b.dataset.d; st.screen = "pdp"; all(); flashCard(); });
+  $("#positions").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b || b.disabled) return; st.pos = b.dataset.p; st.screen = "pdp"; all(); flashCard(); });
+  $("#carts").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; st.cart = b.dataset.c; st.removed = false; go("cart"); });
+  $("#tries").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; st.t = b.dataset.t; st.size = ""; st.added = false; st.padded = false; st.removed = false; go("bundle"); });
+  $("#oos").addEventListener("click", function () { st.oos = !st.oos; all(); if (st.screen === "pdp") flashCard(); });
+  $("#s-prev").onclick = function () { go(SORDER[(SORDER.indexOf(st.screen) + SORDER.length - 1) % SORDER.length]); };
+  $("#s-next").onclick = function () { go(SORDER[(SORDER.indexOf(st.screen) + 1) % SORDER.length]); };
+  $("#copy").onclick = function () { var i = $("#link"); try { navigator.clipboard.writeText(i.value).then(function () { $("#copy").textContent = "Copied"; }, function () { i.select(); }); } catch (e) { i.select(); } };
+  $("#t-admin").onclick = function () { st.tab = "admin"; all(); };
+  $("#t-partner").onclick = function () { st.tab = "partner"; all(); };
+  $("#pctl").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; st.ps = b.dataset.ps; st.pAdded = false; all(); });
+
+  $("#phone").addEventListener("click", function (e) {
+    var t = e.target.closest("[data-goto],[data-size],#add,[data-ask],[data-cancel],#confirm-rm,#reset");
+    if (!t) return;
+    if (t.dataset.goto) { if (t.dataset.goto === "bundle") { st.added = false; } go(t.dataset.goto); return; }
+    if (t.dataset.size) { st.size = t.dataset.size; st.padded = false; renderPhone(); return; }
+    if (t.id === "add") {
+      var b = BUNDLES[st.t], needs = b.items.some(function (k) { return ITEMS[k].sizes; });
+      if (needs && !st.size) { st.padded = true; renderPhone(); return; }
+      st.added = true; st.removed = false; renderPhone(); return;
+    }
+    if (t.hasAttribute("data-ask")) { st.ask = true; renderPhone(); return; }
+    if (t.hasAttribute("data-cancel")) { st.ask = false; renderPhone(); return; }
+    if (t.id === "confirm-rm") { st.ask = false; st.removed = true; renderPhone(); return; }
+    if (t.id === "reset") { st.removed = false; st.oos = false; all(); }
+  });
+  $("#partner").addEventListener("click", function (e) {
+    var t = e.target.closest("[data-ps-go],#p-add"); if (!t) return;
+    if (t.id === "p-add") { st.pAdded = true; partner(); return; }
+    if (t.dataset.pk) { st.edit = t.dataset.pk; loadForm(); }
+    st.ps = t.dataset.psGo; all();
+  });
+
+  loadForm();
+  $("#admin").addEventListener("input", function (e) {
+    var b = cur();
+    if (e.target.id === "f-pick") return;
+    if (e.target.id === "f-name") b.name = e.target.value.trim() || "Untitled bundle";
+    if (e.target.id === "f-price") b.price = +e.target.value;
+    if (e.target.id === "f-b2b") b.b2b = +e.target.value;
+    if (e.target.id === "f-vip") b.vip = +e.target.value;
+    $("#saved").hidden = true;
+    adminCalc(); renderPhone(); partner(); syncUrl();
+  });
+  // Bundle Name: switch between typing a name and picking an existing bundle name from a dropdown.
+  $("#f-mode").addEventListener("click", function () {
+    var on = this.getAttribute("aria-checked") !== "true";
+    this.setAttribute("aria-checked", on);
+    $("#f-name").hidden = on; $("#f-pick").hidden = !on;
+    $("#l-name").setAttribute("for", on ? "f-pick" : "f-name");
+  });
+  $("#f-pick").addEventListener("change", function (e) { openBundle(e.target.value); });
+  $("#admin").addEventListener("submit", function (e) { e.preventDefault(); $("#saved").hidden = false; });
+
+  all();
+})();
+</script>
