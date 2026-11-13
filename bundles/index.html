@@ -96,7 +96,14 @@ body.hidepanel .panel{display:none}
 .media .dots{position:absolute;left:0;right:0;bottom:10px;display:flex;justify-content:center;gap:5px}
 .media .dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.55)}
 .media .dots i.on{background:#fff}
-.media .cap{position:absolute;left:10px;top:10px;background:rgba(31,33,46,.72);color:#fff;font-size:10.5px;font-weight:500;padding:4px 9px;border-radius:999px}
+.media .cap,.car .cap{position:absolute;left:10px;top:10px;background:rgba(31,33,46,.72);color:#fff;font-size:10.5px;font-weight:500;padding:4px 9px;border-radius:999px;pointer-events:none;max-width:calc(100% - 20px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.car{position:relative;width:100%}
+.car .track{display:flex;height:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.car .track::-webkit-scrollbar{display:none}
+.car .slide{flex:none;scroll-snap-align:start;position:relative;overflow:hidden}
+.car .dots{position:absolute;left:0;right:0;bottom:10px;display:flex;justify-content:center;gap:5px;pointer-events:none}
+.car .dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.55);box-shadow:0 0 2px rgba(0,0,0,.3)}
+.car .dots i.on{background:#fff;width:14px;border-radius:3px}
 .info{padding:16px 16px 0}
 .tagline{display:inline-block;background:#F4C99B;font-size:11px;padding:7px 11px 5px;border-radius:999px}
 .ttl{font-size:19px;font-weight:500;line-height:1.22;letter-spacing:-.01em;margin:10px 0 4px}
@@ -485,7 +492,7 @@ body.hidepanel .panel{display:none}
       <div class="abar">Products › <b>Bundles</b> › Create Bundle</div>
       <div class="ahead"><h2>Create Bundle</h2><button type="button" class="ax" aria-label="Close">✕</button></div>
       <div class="abody">
-        <label class="alb" for="f-name">Bundle Full Name <em>*</em></label>
+        <label class="alb" for="f-name">Bundle Name <em>*</em></label>
         <input class="ain" id="f-name" maxlength="80">
         <div class="acount"><span>Bundle page and partner app</span><b id="c-name"></b></div>
         <label class="alb" for="f-short">Bundle Short Name <em>*</em></label>
@@ -535,12 +542,49 @@ body.hidepanel .panel{display:none}
     beige: { src: "pdp-4.png", x: 22, y: 606, w: 121, h: 146 },
     ivory: { src: "pdp-4.png", x: 167, y: 606, w: 121, h: 146 },
     kurti: { src: KURTI, x: 0, y: 0, w: 375, h: 500 },
-    ctlcard: { src: "pdp-4.png", x: 16, y: 255, w: 133, h: 240 }
+    ctlcard: { src: "pdp-4.png", x: 16, y: 255, w: 133, h: 240 },
+    // extra stand-in photos per piece (closer crops of the same live photo) for the swipe gallery
+    saree_b: { src: "pdp-1.png", x: 150, y: 210, w: 95, h: 150, item: "saree" },
+    saree_c: { src: "pdp-1.png", x: 120, y: 380, w: 110, h: 120, item: "saree" },
+    earrings_b: { src: "pdp-4.png", x: 70, y: 300, w: 62, h: 80, item: "earrings" },
+    ivory_b: { src: "pdp-4.png", x: 190, y: 640, w: 70, h: 90, item: "ivory" },
+    beige_b: { src: "pdp-4.png", x: 45, y: 640, w: 70, h: 90, item: "beige" }
   };
+  var GALLERY = { saree: ["saree", "saree_b", "saree_c"], earrings: ["earrings", "earrings_b"], ivory: ["ivory", "ivory_b"], beige: ["beige", "beige_b"], kurti: ["kurti"] };
+  // Slide index where each piece's photos start (slide 0 = the collage).
+  function slideStarts(b) { var s = [], n = 1; b.items.forEach(function (k) { s.push(n); n += GALLERY[k].length; }); return { starts: s, total: n }; }
+  function pieceAt(b, idx) { var s = slideStarts(b).starts, p = null; s.forEach(function (v, i) { if (idx >= v) p = i; }); return idx === 0 ? null : p; }
+  function carousel(id, b, W, H) {
+    var slides = [collage(b.items, W, H, st.col)];
+    b.items.forEach(function (k) { GALLERY[k].forEach(function (c) { slides.push(crop(c, W, H)); }); });
+    return '<div class="car" style="height:' + H + 'px"><div class="track" id="' + id + '">' + slides.map(function (s) { return '<div class="slide" style="width:' + W + 'px;height:' + H + 'px">' + s + '</div>'; }).join("") + '</div>' +
+      '<span class="cap" id="' + id + '-cap"></span><div class="dots" id="' + id + '-dots">' + slides.map(function (s, i) { return '<i' + (i === 0 ? ' class="on"' : "") + '></i>'; }).join("") + '</div></div>';
+  }
+  function capText(b, idx) {
+    if (idx === 0) return "Bundle · " + b.items.length + " pieces · tap a piece below or swipe";
+    var p = pieceAt(b, idx), k = b.items[p], first = slideStarts(b).starts[p];
+    return "Piece " + (p + 1) + " · " + ITEMS[k].short + " · photo " + (idx - first + 1) + " of " + GALLERY[k].length;
+  }
+  function goSlide(id, b, idx, smooth) {
+    var t = document.getElementById(id); if (!t) return;
+    var target = idx * t.clientWidth;
+    if (smooth) {
+      t.scrollTo({ left: target, behavior: "smooth" });
+      // Fallback: if smooth scrolling did not run (reduced motion, background tab), jump there.
+      setTimeout(function () { if (Math.abs(t.scrollLeft - target) > 4) t.scrollLeft = target; }, 500);
+    } else t.scrollLeft = target;
+    markSlide(id, b, idx);
+  }
+  function markSlide(id, b, idx) {
+    var c = document.getElementById(id + "-cap"), d = document.getElementById(id + "-dots");
+    if (c) c.textContent = capText(b, idx);
+    if (d) Array.prototype.forEach.call(d.children, function (dot, i) { dot.className = i === idx ? "on" : ""; });
+  }
   function crop(k, W, H, extra) {
     var c = CROPS[k], s = Math.max(W / c.w, H / c.h);
     var px = -(c.x * s - (W - c.w * s) / 2), py = -(c.y * s - (H - c.h * s) / 2);
-    return '<span class="crop" role="img" aria-label="' + esc(ITEMS[k] ? ITEMS[k].name : "product photo") + '" style="width:' + W + 'px;height:' + H + 'px;background-image:url(\'' + c.src + '\');background-size:' + (375 * s) + 'px auto;background-position:' + px + 'px ' + py + 'px;' + (extra || "") + '"></span>';
+    var it = ITEMS[k] || ITEMS[c.item];
+    return '<span class="crop" role="img" aria-label="' + esc(it ? it.name : "product photo") + '" style="width:' + W + 'px;height:' + H + 'px;background-image:url(\'' + c.src + '\');background-size:' + (375 * s) + 'px auto;background-position:' + px + 'px ' + py + 'px;' + (extra || "") + '"></span>';
   }
 
   // Collage of a bundle's piece photos. Same designs for 2 and 3 pieces; picked in the panel.
@@ -732,22 +776,30 @@ body.hidepanel .panel{display:none}
       '<div class="desc"><h4>Description</h4>' + it.desc.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join("") + '</div>' +
       '<div class="acc"><div>Size &amp; Fit</div><div>Material &amp; Care</div><div>Specifications</div><div style="border:0">Shipping &amp; Returns</div></div><div class="ship">' + SHIP + '</div></div>';
   }
+  function toggleHtml(b) {
+    return b.items.map(function (k, i) {
+      var on = st.piece === i;
+      return '<button type="button" data-piece="' + i + '" aria-pressed="' + on + '">' + crop(k, 38, 48) + '<span style="min-width:0"><b>' + esc(ITEMS[k].short) + '</b><small>' + (on ? "Showing photos · tap to close" : "Piece " + (i + 1) + " · " + money(ITEMS[k].price)) + '</small></span></button>';
+    }).join("");
+  }
+  // Switch piece without rebuilding the page: toggle, details and the photo carousel follow st.piece.
+  function showPiece(scrollUp) {
+    var b = BUNDLES[st.t]; if (!$("#track")) return;
+    $(".ptog").innerHTML = toggleHtml(b);
+    $("#piece-details").innerHTML = pieceDetails(b.items[st.piece === null ? 0 : st.piece]);
+    goSlide("track", b, st.piece === null ? 0 : slideStarts(b).starts[st.piece], true);
+    if (scrollUp) { var pg = $("#page"); pg.scrollTo({ top: 0, behavior: "smooth" }); setTimeout(function () { if (pg.scrollTop > 4) pg.scrollTop = 0; }, 600); }
+  }
   function bundlePage() {
     var b = BUNDLES[st.t];
     if (hidden(b)) return '<div class="page"><div class="cut" style="height:98px"><img src="pdp-1.png" alt="Store header"></div><div class="empty"><b style="color:#1F212E;font-weight:500">This bundle is not available right now</b><br><br>One of its pieces is sold out. The bundle comes back when it is in stock.</div></div>';
     var needs = b.items.some(function (k) { return ITEMS[k].sizes; }), ready = !needs || st.size;
     var shown = st.piece === null ? 0 : st.piece;   // details: piece 1 by default
-    var media = st.piece === null
-      ? collage(b.items, 375, 420, st.col) + '<span class="cap">Bundle · ' + b.items.length + ' pieces</span>'
-      : crop(b.items[st.piece], 375, 420) + '<span class="cap">Piece ' + (st.piece + 1) + ' of ' + b.items.length + ' · tap it again for the bundle</span><div class="dots"><i class="on"></i><i></i><i></i><i></i></div>';
-    var tog = b.items.map(function (k, i) {
-      var on = st.piece === i;
-      return '<button type="button" data-piece="' + i + '" aria-pressed="' + on + '">' + crop(k, 38, 48) + '<span style="min-width:0"><b>' + esc(ITEMS[k].short) + '</b><small>' + (on ? "Showing · tap to close" : "Piece " + (i + 1) + " · " + money(ITEMS[k].price)) + '</small></span></button>';
-    }).join("");
+    var tog = toggleHtml(b);
     var btn = st.added ? '<button type="button" class="prim go" data-goto="cart">Go to Cart →</button>'
       : '<button type="button" class="prim' + (ready ? "" : " off") + '" id="add">' + (ready ? "Add bundle to cart" : "Select a size") + '</button>';
     return '<div class="page pad" id="page"><div class="cut" style="height:98px"><img src="pdp-1.png" alt="Store header"></div><span class="newtag" style="top:106px">NEW SCREEN</span>' +
-      '<div class="media" id="media">' + media + '</div>' +
+      '<div id="media">' + carousel("track", b, 375, 420) + '</div>' +
       '<div class="info"><span class="tagline">✶ Bundle · ' + b.items.length + ' pieces · save ' + money(total(b) - b.price) + '</span><div class="ttl">' + esc(b.name) + '</div><p class="sold">Sold by <b>Satish Madiraju</b> · The Crafts Archive</p>' +
       '<div class="price"><b>' + money(b.price) + '</b><s>' + money(total(b)) + '</s><i>Save ' + money(total(b) - b.price) + '</i></div>' +
       '<div class="sum" style="margin:0 0 14px"><div class="r"><span>Pieces bought separately</span><span>' + money(total(b)) + '</span></div><div class="r d"><span>Bundle discount</span><span>− ' + money(total(b) - b.price) + '</span></div><div class="r t"><span>Bundle price</span><span>' + money(b.price) + '</span></div></div></div>' +
@@ -792,7 +844,21 @@ body.hidepanel .panel{display:none}
     $("#phone").innerHTML = html;
     $("#s-name").textContent = SCREENS[st.screen];
     if (keepScroll && $("#page")) { $("#page").style.scrollBehavior = "auto"; $("#page").scrollTop = y; $("#page").style.scrollBehavior = ""; }
+    if ($("#track")) { var b = BUNDLES[st.t]; goSlide("track", b, st.piece === null ? 0 : slideStarts(b).starts[st.piece], false); }
   }
+  // Swiping the photos by hand also switches the piece (collage = piece 1's details).
+  var swipeTimer = null;
+  document.addEventListener("scroll", function (e) {
+    var t = e.target; if (!t || (t.id !== "track" && t.id !== "ptrack")) return;
+    clearTimeout(swipeTimer);
+    swipeTimer = setTimeout(function () {
+      var partnerSide = t.id === "ptrack", b = partnerSide ? cur() : BUNDLES[st.t];
+      var idx = Math.round(t.scrollLeft / t.clientWidth), p = pieceAt(b, idx);
+      markSlide(t.id, b, idx);
+      if (partnerSide) { if (p !== st.ppiece) { st.ppiece = p; showPartnerPiece(false); } }
+      else if (p !== st.piece) { st.piece = p; $(".ptog").innerHTML = toggleHtml(b); $("#piece-details").innerHTML = pieceDetails(b.items[p === null ? 0 : p]); }
+    }, 140);
+  }, true);
 
   // ---------- partner app ----------
   function partnerPiece(k) {
@@ -823,21 +889,34 @@ body.hidepanel .panel{display:none}
         '<div class="pbar"><small>18 products in your store</small><button type="button" class="pbtn">Launch Store</button></div>';
     } else {
       var m = b.price - b.b2b, vm = b.price - b.vip, shown = st.ppiece === null ? 0 : st.ppiece;
-      var gw = Math.floor((375 - 2 * (b.items.length - 1)) / b.items.length);
-      var gal = st.ppiece === null ? collage(b.items, 375, 300, st.col) : crop(b.items[st.ppiece], 375, 300);
+      var gal = carousel("ptrack", b, 375, 300);
       h = '<div class="pscroll" id="pscroll" style="background:#F9FAFB"><div class="cut" style="height:80px"><img src="partner-1.png" alt="Partner app header: Product Details"></div>' +
         '<div class="pdp"><div class="pgal">' + gal + '</div><h2 class="pname">' + esc(b.name) + '</h2>' +
         '<div class="pbadges"><span class="pcombo">Bundle · ' + b.items.length + ' items</span><span class="pvipb">♛ VIP Margin</span>' + (hid ? '<span class="tag red">Hidden – earrings sold out</span>' : "") + '</div>' +
         '<p class="plabel">Bundle price</p><div class="pprice"><div><span>MRP</span><b>' + money(total(b, "mrp"), true) + '</b></div><div><span>Selling Price</span><b>' + money(b.price, true) + '</b></div><div><span>B2B Price</span><b>' + money(b.b2b, true) + '</b></div><div><span>Margin</span><b>' + (m / b.price * 100).toFixed(1) + '%</b></div><div><span>Margin Amt.</span><b>' + money(m, true) + '</b></div></div>' +
         '<div class="pprice vip"><div><span>MRP</span><b>' + money(total(b, "mrp"), true) + '</b></div><div><span>Selling Price</span><b>' + money(b.price, true) + '</b></div><div><span>VIP B2B Price</span><b>' + money(b.vip, true) + '</b></div><div><span>VIP Margin</span><b>' + (vm / b.price * 100).toFixed(1) + '%</b></div><div><span>VIP Margin A…</span><b>' + money(vm, true) + '</b></div></div>' +
-        '<div class="ptog2" role="group" aria-label="Pieces in this bundle">' + b.items.map(function (k, i) { return '<button type="button" data-ppiece="' + i + '" aria-pressed="' + (st.ppiece === i) + '">' + crop(k, 28, 34) + '<span>' + esc(ITEMS[k].short) + '</span></button>'; }).join("") + '</div>' +
-        partnerPiece(b.items[shown]) + '</div></div>' +
+        '<div class="ptog2" role="group" aria-label="Pieces in this bundle">' + partnerToggle(b) + '</div>' +
+        '<div id="ppiece-details">' + partnerPiece(b.items[shown]) + '</div></div></div>' +
         '<div class="pbar">' + (st.pAdded ? '<div class="psel">Selected</div>' : '<button type="button" class="pbtn" id="p-add">Add to Store</button>') + '</div>';
     }
     var y = $("#pscroll") ? $("#pscroll").scrollTop : 0;
     $("#partner").innerHTML = h;
     if ($("#pscroll") && st.keepP) $("#pscroll").scrollTop = y;
     st.keepP = false;
+    if ($("#ptrack")) goSlide("ptrack", b, st.ppiece === null ? 0 : slideStarts(b).starts[st.ppiece], false);
+  }
+  function partnerToggle(b) {
+    return b.items.map(function (k, i) { return '<button type="button" data-ppiece="' + i + '" aria-pressed="' + (st.ppiece === i) + '">' + crop(k, 28, 34) + '<span>' + esc(ITEMS[k].short) + '</span></button>'; }).join("");
+  }
+  // Same rule as the consumer page: tap a piece → scroll up, photos swipe to that piece, details switch; tap again → collage.
+  function showPartnerPiece(scrollUp) {
+    var b = cur(); if (!$("#ptrack")) return;
+    $(".ptog2").innerHTML = partnerToggle(b);
+    $("#ppiece-details").innerHTML = partnerPiece(b.items[st.ppiece === null ? 0 : st.ppiece]);
+    if (scrollUp) {
+      goSlide("ptrack", b, st.ppiece === null ? 0 : slideStarts(b).starts[st.ppiece], true);
+      var ps = $("#pscroll"); ps.scrollTo({ top: 0, behavior: "smooth" }); setTimeout(function () { if (ps.scrollTop > 4) ps.scrollTop = 0; }, 600);
+    }
   }
 
   // ---------- admin ----------
@@ -857,7 +936,7 @@ body.hidepanel .panel{display:none}
   function adminCalc() {
     var b = cur(), t = total(b), e = "";
     ["#f-name", "#f-short", "#f-price", "#f-b2b", "#f-vip"].forEach(function (id) { $(id).classList.remove("bad"); });
-    if (!$("#f-name").value.trim()) { e = "Bundle full name is required."; $("#f-name").classList.add("bad"); }
+    if (!$("#f-name").value.trim()) { e = "Bundle name is required."; $("#f-name").classList.add("bad"); }
     else if (!$("#f-short").value.trim()) { e = "Bundle short name is required."; $("#f-short").classList.add("bad"); }
     else if (!(b.price > 0) || b.price >= t) { e = "Bundle price must be lower than the items total (" + money(t) + ")."; $("#f-price").classList.add("bad"); }
     else if (!(b.b2b > 0) || b.b2b >= b.price) { e = "B2B price must be lower than the bundle price."; $("#f-b2b").classList.add("bad"); }
@@ -928,9 +1007,9 @@ body.hidepanel .panel{display:none}
     if (t.dataset.openBundle) { st.t = t.dataset.openBundle; st.size = ""; st.added = false; st.padded = false; go("bundle"); return; }
     if (t.dataset.goto) { if (t.dataset.goto === "bundle") st.added = false; go(t.dataset.goto); return; }
     if (t.dataset.piece !== undefined) {
-      // Sir's rule: tap a piece → its photo and details replace the collage; tap the same piece again → collage back.
-      var i = +t.dataset.piece; st.piece = st.piece === i ? null : i; renderPhone(true);
-      var pg = $("#page"), md = $("#media"); if (pg && md && pg.scrollTop > md.offsetTop + 40) pg.scrollTop = md.offsetTop;
+      // Sir's rule: tap a piece → scroll up, the photos swipe from the collage to all of that piece's photos and the
+      // details below switch to it; tap the same piece again → back to the collage (details back to piece 1).
+      var i = +t.dataset.piece; st.piece = st.piece === i ? null : i; showPiece(true);
       return;
     }
     if (t.dataset.size) { st.size = t.dataset.size; st.padded = false; renderPhone(true); return; }
@@ -948,7 +1027,7 @@ body.hidepanel .panel{display:none}
     var t = e.target.closest("[data-pcard],[data-ppiece],#p-add"); if (!t) return;
     if (t.id === "p-add") { st.pAdded = true; st.keepP = true; partner(); return; }
     if (t.dataset.pcard) { st.ps = "details"; st.ppiece = null; st.pAdded = false; all(); return; }   // tapping the card opens Product Details
-    var i = +t.dataset.ppiece; st.ppiece = st.ppiece === i ? null : i; st.keepP = true; partner();
+    var i = +t.dataset.ppiece; st.ppiece = st.ppiece === i ? null : i; showPartnerPiece(true);
   });
   $("#partner").addEventListener("keydown", function (e) { var t = e.target.closest("[data-pcard]"); if (t && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); t.click(); } });
 
