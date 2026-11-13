@@ -326,6 +326,60 @@ body.hidepanel .panel{display:none}
 .tag{display:inline-flex;align-items:center;height:20px;border-radius:999px;padding:0 10px;font-size:10px;white-space:nowrap}
 .tag.green{background:#DAFEE8;color:#0DAC52}
 .tag.red{background:#FFC9D7;color:#CD034E}
+/* admin Bundles list + Bundle details (same look as admin Products list / Product Details) */
+.alink{color:#668091;text-decoration:none}
+.alink:hover{text-decoration:underline}
+#a-view{background:#F9FAFB}
+.av-top{display:flex;align-items:center;gap:10px;padding:14px 16px 10px;border-bottom:1px solid #D5DDE2;flex-wrap:wrap}
+.av-top h2{margin:0;font-size:20px;line-height:26px;font-weight:400;color:#21314A;flex:1;min-width:0}
+.av-top .div{width:1px;height:26px;background:#D5DDE2}
+.av-top .sub{font-size:14px;color:#21314A;font-weight:300}
+.av-ob{height:32px;border-radius:8px;padding:0 10px;border:1px solid #4862EE;color:#4862EE;background:transparent;font-size:12px;font-weight:300}
+.av-fb{height:32px;border-radius:8px;padding:0 12px;border:0;background:#4862EE;color:#fff;font-size:12px;font-weight:300}
+.av-tools{display:flex;gap:8px;align-items:center;padding:10px 16px 0;flex-wrap:wrap}
+.av-tools input{flex:1;min-width:120px;height:32px;border:0;border-radius:8px;background:#fff;padding:0 10px;font:300 13px Geomanist,system-ui;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.av-chips{display:flex;gap:6px;padding:10px 16px 2px;flex-wrap:wrap}
+.av-chips span{height:26px;display:inline-flex;align-items:center;border-radius:999px;padding:0 10px;border:1px solid #D5DDE2;background:#fff;font-size:11.5px;color:#516778}
+.av-chips span.on{border-color:#4862EE;color:#4862EE;background:#F4F5FF}
+.av-head{display:grid;grid-template-columns:1fr 64px 74px;gap:8px;padding:10px 26px 2px;font-size:11px;color:#859BAB;font-weight:300}
+.av-rows{padding:0 12px 14px}
+.av-row{display:grid;grid-template-columns:42px 1fr 64px 74px;gap:8px;align-items:center;width:100%;text-align:left;background:#fff;border:0;border-radius:8px;padding:10px;margin-top:8px;color:#516778;font-size:12.5px;cursor:pointer}
+.av-row:hover{background:#ECEFF2}
+.av-row .nm{color:#21314A;font-weight:400;font-size:13px;line-height:1.3}
+.av-row .nm small{display:block;font-size:11px;color:#668091;font-weight:300}
+.av-row .why{display:block;font-size:10.5px;color:#CD034E;font-weight:300}
+.av-row .th{width:42px;height:42px;border-radius:6px;overflow:hidden}
+.av-body{padding:12px 16px 16px;display:flex;flex-direction:column;gap:12px}
+.av-tog{display:flex;gap:6px;flex-wrap:wrap}
+.av-tog button{display:flex;align-items:center;gap:6px;border:1px solid #D5DDE2;background:#fff;border-radius:8px;padding:4px 10px 4px 4px;font-size:12px;color:#21314A}
+.av-tog button .crop{border-radius:4px}
+.av-tog button.only{padding:0 12px;height:36px}
+.av-tog button[aria-pressed=true]{border-color:#4862EE;background:#F4F5FF;color:#4862EE}
+.av-card{background:#fff;border-radius:8px;box-shadow:0 1px 15px #0000000a;padding:14px}
+.av-card h3{margin:0 0 10px;font-size:15px;font-weight:400;color:#21314A}
+.av-gal{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none}
+.av-gal .crop{border-radius:10px}
+.av-gal .dots{display:flex;justify-content:center;gap:5px;margin-top:8px}
+.av-gal-dots{display:flex;justify-content:center;gap:5px;margin-top:8px}
+.av-gal-dots i{width:6px;height:6px;border-radius:50%;background:#D5DDE2}
+.av-gal-dots i.on{background:#21314A}
+.av-sku{border:1px solid #4776B0;background:#E8EDF6;border-radius:12px;padding:12px 14px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:14px;color:#21314A}
+.av-sku b{font-weight:500}
+.av-sku small{display:block;font-size:12px;color:#668091;margin-top:4px}
+.av-sku .pr{font-size:13px;white-space:nowrap}
+.av-sku .pr b{color:#4776B0;font-weight:400}
+.av-price{display:grid;grid-template-columns:repeat(4,1fr);text-align:center;background:#fff;border-radius:8px;box-shadow:0 1px 15px #0000000a;padding:12px 4px}
+.av-price.five{grid-template-columns:repeat(5,1fr)}
+.av-price span{display:block;font-size:10.5px;color:#668091}
+.av-price b{display:block;font-size:13px;font-weight:400;color:#21314A;margin-top:3px}
+.av-kv{display:grid;grid-template-columns:1fr auto;gap:2px 10px;font-size:13px}
+.av-kv span{color:#668091;padding:7px 0;border-bottom:1px solid #F3F4F6}
+.av-kv b{font-weight:400;color:#21314A;text-align:right;padding:7px 0;border-bottom:1px solid #F3F4F6}
+.av-desc p{margin:0 0 8px;font-size:13px;line-height:1.55;color:#668091}
+.av-split{width:100%;border-collapse:collapse;font-size:12px}
+.av-split th{text-align:left;font-weight:300;color:#859BAB;padding:6px 4px;border-bottom:1px solid #ECEFF2}
+.av-split td{padding:7px 4px;border-bottom:1px solid #F3F4F6;color:#21314A}
+.av-split td s{color:#B0BFC9}
 /* partner app (wcommerce-partner-ui: buttonColor #4862EE, secondary #21314A, textColor #192438, greyText #668091, VIP teal #1AB188) */
 .partner{position:relative;height:min(680px,calc(100vh - 150px));min-height:460px;background:#ECEFF2;border-radius:16px;overflow:hidden;color:#192438}
 .pscroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding-bottom:90px;scrollbar-width:none}
@@ -488,9 +542,16 @@ body.hidepanel .panel{display:none}
     </div>
     <section class="partner" id="partner" hidden></section>
 
+    <div class="pctl" id="actl">
+      <button type="button" data-av="list">Bundles list</button>
+      <button type="button" data-av="details">Bundle details</button>
+      <button type="button" data-av="create">Create / Edit</button>
+    </div>
+    <section class="admin" id="a-view" hidden></section>
+
     <form class="admin" id="admin" novalidate>
-      <div class="abar">Products › <b>Bundles</b> › Create Bundle</div>
-      <div class="ahead"><h2>Create Bundle</h2><button type="button" class="ax" aria-label="Close">✕</button></div>
+      <div class="abar">Products › <a href="#" class="alink" data-av-go="list">Bundles</a> › <b id="a-crumb">Create Bundle</b></div>
+      <div class="ahead"><h2 id="a-title">Create Bundle</h2><button type="button" class="ax" aria-label="Close" data-av-go="list">✕</button></div>
       <div class="abody">
         <label class="alb" for="f-name">Bundle Name <em>*</em></label>
         <input class="ain" id="f-name" maxlength="80">
@@ -517,10 +578,6 @@ body.hidepanel .panel{display:none}
         <p class="asplit" id="a-split"></p>
       </div>
       <div class="afoot"><span class="saved" id="saved" hidden>Saved (demo only)</span><button type="submit" class="abtn" id="f-save">Publish Bundle</button></div>
-      <div class="alist">
-        <h3>All bundles (Products › Bundles list)</h3>
-        <div id="a-list"></div>
-      </div>
     </form>
   </div>
 </div>
@@ -666,7 +723,9 @@ body.hidepanel .panel{display:none}
   var SCREENS = { home: "Home", pdp: "Product page", bundle: "Bundle page", cart: "Cart", list: "Bundle offers" }, SORDER = ["home", "pdp", "bundle", "list", "cart"];
   var st = { screen: "pdp", home: "tile", col: "side", d: "a", pos: "size", cart: "a", t: "saree", oos: false, tab: "admin", ps: "tile",
     piece: null, ppiece: null, size: "", added: false, removed: false, ask: false, padded: false, pAdded: false };
-  function cur() { return BUNDLES.saree; }   // the admin form edits this bundle
+  st.av = "list"; st.ab = "saree"; st.apiece = null; st.amode = "edit";
+  function cur() { return BUNDLES[st.ab]; }   // the bundle open in admin (details / edit) and in the partner app
+  var META = { saree: { stores: 14, created: "12 Nov 2026" }, trio: { stores: 5, created: "13 Nov 2026" }, kurti: { stores: 6, created: "11 Nov 2026" }, beige: { stores: 9, created: "10 Nov 2026" }, pair: { stores: 3, created: "9 Nov 2026" } };
 
   // ---------- URL ----------
   var q = new URLSearchParams(location.search);
@@ -680,11 +739,14 @@ body.hidepanel .panel{display:none}
   if (q.get("oos") === "1") st.oos = true;
   if (q.get("tab") === "partner") st.tab = "partner";
   if (/^(tile|details)$/.test(q.get("ps") || "")) st.ps = q.get("ps");
+  if (/^(list|details|create)$/.test(q.get("av") || "")) st.av = q.get("av");
+  if (BUNDLES[q.get("ab")]) st.ab = q.get("ab");
   if (q.has("hidepanel")) document.body.classList.add("hidepanel");
   function syncUrl() {
     var p = new URLSearchParams({ screen: st.screen, home: st.home, col: st.col, d: st.d, pos: st.pos, cart: st.cart, try: st.t });
     if (st.oos) p.set("oos", "1");
-    if (st.tab === "partner") { p.set("tab", "partner"); p.set("ps", st.ps); }
+    if (st.tab === "partner") { p.set("tab", "partner"); p.set("ps", st.ps); } else { p.set("av", st.av); }
+    p.set("ab", st.ab);
     var url = location.pathname + "?" + p.toString();
     try { history.replaceState(null, "", url); } catch (e) {}
     $("#link").value = location.origin + url;
@@ -948,11 +1010,67 @@ body.hidepanel .panel{display:none}
     $("#a-sugg").textContent = "Suggested B2B " + money(Math.round(total(b, "b2b") * b.price / t)) + " (items B2B with the same discount).";
     var parts = split(b);
     $("#a-split").textContent = "On the order, the price is split per piece: " + b.items.map(function (k, i) { return ITEMS[k].short + " " + money(parts[i]); }).join(" + ") + " = " + money(b.price) + ". A return refunds that piece's share.";
-    $("#a-list").innerHTML = Object.keys(BUNDLES).map(function (k) {
-      var x = BUNDLES[k], hid = hidden(x);
-      return '<div class="arow' + (k === "saree" ? " cur" : "") + '"><span class="nm">' + esc(x.name) + '<small>' + esc(x.short) + '</small>' + (hid ? '<span class="why">Yellow Suhani Earrings · out of stock</span>' : "") + '</span><span>' + money(x.price) + '</span>' + (hid ? '<span class="tag red">Hidden – out of stock</span>' : '<span class="tag green">Live</span>') + '</div>';
-    }).join("");
     counters();
+  }
+  function loadForm() {
+    var b = cur();
+    $("#f-name").value = b.name; $("#f-short").value = b.short; $("#f-price").value = b.price; $("#f-b2b").value = b.b2b; $("#f-vip").value = b.vip;
+    $("#a-title").textContent = st.amode === "edit" ? "Edit Bundle" : "Create Bundle";
+    $("#a-crumb").textContent = st.amode === "edit" ? "Edit · " + b.short : "Create Bundle";
+    $("#saved").hidden = true;
+  }
+
+  // ---------- admin: Bundles list + Bundle details ----------
+  function statusTag(x) { return hidden(x) ? '<span class="tag red">Hidden – out of stock</span>' : '<span class="tag green">Live</span>'; }
+  function adminView() {
+    var h;
+    if (st.av === "list") {
+      var keys = Object.keys(BUNDLES), live = keys.filter(function (k) { return !hidden(BUNDLES[k]); }).length;
+      h = '<div class="abar">Products › <b>Bundles</b></div>' +
+        '<div class="av-top"><h2>Bundles</h2><button type="button" class="av-fb" data-av-new>+ Create Bundle</button></div>' +
+        '<div class="av-tools"><input placeholder="Search bundle or product" aria-label="Search bundles"><button type="button" class="av-ob">Crafts</button><button type="button" class="av-ob" style="background:#dde3fc">Bundles</button></div>' +
+        '<div class="av-chips"><span class="on">All (' + keys.length + ')</span><span>Live (' + live + ')</span><span>Hidden – out of stock (' + (keys.length - live) + ')</span></div>' +
+        '<div class="av-head"><span style="padding-left:50px">Bundle</span><span>Price</span><span>Status</span></div><div class="av-rows">' +
+        keys.map(function (k) {
+          var x = BUNDLES[k], hid = hidden(x);
+          return '<button type="button" class="av-row" data-ab="' + k + '"><span class="th">' + collage(x.items, 42, 42, st.col) + '</span>' +
+            '<span class="nm">' + esc(x.short) + '<small>' + x.items.length + ' pieces · ' + META[k].stores + ' stores</small>' + (hid ? '<span class="why">Yellow Suhani Earrings · out of stock</span>' : "") + '</span>' +
+            '<span>' + money(x.price) + '<small style="display:block;font-size:10.5px;color:#B0BFC9;text-decoration:line-through">' + money(total(x)) + '</small></span>' + statusTag(x) + '</button>';
+        }).join("") + '</div>';
+    } else {
+      var b = cur(), m = META[st.ab], t = total(b), parts = split(b), p = st.apiece;
+      var tog = '<button type="button" class="only" data-apiece="-1" aria-pressed="' + (p === null) + '">Bundle</button>' +
+        b.items.map(function (k, i) { return '<button type="button" data-apiece="' + i + '" aria-pressed="' + (p === i) + '">' + crop(k, 26, 30) + esc(ITEMS[k].short) + '</button>'; }).join("");
+      var body;
+      if (p === null) {
+        var photos = [collage(b.items, 150, 190, st.col)].concat(b.items.map(function (k) { return crop(k, 110, 190); }));
+        body = '<div class="av-card"><div class="av-gal">' + photos.join("") + '</div><div class="av-gal-dots">' + photos.map(function (x, i) { return '<i' + (i === 0 ? ' class="on"' : "") + '></i>'; }).join("") + '</div></div>' +
+          '<div class="av-sku"><div><b>Bundle</b> · ' + b.items.length + ' pieces<small>Image: auto collage of the piece photos</small></div><span class="pr">' + money(t, true) + ' | <b>' + money(b.price, true) + '</b></span></div>' +
+          '<div class="av-price five"><div><span>MRP</span><b>' + money(total(b, "mrp")) + '</b></div><div><span>Bundle Price</span><b>' + money(b.price) + '</b></div><div><span>B2B Price</span><b>' + money(b.b2b) + '</b></div><div><span>Margin</span><b>' + Math.round((b.price - b.b2b) / b.price * 100) + '%</b></div><div><span>Margin Amt</span><b>' + money(b.price - b.b2b) + '</b></div></div>' +
+          '<div class="av-card"><h3>Bundle Details</h3><div class="av-kv">' +
+          [["Bundle Name", esc(b.name)], ["Bundle Short Name", esc(b.short)], ["Pieces", b.items.length], ["Items total", money(t)], ["Customer saves", money(t - b.price)], ["VIP B2B Price", money(b.vip)],
+            ["VIP margin", money(b.price - b.vip) + " (" + Math.round((b.price - b.vip) / b.price * 100) + "%)"], ["Status", statusTag(b)], ["Added by", m.stores + " partner stores"], ["Created", m.created]]
+            .map(function (r) { return '<span>' + r[0] + '</span><b>' + r[1] + '</b>'; }).join("") + '</div>' +
+          (hidden(b) ? '<p style="margin:10px 0 0;font-size:12px;color:#CD034E">Hidden because Yellow Suhani Earrings is out of stock. It comes back by itself when restocked.</p>' : "") + '</div>' +
+          '<div class="av-card"><h3>Price split per piece</h3><table class="av-split"><thead><tr><th>Piece</th><th>Alone</th><th>In bundle</th></tr></thead><tbody>' +
+          b.items.map(function (k, i) { return '<tr><td>' + esc(ITEMS[k].short) + '</td><td><s>' + money(ITEMS[k].price) + '</s></td><td>' + money(parts[i]) + '</td></tr>'; }).join("") +
+          '</tbody></table><p style="margin:8px 0 0;font-size:11.5px;color:#668091">Used on the order lines; a single return refunds that piece\'s share.</p></div>';
+      } else {
+        var k = b.items[p], it = ITEMS[k], mm = it.price - it.b2b;
+        var ph = (GALLERY[k] || [k]).map(function (c) { return crop(c, 110, 150); });
+        body = '<div class="av-card"><div class="av-gal">' + ph.join("") + '</div><div class="av-gal-dots">' + ph.map(function (x, i) { return '<i' + (i === 0 ? ' class="on"' : "") + '></i>'; }).join("") + '</div></div>' +
+          '<div class="av-sku"><div><b>' + esc(it.colour || "") + '</b> ' + esc(it.sku) + '<small>Size: ' + esc(it.sizes ? it.sizes.join(", ") : (it.size || "Free Size") + " (" + it.stock + ")") + '</small></div><span class="pr">' + money(it.mrp, true) + ' | <b>' + money(it.b2b, true) + '</b></span></div>' +
+          '<div class="av-price"><div><span>MRP</span><b>' + money(it.mrp, true) + '</b></div><div><span>B2B Price</span><b>' + money(it.b2b, true) + '</b></div><div><span>Margin</span><b>' + Math.round(mm / it.price * 100) + '%</b></div><div><span>Margin Amount</span><b>' + money(mm, true) + '</b></div></div>' +
+          '<div class="av-card"><h3>Product Details</h3><div class="av-kv">' +
+          [["Product Brand Name", "The Crafts Archive"], ["Category", esc(it.cat)], ["HSN Code", esc(it.hsn || "—")], ["Stock", (st.oos && k === "earrings") ? '<span style="color:#CD034E">0 · out of stock</span>' : it.stock], ["Price in this bundle", money(parts[p])], ["Product ID", it.id ? "#" + it.id : "example"]]
+            .map(function (r) { return '<span>' + r[0] + '</span><b>' + r[1] + '</b>'; }).join("") + '</div></div>' +
+          '<div class="av-card av-desc"><h3>Product Description</h3>' + (it.desc || ["—"]).map(function (x) { return '<p>' + esc(x) + '</p>'; }).join("") + '</div>';
+      }
+      h = '<div class="abar">Products › <a href="#" class="alink" data-av-go="list">Bundles</a> › <b>' + esc(b.short) + '</b></div>' +
+        '<div class="av-top"><h2>' + esc(b.name) + '</h2><span class="div"></span><span class="sub">Bundles</span><button type="button" class="av-fb" data-av-edit>Edit Details</button></div>' +
+        '<div class="av-body"><div class="av-tog" role="group" aria-label="Show the bundle or one piece">' + tog + '</div>' + body + '</div>';
+    }
+    $("#a-view").innerHTML = h;
   }
 
   // ---------- panel + wiring ----------
@@ -967,10 +1085,12 @@ body.hidepanel .panel{display:none}
     $$("#tries button").forEach(function (b) { b.classList.toggle("on", b.dataset.t === st.t); });
     $("#oos").setAttribute("aria-checked", st.oos);
     $("#t-admin").setAttribute("aria-selected", st.tab === "admin"); $("#t-partner").setAttribute("aria-selected", st.tab === "partner");
-    $("#admin").hidden = st.tab !== "admin"; $("#partner").hidden = st.tab !== "partner"; $("#pctl").hidden = st.tab !== "partner";
+    $("#admin").hidden = st.tab !== "admin" || st.av !== "create"; $("#a-view").hidden = st.tab !== "admin" || st.av === "create"; $("#actl").hidden = st.tab !== "admin";
+    $$("#actl button").forEach(function (b) { b.classList.toggle("on", b.dataset.av === st.av); });
+    $("#partner").hidden = st.tab !== "partner"; $("#pctl").hidden = st.tab !== "partner";
     $$("#pctl button").forEach(function (b) { b.classList.toggle("on", b.dataset.ps === st.ps); });
   }
-  function all() { renderPanel(); renderPhone(); partner(); adminItems(); adminCalc(); syncUrl(); }
+  function all() { renderPanel(); renderPhone(); partner(); adminItems(); adminCalc(); adminView(); syncUrl(); }
   function flash(id) {
     var c = $(id); if (!c) return;
     var page = $("#page"); page.scrollTop = Math.max(0, c.offsetTop - 160);
@@ -1031,8 +1151,20 @@ body.hidepanel .panel{display:none}
   });
   $("#partner").addEventListener("keydown", function (e) { var t = e.target.closest("[data-pcard]"); if (t && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); t.click(); } });
 
-  var b0 = cur();
-  $("#f-name").value = b0.name; $("#f-short").value = b0.short; $("#f-price").value = b0.price; $("#f-b2b").value = b0.b2b; $("#f-vip").value = b0.vip;
+  loadForm();
+  // admin navigation: list → details (piece toggle) → edit; "+ Create Bundle" opens the form (demo prefill)
+  function openAdmin(av) { st.av = av; st.tab = "admin"; if (av === "create") loadForm(); all(); }
+  $("#actl").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; st.apiece = null; if (b.dataset.av === "create") st.amode = "edit"; openAdmin(b.dataset.av); });
+  $("#a-view").addEventListener("click", function (e) {
+    var t = e.target.closest("[data-ab],[data-apiece],[data-av-go],[data-av-edit],[data-av-new]"); if (!t) return;
+    e.preventDefault();
+    if (t.dataset.ab) { st.ab = t.dataset.ab; st.apiece = null; openAdmin("details"); return; }
+    if (t.dataset.apiece !== undefined) { var i = +t.dataset.apiece; st.apiece = i < 0 || st.apiece === i ? null : i; adminView(); return; }
+    if (t.dataset.avGo) { openAdmin(t.dataset.avGo); return; }
+    if (t.hasAttribute("data-av-edit")) { st.amode = "edit"; openAdmin("create"); return; }
+    if (t.hasAttribute("data-av-new")) { st.amode = "create"; st.ab = "saree"; openAdmin("create"); }
+  });
+  $("#admin").addEventListener("click", function (e) { var t = e.target.closest("[data-av-go]"); if (t) { e.preventDefault(); openAdmin(t.dataset.avGo); } });
   $("#admin").addEventListener("input", function (e) {
     var b = cur();
     if (e.target.id === "f-name") b.name = e.target.value.trim() || " ";
