@@ -250,8 +250,12 @@ body.hidepanel .panel{display:none}
 .nahead h2{margin:0;font-size:17px;font-weight:500;letter-spacing:-.01em;color:#1F212E}
 .nahead h2 span{color:#C73F21}
 .nahead .sub{font-size:11px;color:#545454;margin-top:3px}
-.narail{display:flex;gap:11px;overflow-x:auto;padding:2px 16px 8px;scroll-snap-type:x mandatory;scroll-padding-left:16px;scrollbar-width:none}
-.narail::-webkit-scrollbar{display:none}
+.narow1{display:flex;justify-content:space-between;align-items:center;gap:10px}
+/* pill = SareesUnderBanner "Shop now" (bg-white text-ink-900 rounded-full px-14 py-8 text-12.5 font-500, 14px arrow);
+   light border + shadow added because it sits on white instead of a photo */
+.naview{flex:none;display:inline-flex;align-items:center;gap:6px;background:#fff;color:#1F212E;border:1px solid #E8EAF0;box-shadow:0 1px 5px rgba(31,33,46,.12);border-radius:999px;padding:8px 14px;font-family:inherit;font-size:12.5px;font-weight:500;white-space:nowrap;cursor:pointer}
+/* no sideways scroll: 2-column grid, the shape NewlyArrivedRow uses for 2 items (grid-cols-2 gap-[11px]) */
+.nagrid{display:grid;grid-template-columns:1fr 1fr;gap:14px 11px;padding:2px 16px 8px}
 .nacard{flex:none;width:166px;scroll-snap-align:start;text-align:left;border:0;background:transparent;padding:0;color:#1F212E;cursor:pointer}
 .naimg{position:relative;display:block;width:166px;aspect-ratio:3/4;border-radius:12px;overflow:hidden;background:#F5F5F5;box-shadow:0 1px 3px rgba(31,33,46,.08)}
 .nabadge{position:absolute;top:0;left:0;z-index:2;white-space:nowrap;font-weight:500;line-height:1;color:#C73F21;background:rgba(255,255,255,.94);border:1px solid rgba(199,63,33,.32);box-shadow:0 1px 5px rgba(31,33,46,.16);border-radius:12px 8.5px 8.5px 0;font-size:9px;padding:3.9px 7px 2.1px;letter-spacing:.025em}
@@ -344,6 +348,19 @@ body.hidepanel .panel{display:none}
 .tag{display:inline-flex;align-items:center;height:20px;border-radius:999px;padding:0 10px;font-size:10px;white-space:nowrap}
 .tag.green{background:#DAFEE8;color:#0DAC52}
 .tag.red{background:#FFC9D7;color:#CD034E}
+.tag.grey{background:#D5DDE2;color:#21314A}
+.ast{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.asw-wrap{display:inline-flex;align-items:center;gap:6px}
+.astx{font-size:11px;font-weight:300;color:#21314A;text-transform:capitalize}
+.asw{position:relative;width:34px;height:20px;border-radius:999px;border:0;background:#D5DDE2;padding:0;flex:none;cursor:pointer}
+.asw::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2);transition:left .15s}
+.asw[aria-checked=true]{background:#4862EE}
+.asw[aria-checked=true]::after{left:16px}
+.nooff{display:flex;align-items:center;gap:6px;font-size:11.5px;color:#545454;margin:-6px 0 12px}
+.nooff b{color:#1F212E;font-weight:500}
+.vplay{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;background:rgba(31,33,46,.55);display:grid;place-items:center;pointer-events:none}
+.vplay i{display:block;width:0;height:0;border-left:16px solid #fff;border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px}
+.vchip{position:absolute;right:10px;bottom:24px;background:rgba(31,33,46,.72);color:#fff;font-size:10px;font-weight:500;padding:3px 7px;border-radius:6px;letter-spacing:.06em;pointer-events:none}
 /* admin Bundles list + Bundle details (same look as admin Products list / Product Details) */
 .alink{color:#668091;text-decoration:none}
 .alink:hover{text-decoration:underline}
@@ -359,9 +376,9 @@ body.hidepanel .panel{display:none}
 .av-chips{display:flex;gap:6px;padding:10px 16px 2px;flex-wrap:wrap}
 .av-chips span{height:26px;display:inline-flex;align-items:center;border-radius:999px;padding:0 10px;border:1px solid #D5DDE2;background:#fff;font-size:11.5px;color:#516778}
 .av-chips span.on{border-color:#4862EE;color:#4862EE;background:#F4F5FF}
-.av-head{display:grid;grid-template-columns:1fr 64px 74px;gap:8px;padding:10px 26px 2px;font-size:11px;color:#859BAB;font-weight:300}
+.av-head{display:grid;grid-template-columns:1fr 58px 90px;gap:8px;padding:10px 26px 2px;font-size:11px;color:#859BAB;font-weight:300}
 .av-rows{padding:0 12px 14px}
-.av-row{display:grid;grid-template-columns:42px 1fr 64px 74px;gap:8px;align-items:center;width:100%;text-align:left;background:#fff;border:0;border-radius:8px;padding:10px;margin-top:8px;color:#516778;font-size:12.5px;cursor:pointer}
+.av-row{display:grid;grid-template-columns:42px 1fr 58px 90px;gap:8px;align-items:center;width:100%;text-align:left;background:#fff;border:0;border-radius:8px;padding:10px;margin-top:8px;color:#516778;font-size:12.5px;cursor:pointer}
 .av-row:hover{background:#ECEFF2}
 .av-row .nm{color:#21314A;font-weight:400;font-size:13px;line-height:1.3}
 .av-row .nm small{display:block;font-size:11px;color:#668091;font-weight:300}
@@ -625,20 +642,24 @@ body.hidepanel .panel{display:none}
     ivory_b: { src: "pdp-4.png", x: 190, y: 640, w: 70, h: 90, item: "ivory" },
     beige_b: { src: "pdp-4.png", x: 45, y: 640, w: 70, h: 90, item: "beige" }
   };
-  var GALLERY = { saree: ["saree", "saree_b", "saree_c"], earrings: ["earrings", "earrings_b"], ivory: ["ivory", "ivory_b"], beige: ["beige", "beige_b"], kurti: ["kurti"] };
+  CROPS.saree_v = { src: "pdp-1.png", x: 100, y: 150, w: 175, h: 350, item: "saree", video: true };   // the live saree page has a VIDEO in its gallery
+  var VIDEO_OVERLAY = '<span class="vplay" aria-hidden="true"><i></i></span><span class="vchip">VIDEO</span>';
+  function media(c, W, H) { return crop(c, W, H) + (CROPS[c].video ? VIDEO_OVERLAY : ""); }
+  var GALLERY = { saree: ["saree", "saree_v", "saree_b", "saree_c"], earrings: ["earrings", "earrings_b"], ivory: ["ivory", "ivory_b"], beige: ["beige", "beige_b"], kurti: ["kurti"] };
   // Slide index where each piece's photos start (slide 0 = the collage).
   function slideStarts(b) { var s = [], n = 1; b.items.forEach(function (k) { s.push(n); n += GALLERY[k].length; }); return { starts: s, total: n }; }
   function pieceAt(b, idx) { var s = slideStarts(b).starts, p = null; s.forEach(function (v, i) { if (idx >= v) p = i; }); return idx === 0 ? null : p; }
   function carousel(id, b, W, H) {
     var slides = [collage(b.items, W, H, st.col)];
-    b.items.forEach(function (k) { GALLERY[k].forEach(function (c) { slides.push(crop(c, W, H)); }); });
+    b.items.forEach(function (k) { GALLERY[k].forEach(function (c) { slides.push(media(c, W, H)); }); });
     return '<div class="car" style="height:' + H + 'px"><div class="track" id="' + id + '">' + slides.map(function (s) { return '<div class="slide" style="width:' + W + 'px;height:' + H + 'px">' + s + '</div>'; }).join("") + '</div>' +
       '<span class="cap" id="' + id + '-cap"></span><div class="dots" id="' + id + '-dots">' + slides.map(function (s, i) { return '<i' + (i === 0 ? ' class="on"' : "") + '></i>'; }).join("") + '</div></div>';
   }
   function capText(b, idx) {
     if (idx === 0) return "Bundle · " + b.items.length + " pieces · swipe for each piece";
     var p = pieceAt(b, idx), k = b.items[p], first = slideStarts(b).starts[p];
-    return "Piece " + (p + 1) + " · " + ITEMS[k].short + " · photo " + (idx - first + 1) + " of " + GALLERY[k].length;
+    var c = GALLERY[k][idx - first];
+    return "Piece " + (p + 1) + " · " + ITEMS[k].short + " · " + (CROPS[c].video ? "video" : "photo") + " " + (idx - first + 1) + " of " + GALLERY[k].length;
   }
   function goSlide(id, b, idx, smooth) {
     var t = document.getElementById(id); if (!t) return;
@@ -722,7 +743,10 @@ body.hidepanel .panel{display:none}
     pair: { name: "Beige and Ivory Sambalpuri Baandha Ikat Saree Pair", short: "Sambalpuri Saree Pair", items: ["beige", "ivory"], price: 2899, b2b: 2150, vip: 2080 }
   };
   function total(b, f) { return b.items.reduce(function (s, k) { return s + ITEMS[k][f || "price"]; }, 0); }
-  function hidden(b) { return st.oos && b.items.indexOf("earrings") >= 0; }
+  function oosOf(b) { return st.oos && b.items.indexOf("earrings") >= 0; }
+  // A bundle is not shown to partners or customers when admin made it Inactive, or when a piece is out of stock.
+  function hidden(b) { return b.active === false || oosOf(b); }
+  function reason(b) { return b.active === false ? "Inactive" : oosOf(b) ? "Out of stock" : ""; }
   // Proportional split of the bundle price over the lines; the last line takes the rounding remainder.
   function split(b) {
     var t = total(b), left = b.price;
@@ -793,14 +817,9 @@ body.hidepanel .panel{display:none}
         // Same build as NewlyArrivedRow.jsx: 17px heading with a coral word, 11px subline, borderless 3:4 cards in a
         // snap rail, white corner badge, progress bar under the rail; "See all" is the last tile (CraftClusterRow).
         '<section class="narow" id="bundle-home"><span class="newtag" style="top:8px">NEW SECTION</span>' +
-        '<div class="nahead"><h2>Bundle <span>offers</span></h2><div class="sub">Sets picked by Satish · save when you buy them together</div></div>' +
-        '<div class="narail" id="hrail">' + visibleBundles().map(function (k) {
-          var b = BUNDLES[k];
-          return '<button type="button" class="nacard" data-open-bundle="' + k + '"><span class="naimg">' + collage(b.items, 166, 221, st.col) + '<span class="nabadge">Save ' + money(total(b) - b.price) + '</span></span>' +
-            '<span class="nan">' + esc(b.short) + '</span><span class="nap"><s>' + money(total(b)) + '</s>' + money(b.price) + '</span></button>';
-        }).join("") +
-        '<button type="button" class="nacard" data-goto="list"><span class="naimg naall"><span>See all bundle offers →</span></span></button></div>' +
-        '<div class="naprog" aria-hidden="true"><i id="hrail-fill" style="width:40%"></i></div></section>' +
+        '<div class="nahead"><div class="narow1"><h2>Bundle <span>offers</span></h2><button type="button" class="naview" data-goto="list">View all<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button></div><div class="sub">Sets picked by Satish · save when you buy them together</div></div>' +
+        '<div class="nagrid">' + visibleBundles().slice(0, 2).map(function (k) { return bundleCard(k, 166); }).join("") +
+        '</div></section>' +
         '<p class="skip">··· Sarees under ₹2,000, Today\'s Picks, Women\'s Fashion (unchanged) ···</p>';
     }
     return '<div class="page pad" id="page">' + top + sec + '</div>';
@@ -890,8 +909,7 @@ body.hidepanel .panel{display:none}
     return '<div class="page pad" id="page"><div class="cut" style="height:98px"><img src="pdp-1.png" alt="Store header"></div><span class="newtag" style="top:106px">NEW SCREEN</span>' +
       '<div id="media">' + carousel("track", b, 375, 420) + '</div>' +
       '<div class="info"><span class="tagline">✶ Bundle · ' + b.items.length + ' pieces · save ' + money(total(b) - b.price) + '</span><div class="ttl">' + esc(b.name) + '</div><p class="sold">Sold by <b>Satish Madiraju</b> · The Crafts Archive</p>' +
-      '<div class="price"><b>' + money(b.price) + '</b><s>' + money(total(b)) + '</s><i>Save ' + money(total(b) - b.price) + '</i></div>' +
-      '<div class="sum" style="margin:0 0 14px"><div class="r"><span>Pieces bought separately</span><span>' + money(total(b)) + '</span></div><div class="r d"><span>Bundle discount</span><span>− ' + money(total(b) - b.price) + '</span></div><div class="r t"><span>Bundle price</span><span>' + money(b.price) + '</span></div></div></div>' +
+      '<div class="price"><b>' + money(b.price) + '</b><s>' + money(total(b)) + '</s><i>Save ' + money(total(b) - b.price) + '</i></div>' +      '<div class="sum" style="margin:0 0 14px"><div class="r"><span>Pieces bought separately</span><span>' + money(total(b)) + '</span></div><div class="r d"><span>Bundle discount</span><span>− ' + money(total(b) - b.price) + '</span></div><div class="r t"><span>Bundle price</span><span>' + money(b.price) + '</span></div></div></div>' +
       '<div class="pieces"><div class="h">In this bundle <span>Tap a piece to see its photos and details</span></div><div class="ptog">' + tog + '</div></div>' +
       '<div id="piece-details">' + pieceDetails(b.items[shown]) + '</div></div>' +
       '<div class="sbar"><div class="r1"><div class="pr"><span>Bundle price</span><b>' + money(b.price) + '</b></div>' + btn + '</div><p class="note">' + (needs && !ready ? "Pick a size for the kurti first." : "Both pieces are held for you together. One bundle per cart.") + '</p></div>';
@@ -984,7 +1002,7 @@ body.hidepanel .panel{display:none}
       var gal = carousel("ptrack", b, 375, 300);
       h = '<div class="pscroll" id="pscroll" style="background:#F9FAFB"><div class="cut" style="height:80px"><img src="partner-1.png" alt="Partner app header: Product Details"></div>' +
         '<div class="pdp"><div class="pgal">' + gal + '</div><h2 class="pname">' + esc(b.name) + '</h2>' +
-        '<div class="pbadges"><span class="pcombo">Bundle · ' + b.items.length + ' items</span><span class="pvipb">♛ VIP Margin</span>' + (hid ? '<span class="tag red">Hidden – earrings sold out</span>' : "") + '</div>' +
+        '<div class="pbadges"><span class="pcombo">Bundle · ' + b.items.length + ' items</span><span class="pvipb">♛ VIP Margin</span>' + (hid ? '<span class="tag ' + (b.active === false ? "grey" : "red") + '">' + reason(b) + ' · not shown</span>' : "") + '</div>' +
         '<p class="plabel">Bundle price</p><div class="pprice"><div><span>MRP</span><b>' + money(total(b, "mrp"), true) + '</b></div><div><span>Selling Price</span><b>' + money(b.price, true) + '</b></div><div><span>B2B Price</span><b>' + money(b.b2b, true) + '</b></div><div><span>Margin</span><b>' + (m / b.price * 100).toFixed(1) + '%</b></div><div><span>Margin Amt.</span><b>' + money(m, true) + '</b></div></div>' +
         '<div class="pprice vip"><div><span>MRP</span><b>' + money(total(b, "mrp"), true) + '</b></div><div><span>Selling Price</span><b>' + money(b.price, true) + '</b></div><div><span>VIP B2B Price</span><b>' + money(b.vip, true) + '</b></div><div><span>VIP Margin</span><b>' + (vm / b.price * 100).toFixed(1) + '%</b></div><div><span>VIP Margin A…</span><b>' + money(vm, true) + '</b></div></div>' +
         '<div class="ptog2" role="group" aria-label="Pieces in this bundle">' + partnerToggle(b) + '</div>' +
@@ -1051,7 +1069,9 @@ body.hidepanel .panel{display:none}
   }
 
   // ---------- admin: Bundles list + Bundle details ----------
-  function statusTag(x) { return hidden(x) ? '<span class="tag red">Hidden – out of stock</span>' : '<span class="tag green">Live</span>'; }
+  function statusTag(x) { return x.active === false ? '<span class="tag grey">Inactive</span>' : oosOf(x) ? '<span class="tag red">Out of stock</span>' : '<span class="tag green">Live</span>'; }
+  // Same control as admin ViewProduct: status text + small NextUI switch.
+  function activeSwitch(k) { var on = BUNDLES[k].active !== false; return '<span class="asw-wrap"><span class="astx">' + (on ? "active" : "inactive") + '</span><button type="button" class="asw" role="switch" aria-checked="' + on + '" data-toggle="' + k + '" aria-label="Bundle active"></button></span>'; }
   function adminView() {
     var h;
     if (st.av === "list") {
@@ -1059,13 +1079,14 @@ body.hidepanel .panel{display:none}
       h = '<div class="abar">Products › <b>Bundles</b></div>' +
         '<div class="av-top"><h2>Bundles</h2><button type="button" class="av-fb" data-av-new>+ Create Bundle</button></div>' +
         '<div class="av-tools"><input placeholder="Search bundle or product" aria-label="Search bundles"></div>' +
-        '<div class="av-chips"><span class="on">All (' + keys.length + ')</span><span>Live (' + live + ')</span><span>Hidden – out of stock (' + (keys.length - live) + ')</span></div>' +
+        '<div class="av-chips"><span class="on">All (' + keys.length + ')</span><span>Live (' + live + ')</span><span>Out of stock (' + keys.filter(function (k) { return BUNDLES[k].active !== false && oosOf(BUNDLES[k]); }).length + ')</span><span>Inactive (' + keys.filter(function (k) { return BUNDLES[k].active === false; }).length + ')</span></div>' +
         '<div class="av-head"><span style="padding-left:50px">Bundle</span><span>Price</span><span>Status</span></div><div class="av-rows">' +
         keys.map(function (k) {
-          var x = BUNDLES[k], hid = hidden(x);
-          return '<button type="button" class="av-row" data-ab="' + k + '"><span class="th">' + collage(x.items, 42, 42, st.col) + '</span>' +
-            '<span class="nm">' + esc(x.short) + '<small>' + x.items.length + ' pieces · ' + META[k].stores + ' stores</small>' + (hid ? '<span class="why">Yellow Suhani Earrings · out of stock</span>' : "") + '</span>' +
-            '<span>' + money(x.price) + '<small style="display:block;font-size:10.5px;color:#B0BFC9;text-decoration:line-through">' + money(total(x)) + '</small></span>' + statusTag(x) + '</button>';
+          var x = BUNDLES[k];
+          return '<div class="av-row" role="button" tabindex="0" data-ab="' + k + '"><span class="th">' + collage(x.items, 42, 42, st.col) + '</span>' +
+            '<span class="nm">' + esc(x.short) + '<small>' + x.items.length + ' pieces · ' + META[k].stores + ' stores</small>' + (x.active !== false && oosOf(x) ? '<span class="why">Yellow Suhani Earrings · out of stock</span>' : "") + '</span>' +
+            '<span>' + money(x.price) + '<small style="display:block;font-size:10.5px;color:#B0BFC9;text-decoration:line-through">' + money(total(x)) + '</small></span>' +
+            '<span class="ast">' + statusTag(x) + activeSwitch(k) + '</span></div>';
         }).join("") + '</div>';
     } else {
       var b = cur(), m = META[st.ab], t = total(b), parts = split(b), p = st.apiece;
@@ -1088,7 +1109,7 @@ body.hidepanel .panel{display:none}
           '</tbody></table><p style="margin:8px 0 0;font-size:11.5px;color:#668091">Used on the order lines; a single return refunds that piece\'s share.</p></div>';
       } else {
         var k = b.items[p], it = ITEMS[k], mm = it.price - it.b2b;
-        var ph = (GALLERY[k] || [k]).map(function (c) { return crop(c, 110, 150); });
+        var ph = (GALLERY[k] || [k]).map(function (c) { return '<span style="position:relative;display:block;flex:none">' + media(c, 110, 150) + '</span>'; });
         body = '<div class="av-card"><div class="av-gal">' + ph.join("") + '</div><div class="av-gal-dots">' + ph.map(function (x, i) { return '<i' + (i === 0 ? ' class="on"' : "") + '></i>'; }).join("") + '</div></div>' +
           '<div class="av-sku"><div><b>' + esc(it.colour || "") + '</b> ' + esc(it.sku) + '<small>Size: ' + esc(it.sizes ? it.sizes.join(", ") : (it.size || "Free Size") + " (" + it.stock + ")") + '</small></div><span class="pr">' + money(it.mrp, true) + ' | <b>' + money(it.b2b, true) + '</b></span></div>' +
           '<div class="av-price"><div><span>MRP</span><b>' + money(it.mrp, true) + '</b></div><div><span>B2B Price</span><b>' + money(it.b2b, true) + '</b></div><div><span>Margin</span><b>' + Math.round(mm / it.price * 100) + '%</b></div><div><span>Margin Amount</span><b>' + money(mm, true) + '</b></div></div>' +
@@ -1098,7 +1119,7 @@ body.hidepanel .panel{display:none}
           '<div class="av-card av-desc"><h3>Product Description</h3>' + (it.desc || ["—"]).map(function (x) { return '<p>' + esc(x) + '</p>'; }).join("") + '</div>';
       }
       h = '<div class="abar">Products › <a href="#" class="alink" data-av-go="list">Bundles</a> › <b>' + esc(b.short) + '</b></div>' +
-        '<div class="av-top"><h2>' + esc(b.name) + '</h2><span class="div"></span><span class="sub">Bundles</span><button type="button" class="av-fb" data-av-edit>Edit Details</button></div>' +
+        '<div class="av-top"><h2>' + esc(b.name) + '</h2><span class="div"></span><span class="sub">Bundles</span>' + activeSwitch(st.ab) + '<button type="button" class="av-fb" data-av-edit>Edit Details</button></div>' +
         '<div class="av-body"><div class="av-tog" role="group" aria-label="Show the bundle or one piece">' + tog + '</div>' + body + '</div>';
     }
     $("#a-view").innerHTML = h;
@@ -1187,7 +1208,10 @@ body.hidepanel .panel{display:none}
   // admin navigation: list → details (piece toggle) → edit; "+ Create Bundle" opens the form (demo prefill)
   function openAdmin(av) { st.av = av; st.tab = "admin"; if (av === "create") loadForm(); all(); }
   $("#actl").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; st.apiece = null; if (b.dataset.av === "create") st.amode = "edit"; openAdmin(b.dataset.av); });
+  $("#a-view").addEventListener("keydown", function (e) { var r = e.target.closest(".av-row"); if (r && e.target === r && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); r.click(); } });
   $("#a-view").addEventListener("click", function (e) {
+    var sw = e.target.closest("[data-toggle]");
+    if (sw) { var bk = BUNDLES[sw.dataset.toggle]; bk.active = bk.active === false; all(); return; }   // Active / Inactive
     var t = e.target.closest("[data-ab],[data-apiece],[data-av-go],[data-av-edit],[data-av-new]"); if (!t) return;
     e.preventDefault();
     if (t.dataset.ab) { st.ab = t.dataset.ab; st.apiece = null; openAdmin("details"); return; }
