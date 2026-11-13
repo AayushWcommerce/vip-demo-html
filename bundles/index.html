@@ -416,6 +416,20 @@ body.hidepanel .panel{display:none}
       </div>
     </div>
     <div class="pcard">
+      <div class="eyebrow">Collage (all bundle photos)</div>
+      <div class="pos g2" id="collages">
+        <button data-col="side">A · Side by side<span>Equal columns</span></button>
+        <button data-col="feature">B · One big + stack<span>Piece 1 large</span></button>
+        <button data-col="diagonal">C · Diagonal<span>Slanted slices</span></button>
+        <button data-col="inset">D · Hero + inset<span>Small framed photos</span></button>
+      </div>
+      <div class="pos g2" id="counts">
+        <button data-n="2">2 pieces<span>Saree + Earrings</span></button>
+        <button data-n="3">3 pieces<span>2 Sarees + Earrings</span></button>
+      </div>
+      <span class="note">Same design on the bundle page, listing, home, and partner app.</span>
+    </div>
+    <div class="pcard">
       <div class="eyebrow">Product page card</div>
       <div class="pos" id="designs">
         <button data-d="a">A · Pair card<span>Both photos, price, View bundle</span></button>
@@ -529,6 +543,35 @@ body.hidepanel .panel{display:none}
     return '<span class="crop" role="img" aria-label="' + esc(ITEMS[k] ? ITEMS[k].name : "product photo") + '" style="width:' + W + 'px;height:' + H + 'px;background-image:url(\'' + c.src + '\');background-size:' + (375 * s) + 'px auto;background-position:' + px + 'px ' + py + 'px;' + (extra || "") + '"></span>';
   }
 
+  // Collage of a bundle's piece photos. Same designs for 2 and 3 pieces; picked in the panel.
+  //  side    = equal columns          feature = first piece big, the rest stacked on the right
+  //  diagonal = slanted slices        inset   = first piece full, the rest as small framed photos
+  var COLLAGES = { side: "A · Side by side", feature: "B · One big + stack", diagonal: "C · Diagonal", inset: "D · Hero + inset" };
+  function collage(items, W, H, style) {
+    var n = items.length, g = 2, out = "";
+    var at = function (x, y, extra) { return "position:absolute;left:" + x + "px;top:" + y + "px;" + (extra || ""); };
+    if (style === "feature") {
+      var bw = Math.round(W * (n === 2 ? 0.58 : 0.62)), rw = W - bw - g, rh = Math.floor((H - g * (n - 2)) / (n - 1));
+      out = crop(items[0], bw, H, at(0, 0)) + items.slice(1).map(function (k, i) { return crop(k, rw, i === n - 2 ? H - (rh + g) * (n - 2) : rh, at(bw + g, i * (rh + g))); }).join("");
+    } else if (style === "diagonal") {
+      var sw = W / n, s = Math.round(W * 0.09);
+      out = items.map(function (k, i) {
+        var x0 = Math.round(i * sw), x1 = Math.round((i + 1) * sw), left = Math.max(0, x0 - s), w = Math.min(W, x1 + s) - left;
+        var tl = i === 0 ? 0 : x0 + s - left, tr = i === n - 1 ? w : x1 + s - left, br = i === n - 1 ? w : x1 - s - left, bl = i === 0 ? 0 : x0 - s - left;
+        return crop(k, w, H, at(left, 0, "clip-path:polygon(" + tl + "px 0," + tr + "px 0," + br + "px 100%," + bl + "px 100%);"));
+      }).join("") + (n > 1 ? '<svg style="position:absolute;inset:0;pointer-events:none" width="' + W + '" height="' + H + '">' + items.slice(1).map(function (k, i) { var x = Math.round((i + 1) * sw); return '<line x1="' + (x + s) + '" y1="0" x2="' + (x - s) + '" y2="' + H + '" stroke="#fff" stroke-width="2.5"/>'; }).join("") + '</svg>' : "");
+    } else if (style === "inset") {
+      var iw = Math.round(W * (n === 2 ? 0.34 : 0.28)), ih = Math.round(iw * 1.25), m = Math.max(6, Math.round(W * 0.03));
+      out = crop(items[0], W, H, at(0, 0)) + items.slice(1).map(function (k, i) {
+        return crop(k, iw, ih, at(W - m - (iw + m * 0.6) * (n - 1 - i), H - m - ih, "border:" + Math.max(2, Math.round(W / 120)) + "px solid #fff;border-radius:" + Math.max(6, Math.round(W / 30)) + "px;box-shadow:0 4px 14px rgba(31,33,46,.25);box-sizing:border-box"));
+      }).join("");
+    } else {
+      var cw = Math.floor((W - g * (n - 1)) / n);
+      out = items.map(function (k, i) { return crop(k, i === n - 1 ? W - (cw + g) * (n - 1) : cw, H, at(i * (cw + g), 0)); }).join("");
+    }
+    return '<span class="collage" style="position:relative;display:block;width:' + W + 'px;height:' + H + 'px;overflow:hidden;flex:none">' + out + '</span>';
+  }
+
   // Live data (thecraftsarchive.com, 13 Nov): text copied from each product page. B2B prices are examples.
   var SHIP = '<h5>Shipping</h5><ul><li>Free shipping on prepaid orders over ₹499. Orders under ₹499 and Cash-on-Delivery orders: a flat shipping fee applies, shown at checkout.</li><li>Ships across India; COD available on serviceable pincodes. International orders are prepaid only (no COD) — flat $25 international shipping.</li><li>Dispatched within 24 hours. Delivery: 3–7 business days within India, 7–15 business days for international orders.</li></ul><a href="#" onclick="return false">Shipping policy ›</a>' +
     '<h5>Returns &amp; refunds</h5><ul><li>7-day easy returns if your piece arrives damaged, defective, or not as described — full refund.</li><li>Start a return from Orders or on WhatsApp — we arrange the pickup.</li><li>Refunds are processed by Wcommerce to your original payment method (prepaid) or bank/UPI (COD) within 24 hours of receiving the returned item.</li><li>International orders: returns only if the item arrives damaged.</li><li>Shipping, returns &amp; refunds are guaranteed by Wcommerce.</li></ul><a href="#" onclick="return false">Returns &amp; Refunds policy ›</a>';
@@ -547,10 +590,14 @@ body.hidepanel .panel{display:none}
       tagline: "Example piece (not on the live store)", colour: "White", hex: "#F4F2EC", sizes: ["S", "M", "L", "XL"], out: ["XL"], verified: false, sku: "KUR-0310", stock: 3,
       details: [["Fabric", "Cotton"], ["Print", "Sambalpuri ikat"]], desc: ["Example text: this kurti is a stand-in to show how a sized piece works inside a bundle."] },
     beige: { id: 0, name: "Handwoven Sambalpuri Cotton Saree in Beige with Baandha Ikat Border", short: "Beige Sambalpuri Saree", price: 1630, mrp: 1630, b2b: 1200, cat: "Sarees", sku: "SAR-0971", stock: 1 },
-    ivory: { id: 0, name: "Sambalpuri Baandha Ikat Cotton Saree in Ivory and Pink with Blouse", short: "Ivory Baandha Saree", price: 1630, mrp: 1630, b2b: 1200, cat: "Sarees", sku: "SAR-0974", stock: 1 }
+    ivory: { id: 0, name: "Sambalpuri Baandha Ikat Cotton Saree in Ivory and Pink with Blouse", short: "Ivory Baandha Saree", price: 1630, mrp: 1630, b2b: 1200, cat: "Sarees", hsn: "5208", sku: "SAR-0974", stock: 1,
+      tagline: "Handwoven in Sambalpur, Odisha", colour: "Ivory and Pink", hex: "#EFE6DA", size: "Free Size", verified: true,
+      details: [["Weave", "Handloom"], ["Fabric", "Sambalpuri Cotton"], ["Technique", "Traditional Baandha (ikat) tie-dye"], ["Origin", "Sambalpur, Odisha"]],
+      desc: ["Example text: on the live store this saree has its own description; the demo only copied the brown saree and the earrings."] }
   };
   var BUNDLES = {
     saree: { name: "Brown Sambalpuri Baandha Ikat Saree with Yellow Suhani Earrings", short: "Sambalpuri Saree + Earrings", items: ["saree", "earrings"], price: 1899, b2b: 1400, vip: 1350 },
+    trio: { name: "Brown and Ivory Sambalpuri Sarees with Yellow Suhani Earrings", short: "Two Sarees + Earrings", items: ["saree", "earrings", "ivory"], price: 3299, b2b: 2550, vip: 2480 },
     kurti: { name: "White Ikat Cotton Kurti with Yellow Suhani Earrings", short: "Ikat Kurti + Earrings", items: ["kurti", "earrings"], price: 1199, b2b: 900, vip: 860 },
     beige: { name: "Beige Sambalpuri Saree with Yellow Suhani Earrings", short: "Beige Saree + Earrings", items: ["beige", "earrings"], price: 1899, b2b: 1400, vip: 1350 },
     pair: { name: "Beige and Ivory Sambalpuri Baandha Ikat Saree Pair", short: "Sambalpuri Saree Pair", items: ["beige", "ivory"], price: 2899, b2b: 2150, vip: 2080 }
@@ -573,7 +620,7 @@ body.hidepanel .panel{display:none}
   };
 
   var SCREENS = { home: "Home", pdp: "Product page", bundle: "Bundle page", cart: "Cart", list: "Bundle offers" }, SORDER = ["home", "pdp", "bundle", "list", "cart"];
-  var st = { screen: "pdp", home: "tile", d: "a", pos: "size", cart: "a", t: "saree", oos: false, tab: "admin", ps: "tile",
+  var st = { screen: "pdp", home: "tile", col: "side", d: "a", pos: "size", cart: "a", t: "saree", oos: false, tab: "admin", ps: "tile",
     piece: null, ppiece: null, size: "", added: false, removed: false, ask: false, padded: false, pAdded: false };
   function cur() { return BUNDLES.saree; }   // the admin form edits this bundle
 
@@ -581,6 +628,7 @@ body.hidepanel .panel{display:none}
   var q = new URLSearchParams(location.search);
   if (SCREENS[q.get("screen")]) st.screen = q.get("screen");
   if (/^(tile|section)$/.test(q.get("home") || "")) st.home = q.get("home");
+  if (COLLAGES[q.get("col")]) st.col = q.get("col");
   if (/^[abc]$/.test(q.get("d") || "")) st.d = q.get("d");
   if (/^(size|seller|look)$/.test(q.get("pos") || "")) st.pos = q.get("pos");
   if (/^[ab]$/.test(q.get("cart") || "")) st.cart = q.get("cart");
@@ -590,7 +638,7 @@ body.hidepanel .panel{display:none}
   if (/^(tile|details)$/.test(q.get("ps") || "")) st.ps = q.get("ps");
   if (q.has("hidepanel")) document.body.classList.add("hidepanel");
   function syncUrl() {
-    var p = new URLSearchParams({ screen: st.screen, home: st.home, d: st.d, pos: st.pos, cart: st.cart, try: st.t });
+    var p = new URLSearchParams({ screen: st.screen, home: st.home, col: st.col, d: st.d, pos: st.pos, cart: st.cart, try: st.t });
     if (st.oos) p.set("oos", "1");
     if (st.tab === "partner") { p.set("tab", "partner"); p.set("ps", st.ps); }
     var url = location.pathname + "?" + p.toString();
@@ -600,12 +648,12 @@ body.hidepanel .panel{display:none}
 
   // ---------- consumer: home ----------
   function bundleCard(k, w) {
-    var b = BUNDLES[k], cw = Math.floor(((w || 163) - 2 * (b.items.length - 1)) / b.items.length), h = Math.round((w || 163) * 4 / 3);
-    return '<button type="button" class="pc" data-open-bundle="' + k + '"' + (w ? ' style="width:' + w + 'px;flex:none"' : "") + '><span class="img">' + b.items.map(function (i) { return crop(i, cw, h); }).join("") +
+    var b = BUNDLES[k], cw = w || 163, h = Math.round(cw * 4 / 3);
+    return '<button type="button" class="pc" data-open-bundle="' + k + '"' + (w ? ' style="width:' + w + 'px;flex:none"' : "") + '><span class="img">' + collage(b.items, cw, h, st.col) +
       '<span class="badge">SAVE ' + money(total(b) - b.price) + '</span><span class="heart">♡</span></span>' +
       '<span class="bd"><span class="o">BUNDLE · ' + b.items.length + ' PIECES</span><span class="n">' + esc(b.short) + '</span><span class="p">' + money(b.price) + '<s>' + money(total(b)) + '</s></span></span></button>';
   }
-  function visibleBundles() { return ["saree", "beige", "pair"].filter(function (k) { return !hidden(BUNDLES[k]); }); }
+  function visibleBundles() { return ["saree", "trio", "beige", "pair"].filter(function (k) { return !hidden(BUNDLES[k]); }); }
   function homePage() {
     var top = '<div class="cut" style="height:560px"><img src="../password-login/home.jpg" style="width:375px" alt="Live home: header, trust strips, curated by, search, Karwa Chauth banner"></div>';
     var sec;
@@ -613,7 +661,7 @@ body.hidepanel .panel{display:none}
       var tiles = [["Sarees", "saree"], ["Ready to Wear Sarees", "beige"], ["Kurti Tops", "kurti"], ["Kurti Sets", "kurti"], ["Co-ord Sets", ""], ["Dresses", ""], ["Dress Materials", ""], ["Dupattas", ""], ["Blouses", ""]];
       sec = '<p class="skip">··· Newly Arrived, Sarees under ₹2,000, Today\'s Picks (unchanged) ···</p>' +
         '<section class="hsec" id="bundle-home" style="position:relative"><span class="newtag" style="top:14px">NEW TILE</span><h2>Women\'s Fashion</h2><p>Shop by category</p><div class="tgrid">' +
-        '<button type="button" class="ttile new" data-goto="list"><i>' + crop("saree", 34, 72) + crop("earrings", 34, 72) + '</i>Bundle offers<span class="nb">NEW</span></button>' +
+        '<button type="button" class="ttile new" data-goto="list"><i>' + collage(BUNDLES.saree.items, 75, 75, st.col) + '</i>Bundle offers<span class="nb">NEW</span></button>' +
         tiles.map(function (t) { return '<span class="ttile"><i>' + (t[1] ? crop(t[1], 72, 72) : "") + '</i>' + t[0] + '</span>'; }).join("") + '</div></section>' +
         '<p class="skip">··· Jewelry, Shop Clothing by Craft (unchanged) ···</p>';
     } else {
@@ -639,7 +687,7 @@ body.hidepanel .panel{display:none}
   }
   function cardC(b) {
     return '<section class="ctl" id="bundle-card"><h3>Complete the look <small>Jewelry to pair</small></h3><div class="rail">' +
-      '<button type="button" class="tile" data-goto="bundle"><span class="img">' + crop("saree", 65, 177) + crop("earrings", 66, 177) + '<span class="badge">BUNDLE · SAVE ' + money(total(b) - b.price) + '</span></span>' +
+      '<button type="button" class="tile" data-goto="bundle"><span class="img">' + collage(b.items, 133, 177, st.col) + '<span class="badge">BUNDLE · SAVE ' + money(total(b) - b.price) + '</span></span>' +
       '<div class="n">' + esc(b.short) + '</div><div class="p"><s>' + money(total(b)) + '</s>' + money(b.price) + '</div></button>' +
       '<span class="tile" style="position:relative">' + crop("ctlcard", 133, 240) + '</span></div></section>';
   }
@@ -690,7 +738,7 @@ body.hidepanel .panel{display:none}
     var needs = b.items.some(function (k) { return ITEMS[k].sizes; }), ready = !needs || st.size;
     var shown = st.piece === null ? 0 : st.piece;   // details: piece 1 by default
     var media = st.piece === null
-      ? b.items.map(function (k) { return crop(k, Math.floor((375 - 2 * (b.items.length - 1)) / b.items.length), 420); }).join("") + '<span class="cap">Bundle · ' + b.items.length + ' pieces</span>'
+      ? collage(b.items, 375, 420, st.col) + '<span class="cap">Bundle · ' + b.items.length + ' pieces</span>'
       : crop(b.items[st.piece], 375, 420) + '<span class="cap">Piece ' + (st.piece + 1) + ' of ' + b.items.length + ' · tap it again for the bundle</span><div class="dots"><i class="on"></i><i></i><i></i><i></i></div>';
     var tog = b.items.map(function (k, i) {
       var on = st.piece === i;
@@ -768,7 +816,7 @@ body.hidepanel .panel{display:none}
         '<span class="ptile" style="background:#FBF1DE"><span class="ic">' + ICONS.jewel + '</span><span class="l">Jewelry</span><span class="cnt">40</span></span></div>' +
         '<div class="plist">' + list.map(function (k) {
           var x = BUNDLES[k], sel = k === "saree";
-          return '<div class="pcd' + (sel ? " sel" : "") + '" role="button" tabindex="0" data-pcard="' + k + '"><div class="pch"><span class="thumb">' + x.items.map(function (it) { return crop(it, Math.floor(65 / x.items.length), 65); }).join("") + '</span>' +
+          return '<div class="pcd' + (sel ? " sel" : "") + '" role="button" tabindex="0" data-pcard="' + k + '"><div class="pch"><span class="thumb">' + collage(x.items, 65, 65, st.col) + '</span>' +
             '<div class="t"><div class="n">' + esc(x.name) + '</div><div class="b">' + x.items.length + ' items <span class="c">Bundle</span></div></div><span class="pcb' + (sel ? " on" : "") + '">' + (sel ? "✓" : "") + '</span></div>' +
             '<div class="phr"></div><div class="pcols"><div><span>Selling Price</span><b>' + money(x.price) + '</b></div><div><span>B2B Price</span><b>' + money(x.b2b) + '</b></div><div><span>Margin</span><b>' + ((x.price - x.b2b) / x.price * 100).toFixed(1) + '%</b></div><div><span>Margin Amount</span><b>' + money(x.price - x.b2b) + '</b></div></div></div>';
         }).join("") + (hid ? '<p style="font-size:12px;color:#668091;margin:4px 4px 0">Bundles with the sold-out earrings are not listed.</p>' : "") + '</div></div>' +
@@ -776,7 +824,7 @@ body.hidepanel .panel{display:none}
     } else {
       var m = b.price - b.b2b, vm = b.price - b.vip, shown = st.ppiece === null ? 0 : st.ppiece;
       var gw = Math.floor((375 - 2 * (b.items.length - 1)) / b.items.length);
-      var gal = st.ppiece === null ? b.items.map(function (k) { return crop(k, gw, 300); }).join("") : crop(b.items[st.ppiece], 375, 300);
+      var gal = st.ppiece === null ? collage(b.items, 375, 300, st.col) : crop(b.items[st.ppiece], 375, 300);
       h = '<div class="pscroll" id="pscroll" style="background:#F9FAFB"><div class="cut" style="height:80px"><img src="partner-1.png" alt="Partner app header: Product Details"></div>' +
         '<div class="pdp"><div class="pgal">' + gal + '</div><h2 class="pname">' + esc(b.name) + '</h2>' +
         '<div class="pbadges"><span class="pcombo">Bundle · ' + b.items.length + ' items</span><span class="pvipb">♛ VIP Margin</span>' + (hid ? '<span class="tag red">Hidden – earrings sold out</span>' : "") + '</div>' +
@@ -831,6 +879,8 @@ body.hidepanel .panel{display:none}
   // ---------- panel + wiring ----------
   function renderPanel() {
     $$("#homes button").forEach(function (b) { b.classList.toggle("on", b.dataset.h === st.home); });
+    $$("#collages button").forEach(function (b) { b.classList.toggle("on", b.dataset.col === st.col); });
+    $$("#counts button").forEach(function (b) { b.classList.toggle("on", (b.dataset.n === "3") === (st.t === "trio") && (st.t === "trio" || st.t === "saree")); });
     $$("#designs button").forEach(function (b) { b.classList.toggle("on", b.dataset.d === st.d); });
     $$("#positions button").forEach(function (b) { b.classList.toggle("on", st.d !== "c" && b.dataset.p === st.pos); b.disabled = st.d === "c"; });
     $("#posnote").hidden = st.d !== "c";
@@ -850,6 +900,16 @@ body.hidepanel .panel{display:none}
   function go(screen) { st.screen = screen; st.ask = false; st.piece = null; all(); var p = $("#page"); if (p) p.scrollTop = 0; }
 
   $("#homes").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; st.home = b.dataset.h; st.screen = "home"; all(); flash("#bundle-home"); });
+  $("#collages").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    st.col = b.dataset.col; st.piece = null; st.ppiece = null;
+    if (st.screen !== "bundle" && st.screen !== "list" && st.screen !== "home") st.screen = "bundle";
+    all();
+  });
+  $("#counts").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    st.t = b.dataset.n === "3" ? "trio" : "saree"; st.size = ""; st.added = false; st.padded = false; st.removed = false; go("bundle");
+  });
   $("#designs").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; st.d = b.dataset.d; st.screen = "pdp"; all(); flash("#bundle-card"); });
   $("#positions").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b || b.disabled) return; st.pos = b.dataset.p; st.screen = "pdp"; all(); flash("#bundle-card"); });
   $("#carts").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; st.cart = b.dataset.c; st.removed = false; go("cart"); });
