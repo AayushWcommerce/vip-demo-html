@@ -1028,7 +1028,7 @@ body.hidepanel .panel{display:none}
       var keys = Object.keys(BUNDLES), live = keys.filter(function (k) { return !hidden(BUNDLES[k]); }).length;
       h = '<div class="abar">Products › <b>Bundles</b></div>' +
         '<div class="av-top"><h2>Bundles</h2><button type="button" class="av-fb" data-av-new>+ Create Bundle</button></div>' +
-        '<div class="av-tools"><input placeholder="Search bundle or product" aria-label="Search bundles"><button type="button" class="av-ob">Crafts</button><button type="button" class="av-ob" style="background:#dde3fc">Bundles</button></div>' +
+        '<div class="av-tools"><input placeholder="Search bundle or product" aria-label="Search bundles"></div>' +
         '<div class="av-chips"><span class="on">All (' + keys.length + ')</span><span>Live (' + live + ')</span><span>Hidden – out of stock (' + (keys.length - live) + ')</span></div>' +
         '<div class="av-head"><span style="padding-left:50px">Bundle</span><span>Price</span><span>Status</span></div><div class="av-rows">' +
         keys.map(function (k) {
