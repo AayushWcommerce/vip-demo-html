@@ -7,8 +7,10 @@
 @font-face{font-family:"Geomanist";src:url("../password-login/Geomanist-Regular.woff2") format("woff2");font-weight:400}
 @font-face{font-family:"Geomanist";src:url("../password-login/Geomanist-Medium.woff2") format("woff2");font-weight:500}
 
-/* Layout: same as the other demos in vip-demo-repo — phone (shopper), tester panel, partner app side by side.
-   Stage tokens follow the viewer's theme; the phone and partner screens are the real (light) apps, so they use each repo's colours directly. */
+/* Layout: same as the other demos in vip-demo-repo: phone (shopper), tester panel, partner app, side by side.
+   The phone copies the live store (thecraftsarchive.com, 24 Nov) and the partner column copies the live partner app
+   (dev-partner, "Review Products" / FashionCapMeter / Launch Store / dashboard). Sizes and colours were read from those pages.
+   Anything new for this feature carries a blue NEW tag. */
 :root{
   --stage:#ECEFF2; --card:#FFFFFF; --text:#1F212E; --muted:#707078; --line:#D5DDE2; --accent:#4862EE; --accent-tint:#F4F5FF; --ok:#1E6B45; --err:#C73F21;
   --font:Geomanist,Manrope,system-ui,"Segoe UI",sans-serif;
@@ -32,11 +34,16 @@ img{display:block;font-size:0}
 .intro p{margin:0;color:var(--muted);font-size:13px;line-height:1.4}
 .stage{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start;justify-content:center}
 @media (min-width:1000px){
-  .stage{display:grid;grid-template-columns:375px minmax(260px,320px) minmax(340px,400px);gap:16px;justify-content:center}
+  .stage{display:grid;grid-template-columns:375px minmax(260px,320px) 375px;gap:16px;justify-content:center}
   .stage .panel,.stage .col3{width:auto}
 }
 body.hidepanel .panel{display:none}
-@media (min-width:1000px){body.hidepanel .stage{grid-template-columns:375px minmax(340px,400px)}}
+@media (min-width:1000px){body.hidepanel .stage{grid-template-columns:375px 375px}}
+
+/* NEW marker: only on parts this feature adds */
+.newtag{position:absolute;z-index:6;background:#4862EE;color:#fff;font:500 9px/1 Geomanist,system-ui,sans-serif;letter-spacing:.06em;padding:3px 6px 2px;border-radius:4px;pointer-events:none}
+.flash{animation:flash 1.4s ease-out}
+@keyframes flash{0%,40%{box-shadow:0 0 0 3px #4862EE}100%{box-shadow:0 0 0 3px rgba(72,98,238,0)}}
 
 /* ── phone ── */
 .device{display:flex;flex-direction:column;gap:8px;width:375px;max-width:100%}
@@ -45,86 +52,96 @@ body.hidepanel .panel{display:none}
 .swlabel{flex:1;min-width:0;text-align:center;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .swlabel span{color:var(--muted);margin-right:6px}
 .swlabel b{font-weight:500}
-.phone{position:relative;width:375px;max-width:100%;height:min(812px,calc(100vh - 110px));min-height:560px;background:#fff;overflow:hidden;border-radius:28px;box-shadow:0 10px 40px rgba(31,33,46,.18);color:#1F212E}
-.page{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;padding-bottom:40px}
+.phone{position:relative;width:375px;max-width:100%;height:min(812px,calc(100vh - 110px));min-height:560px;background:#fff;overflow:hidden;border-radius:28px;box-shadow:0 10px 40px rgba(31,33,46,.18);color:#1F212E;font-weight:300}
+.page{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;padding-bottom:40px;background:#fff}
 .page::-webkit-scrollbar{display:none}
-.newtag{position:absolute;z-index:3;right:8px;background:#4862EE;color:#fff;font-size:9px;font-weight:500;letter-spacing:.06em;padding:2px 6px;border-radius:4px;pointer-events:none}
-.flash{animation:flash 1.4s ease-out}
-@keyframes flash{0%,40%{box-shadow:0 0 0 3px #4862EE}100%{box-shadow:0 0 0 3px rgba(72,98,238,0)}}
-
-/* consumer-ui tokens: ink-900 #1F212E, ink-500 #545454, ink-400 #707078, s-primary #4862EE, s-tint #F4F5FF,
-   wc-border #E8EAF0, wc-gray #F5F5F5, coral-ink #C73F21, success-ink #1E863B, surface-peach #FEEFEB */
-.shd{display:flex;align-items:center;gap:10px;padding:12px 14px;background:#fff;position:sticky;top:0;z-index:4;border-bottom:1px solid #F5F5F5}
-.shd .burger{width:22px;flex:none;display:flex;flex-direction:column;gap:4px}
-.shd .burger i{display:block;height:2px;border-radius:2px;background:#1F212E}
-.shd .burger i:nth-child(2){width:15px}
-.shd .logo{width:40px;height:40px;border-radius:50%;object-fit:cover;flex:none;background:#21314A}
-.shd .nm{flex:1;min-width:0}
-.shd .nm b{display:block;font-size:17px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.shd .nm small{display:block;font-size:11px;color:#545454;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.shd .cart{width:36px;height:36px;border-radius:10px;border:1px solid #E8EAF0;display:grid;place-items:center;flex:none;font-size:15px}
-.tbar{display:grid;grid-template-columns:repeat(3,1fr);background:#1F212E;color:#fff;text-align:center;font-size:10px;padding:7px 0}
-.tbar b{display:block;font-weight:500;color:#F4C99B}
-.tbar div+div{border-left:1px solid rgba(255,255,255,.18)}
-.ship{background:#F4F5FF;font-size:11px;text-align:center;padding:8px 14px;color:#2C2C2C}
-.hsec{position:relative;padding:18px 16px 6px}
-.hsec h2{margin:0;font-size:18px;font-weight:500;letter-spacing:-.01em}
-.hsec h2 em{font-style:normal;color:#C73F21}
-.hsec p{margin:3px 0 12px;font-size:11.5px;color:#545454}
-.rail{display:flex;gap:11px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
-.rail::-webkit-scrollbar{display:none}
-.ccard{flex:none;width:118px;text-align:left;font-size:12px;line-height:1.3}
-.ccard img{width:118px;height:150px;border-radius:12px;object-fit:cover;object-position:top;background:#F5F5F5}
-.ccard b{display:block;font-weight:500;margin-top:6px}
-.ccard small{display:block;font-size:10px;color:#707078}
-.tgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px 8px}
-.ttile{text-align:center;font-size:10.5px;line-height:1.25;color:#1F212E}
-.ttile img{width:100%;aspect-ratio:1/1;border-radius:14px;object-fit:cover;background:#F4F5FF;border:1px solid #E8EAF0;margin-bottom:5px}
-.ttile small{display:block;color:#707078;font-size:9.5px}
-.ttile.thin{opacity:.55}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:4px 16px 8px}
-/* listing card = EachProductDetails.jsx */
-.pc{position:relative;border:1px solid #E8EAF0;border-radius:12px;box-shadow:0 4px 18px rgba(31,33,46,.08);background:#fff;overflow:hidden;color:#1F212E}
-.pc .img{position:relative;aspect-ratio:3/4;background:#F5F5F5;overflow:hidden}
-.pc .img img{width:100%;height:100%;object-fit:cover;object-position:top}
-.pc .badge{position:absolute;top:8px;left:8px;border-radius:999px;padding:4px 7px 2px;font-size:9px;font-weight:500;color:#fff;background:#FF512A}
-.pc .badge.auto{background:#4862EE}
-.pc .bd{display:block;padding:8px 10px 10px}
-.pc .o{display:block;font-size:9px;font-weight:500;color:#C73F21}
-.pc .n{display:block;font-size:11.5px;height:30px;line-height:15px;overflow:hidden;margin-top:2px}
-.pc .p{display:block;font-size:12.5px;font-weight:500;margin-top:4px}
-.pc .p s{font-size:10.5px;color:#707078;font-weight:400;margin-left:4px}
-.pc.sold .img img{filter:grayscale(1);opacity:.45}
-.pc.sold .so{position:absolute;inset:0;display:grid;place-items:center}
-.pc.sold .so span{background:rgba(31,33,46,.82);color:#fff;font-size:11px;font-weight:500;padding:5px 11px;border-radius:999px}
-.pc.fresh{border-color:#4862EE;box-shadow:0 0 0 2px rgba(72,98,238,.25)}
-.viewall{display:block;margin:6px 16px 0;width:calc(100% - 32px);padding:12px;border-radius:12px;border:1.5px solid #4862EE;background:#fff;color:#4862EE;font-size:14px;font-weight:500}
-.endnote{margin:14px 16px;padding:14px;border-radius:12px;background:#F5F5F5;text-align:center;font-size:12px;color:#545454}
-.endnote b{display:block;color:#1F212E;font-weight:500;font-size:13px;margin-bottom:2px}
-.lhead{padding:14px 16px 4px}
-.lhead h1{margin:0;font-size:20px;font-weight:500}
-.lhead small{font-size:12px;color:#545454}
-.fchips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:10px 16px 6px}
-.fchips span{flex:none;font-size:11px;border:1px solid #E8EAF0;border-radius:999px;padding:5px 10px;color:#2C2C2C;white-space:nowrap}
-.fchips span.on{border-color:#1F212E;background:#1F212E;color:#fff}
-.empty{text-align:center;color:#545454;font-size:13px;padding:40px 24px;line-height:1.5}
-.empty b{display:block;font-size:16px;color:#1F212E;font-weight:500;margin-bottom:6px}
-.salebar{margin:12px 16px 4px;border-radius:14px;padding:12px 14px;font-size:12px;line-height:1.5}
-.salebar.on{background:#F4F5FF;border:1px solid rgba(72,98,238,.25)}
-.salebar.off{background:#FEEFEB;border:1px solid rgba(252,119,80,.25)}
-.salebar b{font-weight:500}
-.salebtns{display:flex;gap:8px;padding:8px 16px 0}
-.salebtns button{flex:1;padding:10px;border-radius:12px;font-size:13px;font-weight:500;border:1.5px solid #4862EE;background:#fff;color:#4862EE}
-.salebtns button.prim{background:#4862EE;color:#fff}
-.viewtag{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);z-index:6;box-shadow:0 2px 10px rgba(31,33,46,.15);background-clip:padding-box;font-size:9.5px;font-weight:500;letter-spacing:.05em;padding:3px 8px;border-radius:6px;pointer-events:none}
+.viewtag{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);z-index:7;box-shadow:0 2px 10px rgba(31,33,46,.15);font-size:9.5px;font-weight:500;letter-spacing:.05em;padding:3px 8px;border-radius:6px;pointer-events:none;white-space:nowrap}
 .viewtag.old{background:#FFF1EC;color:#C73F21;border:1px solid rgba(199,63,33,.3)}
 .viewtag.new{background:#F4F5FF;color:#4862EE;border:1px solid rgba(72,98,238,.3)}
+
+/* consumer-ui, store home (read from thecraftsarchive.com at 375px) */
+.c-hd{display:flex;align-items:center;gap:8px;height:78px;padding:0 16px;background:#fff}
+.c-hd .bg{width:22px;height:22px;flex:none;margin-right:4px;color:#1F212E}
+.c-hd .lg{width:40px;height:40px;border-radius:50%;object-fit:cover;flex:none;background:#1B1E33}
+.c-hd .nm{flex:1;min-width:0;padding-left:4px}
+.c-hd .nm b{display:block;font-size:21px;font-weight:500;line-height:32px;color:#1F212E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-hd .nm small{display:block;font-size:12.5px;color:#545454;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-ic{width:38px;height:38px;border-radius:10px;background:#F5F5F5;display:grid;place-items:center;flex:none;color:#1F212E}
+.c-trust{display:grid;grid-template-columns:repeat(3,1fr);height:39px;align-items:center;background:#1F212E;text-align:center;line-height:1.15}
+.c-trust div{font-size:9px;color:#fff;opacity:.9}
+.c-trust b{display:block;font-size:10px;font-weight:500;color:#FFE08A;opacity:1}
+.c-ship{display:flex;align-items:center;gap:8px;background:#F4F5FF;padding:9px 14px;font-size:11.5px;font-weight:400;color:#2C2C2C;line-height:1.5}
+.c-ship span{flex:1;text-align:center}
+.c-ship i{font-style:normal;color:#4862EE;font-weight:500;font-size:14px}
+.c-sec{position:relative;padding:6px 0 10px}
+.c-sh{padding:0 16px 11px}
+.c-sh h2{margin:0;font-size:17px;font-weight:500;letter-spacing:-.17px;line-height:26px;color:#1F212E}
+.c-sh h2 em{font-style:normal;color:#C73F21}
+.c-sh div{font-size:11px;color:#545454;line-height:17px}
+.c-rail{display:flex;gap:11px;overflow-x:auto;scrollbar-width:none;padding:2px 16px 8px}
+.c-rail::-webkit-scrollbar{display:none}
+.c-na{flex:none;width:166px}
+.c-na .im{position:relative;width:166px;height:222px;border-radius:12px;overflow:hidden;background:#F5F5F5}
+.c-na .im img{width:100%;height:100%;object-fit:cover;object-position:top}
+.c-badge{position:absolute;top:6px;left:0;font-size:9px;font-weight:500;letter-spacing:.225px;color:#C73F21;background:rgba(255,255,255,.94);border:.67px solid rgba(199,63,33,.3);border-left:0;border-radius:0 8.5px 8.5px 0;padding:3.9px 7px 2.1px}
+.c-na p{margin:6px 0 0;font-size:12px;font-weight:400;line-height:15px;height:30px;overflow:hidden;color:#1F212E}
+.c-na .pr{margin-top:3px;font-size:13px;font-weight:500;color:#1F212E}
+.c-na .pr s{font-size:11px;font-weight:400;color:#545454;margin-left:4px}
+.c-tiles{display:grid;grid-template-columns:repeat(4,80px);justify-content:space-between;gap:14px 0;padding:0 16px}
+.c-tile{text-align:center}
+.c-tile .b{width:80px;height:80px;border-radius:14px;background:#F4F5FF;border:.67px solid #E8EAF0;overflow:hidden}
+.c-tile .b img{width:100%;height:100%;object-fit:cover}
+.c-tile span{display:block;margin-top:5px;font-size:11px;font-weight:400;line-height:13px;color:#1F212E}
+.c-tile small{display:block;font-size:9.5px;color:#707078;margin-top:1px}
+.c-craft{position:relative;flex:none;width:148px;height:197px;border-radius:14px;overflow:hidden;background:#F5F5F5;border:0;padding:0;text-align:left}
+.c-craft img{width:100%;height:100%;object-fit:cover;object-position:top}
+.c-craft .t{position:absolute;left:0;right:0;bottom:0;padding:10px 11px;background:linear-gradient(transparent,rgba(0,0,0,.62));color:#fff}
+.c-craft b{display:block;font-size:13px;font-weight:500;letter-spacing:-.13px;line-height:20px}
+.c-craft small{display:block;font-size:9.5px;color:rgba(255,255,255,.85);line-height:14px}
+.c-more{display:block;margin:4px 16px 0;width:calc(100% - 32px);height:44px;border-radius:12px;border:.67px solid #E8EAF0;background:#fff;color:#1F212E;font-size:13px;font-weight:500}
+.c-empty{text-align:center;color:#545454;font-size:13px;padding:40px 24px;line-height:1.5}
+.c-empty b{display:block;font-size:16px;color:#1F212E;font-weight:500;margin-bottom:6px}
+
+/* consumer-ui, listing page (/shop/womens-fashion/…, EachProductDetails) */
+.l-hd{display:flex;align-items:center;gap:11px;height:63px;padding:13px 15px;background:rgba(255,255,255,.97)}
+.l-hd .lg{width:36px;height:36px;border-radius:50%;object-fit:cover;flex:none;background:#1B1E33}
+.l-hd .tt{flex:1;font-size:15px;font-weight:500;color:#1F212E}
+.l-hd .c-ic{width:36px;height:36px}
+.l-trust{display:flex;justify-content:space-around;height:31px;align-items:center;background:#000;color:#fff;font-size:10px;font-weight:500}
+.l-wrap{padding:16px 16px 0}
+.l-search{display:flex;align-items:center;gap:6px;height:41px;border:.67px solid #E8EAF0;border-radius:14px;padding:0 10px;font-size:15px;color:#9A9AA3}
+.l-chips{display:flex;gap:12px;overflow:hidden;margin-top:12px}
+.l-chip{flex:none;display:inline-flex;align-items:center;gap:5px;height:37px;padding:0 14px;border-radius:999px;border:.67px solid #E8EAF0;background:#fff;color:#2C2C2C;font-size:12px;font-weight:500;white-space:nowrap}
+.l-chip.on{background:#4862EE;border-color:#4862EE;color:#fff}
+.l-craft{position:relative;margin-top:12px}
+.l-craft .lb{font-size:9.5px;font-weight:500;color:#707078;letter-spacing:.05em;line-height:14px}
+.l-craft .row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:6px 0 4px}
+.l-craft .row::-webkit-scrollbar{display:none}
+.l-count{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:16px;color:#545454}
+.l-count b{font-weight:400;color:#1F212E}
+.l-count span b{color:#111827}
+.l-grid{display:grid;grid-template-columns:166px 166px;justify-content:space-between;gap:12px 0;padding:8px 16px 8px}
+.pc{position:relative;border:.67px solid #E8EAF0;border-radius:12px;background:#fff;overflow:hidden;color:#1F212E}
+.pc .im{position:relative;height:219px;background:#F5F5F5;overflow:hidden}
+.pc .im img{width:100%;height:100%;object-fit:cover;object-position:top}
+.pc .hrt{position:absolute;top:7px;right:7px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center;color:#1F212E}
+.pc .oos{position:absolute;top:7px;left:7px;font-size:9px;font-weight:500;padding:3px 7px;border-radius:999px;background:#1F212E;color:#fff}
+.pc .bd{padding:8px 10px 10px}
+.pc .o{font-size:9px;font-weight:500;color:#C73F21;line-height:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc .tg{display:inline-block;margin-top:4px;font-size:8.5px;font-weight:500;color:#545454;background:#F5F5F5;border:.67px solid #E8EAF0;border-radius:999px;padding:2px 7px}
+.pc .n{margin-top:4px;font-size:11.5px;font-weight:400;line-height:15px;height:30px;overflow:hidden}
+.pc .p{margin-top:4px;font-size:12.5px;font-weight:500;line-height:16px}
+.pc .p s{font-size:10.5px;font-weight:400;color:#707078;margin-right:4px}
+.pc .cod{margin-top:5px;font-size:9px;font-weight:500;color:#1E863B}
+.pc.gone .im img{opacity:.55}
+.pc.fresh{box-shadow:0 0 0 2px #4862EE}
 
 /* ── tester panel ── */
 .panel{width:320px;max-width:100%;display:flex;flex-direction:column;gap:12px}
 .pcard{background:var(--card);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:1.4;min-width:0}
 .eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
 .note{font-size:12px;color:var(--muted)}
+.note b{font-weight:500;color:var(--text)}
 .pos{display:flex;flex-direction:column;gap:8px}
 .pos.g2{display:grid;grid-template-columns:1fr 1fr}
 .pos.g3{display:grid;grid-template-columns:1fr 1fr 1fr}
@@ -132,6 +149,7 @@ body.hidepanel .panel{display:none}
 .pos button span{display:block;font-size:12px;color:var(--muted)}
 .pos button.on{border-color:var(--accent);background:var(--accent-tint);color:var(--accent)}
 .pos button.on span{color:var(--accent)}
+.pos button:disabled{opacity:.5;cursor:not-allowed}
 .linkbox{display:flex;gap:6px}
 .linkbox input{flex:1;min-width:0;border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-size:11.5px;background:var(--stage);color:var(--text)}
 .linkbox button{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:8px;padding:0 10px;font-size:12px}
@@ -140,174 +158,175 @@ body.hidepanel .panel{display:none}
 .counts b{display:block;font-size:16px;font-weight:500}
 .counts span{font-size:10.5px;color:var(--muted)}
 
-/* ── third column: partner app (wcommerce-partner-ui: buttonColor #4862EE, secondary #21314A, textColor #192438, greyText #668091, warn redText #DC3F3F) ── */
-.col3{width:400px;max-width:100%;display:flex;flex-direction:column;gap:8px;min-width:0}
-.pctl{display:flex;gap:5px;background:var(--card);border-radius:12px;padding:6px;flex-wrap:wrap}
-.pctl button{flex:1 1 0;min-width:0;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:8px;padding:5px 4px;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pctl button.on{border-color:var(--accent);background:var(--accent-tint);color:var(--accent)}
-.pctl button.done::before{content:"✓ ";color:var(--ok)}
-.partner{position:relative;height:min(720px,calc(100vh - 150px));min-height:480px;background:#ECEFF2;border-radius:16px;overflow:hidden;color:#192438}
-.pscroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding-bottom:120px;scrollbar-width:none}
+/* ── partner app (wcommerce-partner-ui, read from dev-partner at 375px) ── */
+.col3{width:375px;max-width:100%;display:flex;flex-direction:column;gap:8px;min-width:0}
+.tabs{display:flex;gap:4px;padding:3px;background:var(--card);border-radius:12px}
+.tabs button{flex:1;min-width:0;border:0;border-radius:9px;padding:6px 2px;background:transparent;color:var(--muted);font-size:12.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tabs button[aria-selected=true]{background:var(--accent-tint);color:var(--accent)}
+.partner{position:relative;height:min(812px,calc(100vh - 110px));min-height:560px;background:#F9FAFB;border-radius:28px;overflow:hidden;color:#192438;font-weight:300;font-size:14px;box-shadow:0 10px 40px rgba(31,33,46,.18)}
+.pscroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding-bottom:130px;scrollbar-width:none}
 .pscroll::-webkit-scrollbar{display:none}
-.ptop{background:#F9FAFB;padding:14px 16px 12px;border-bottom:1px solid #E5E7EB}
-.prog{display:flex;gap:4px;margin-bottom:10px}
-.prog i{flex:1;height:4px;border-radius:4px;background:#D5DDE2}
-.prog i.on{background:#4862EE}
-.ptop small{display:block;color:#4862EE;font-size:12px;font-weight:500}
-.ptop h1{margin:3px 0 0;font-size:21px;font-weight:500;line-height:28px}
-.ptop p{margin:3px 0 0;font-size:13.5px;color:#668091;line-height:1.45}
-.pbody{padding:12px}
-.pcardw{background:#fff;border-radius:14px;padding:14px;margin-bottom:10px}
-.pcardw h3{margin:0 0 4px;font-size:15px;font-weight:500}
-.pcardw p{margin:0;font-size:12.5px;color:#668091;line-height:1.5}
-/* FashionCapMeter look */
-.meter{background:#fff;border-radius:14px;padding:12px 14px;margin-bottom:10px}
-.meter .r1{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
-.meter .lbl{font-size:11px;color:#668091}
-.meter .num{font-size:15px;font-weight:500;font-variant-numeric:tabular-nums}
-.meter .num small{font-size:11px;color:#668091;font-weight:400}
-.bar{position:relative;height:8px;border-radius:999px;background:#E8EDF6;overflow:visible}
-.bar i{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:#4862EE;transition:width .25s}
-.bar i.ok{background:#17A34A}
-.bar i.full{background:#DC3F3F}
-.bar .tick{position:absolute;top:-4px;bottom:-4px;width:2px;background:#21314A;border-radius:2px}
-.bar .tickl{position:absolute;top:12px;font-size:9.5px;color:#21314A;transform:translateX(-50%);white-space:nowrap}
-.meter .sub{font-size:11.5px;margin-top:20px;color:#668091}
-.meter .sub b{font-weight:500;color:#192438}
-.meter .sub.warn b{color:#DC3F3F}
-.meter .sub.good b{color:#17A34A}
-.meter + .meter{margin-top:-4px}
-.meter.lock{opacity:.6}
-.ptiles{display:flex;gap:8px;padding:0 0 10px;overflow-x:auto;scrollbar-width:none}
-.ptile{position:relative;flex:1 0 82px;height:92px;border-radius:14px;padding:10px 6px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;background:#fff;color:#1F212E;border:1px solid #E5E7EB;font-size:11px;font-weight:500;text-align:center}
-.ptile img{width:34px;height:34px;border-radius:50%;object-fit:cover}
-.ptile small{display:block;font-size:9.5px;font-weight:400;color:#668091}
-.ptile.on{background:#4862EE;color:#fff;border-color:#4862EE;box-shadow:0 8px 22px rgba(72,98,238,.30)}
-.ptile.on small{color:rgba(255,255,255,.85)}
-.ptile.locked{background:#F3F4F6;color:#8A97A6}
-.ptile .lk{position:absolute;top:6px;right:7px;font-size:11px}
-.guide{display:flex;gap:10px;align-items:flex-start;background:linear-gradient(135deg,#F4F5FF,#EEF7FF);border:1px solid rgba(72,98,238,.25);border-radius:14px;padding:12px 14px;margin-bottom:10px}
-.guide .ic{width:32px;height:32px;border-radius:50%;background:#4862EE;color:#fff;display:grid;place-items:center;flex:none;font-size:15px}
-.guide b{display:block;font-size:13.5px;font-weight:500}
-.guide p{margin:2px 0 8px;font-size:12px;color:#516778;line-height:1.45}
-.guide .btns{display:flex;gap:6px;flex-wrap:wrap}
-.gbtn{height:32px;border-radius:8px;padding:0 12px;border:0;background:#4862EE;color:#fff;font-size:12.5px}
+/* ProgressBar.jsx */
+.pb{padding:0 16px}
+.pb .st{padding-top:20px;font-size:12px;font-weight:500;color:#4862EE}
+.pb h1{margin:8px 0 0;font-size:24px;font-weight:500;line-height:40px;color:#192438}
+.pb .bars{display:flex;margin:16px -4px 0;padding-bottom:8px}
+.pb .bars i{flex:1;height:8px;border-radius:8px;margin:0 4px;background:#DDE3FC}
+.pb .bars i.on{background:#6366F1}
+.subtx{margin:12px 0 0;padding:0 16px;font-size:16px;font-weight:300;line-height:24px;color:#668091}
+/* FilterTileRow.jsx */
+.ftr{position:relative;margin:8px 8px 0;padding-bottom:14px;border-bottom:1px solid #1F212E}
+.ftr .row{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding:4px 32px 12px 22px}
+.ftr .row::-webkit-scrollbar{display:none}
+.tile{position:relative;flex:none;width:84px;height:96px;border-radius:14px;border:0;padding:10px 6px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;color:#1F212E;transition:transform .2s}
+.tile .ct{position:absolute;top:6px;right:6px;font-size:10px;font-weight:500;padding:1px 6px;border-radius:999px;min-width:18px;text-align:center;background:rgba(255,255,255,.9);color:#1F212E}
+.tile .sv{width:34px;height:34px;margin-top:2px;display:grid;place-items:center}
+.tile .sv svg{width:34px;height:34px}
+.tile .lb{margin-top:auto;font-size:11px;font-weight:500;line-height:1.15;text-align:center}
+.tile.on{background:#4862EE!important;color:#fff;box-shadow:0 8px 22px rgba(72,98,238,.30)}
+.tile.on .ct{background:rgba(255,255,255,.2);color:#fff}
+.tile.locked{opacity:.5}
+.tile.locked .ct{background:#1F212E;color:#fff}
+/* FashionCapMeter.jsx */
+.fcm{position:relative;padding:8px 16px 12px}
+.fcm .r1{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.fcm .lbl{display:flex;align-items:center;gap:4px;font-size:11px;font-weight:400;line-height:1.5;color:#668091}
+.fcm .lbl i{font-style:normal;font-size:12px;color:#859BAB}
+.fcm .num{font-size:15px;font-weight:500;line-height:1.2;color:#192438;font-variant-numeric:tabular-nums}
+.fcm .num.warn{color:#DC3F3F}
+.fcm .trk{position:relative;height:6px;border-radius:999px;background:#ECEFF2}
+.fcm .trk i{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:#4862EE;transition:width .24s ease-out}
+.fcm .trk i.warn{background:#DC3F3F}
+.fcm .tick{position:absolute;top:-3px;bottom:-3px;width:2px;border-radius:2px;background:#21314A}
+.fcm .tickl{position:absolute;top:9px;transform:translateX(-50%);font-size:9.5px;color:#668091;white-space:nowrap}
+.fcm .tickl.r{transform:translateX(-100%)}
+.fcm.withtick{padding-bottom:22px}
+.fcm + .fcm{padding-top:0}
+.fcm.off{opacity:.55}
+.selrow{display:flex;align-items:center;justify-content:space-between;padding:8px 16px}
+.selrow span{font-size:13px;font-weight:400;line-height:1.4;color:#668091;font-variant-numeric:tabular-nums}
+.selrow span.has{color:#192438}
+.selrow label{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:400;color:#668091;padding-right:8px}
+.banner{display:flex;gap:8px;align-items:flex-start;margin:0 16px 12px;border-radius:12px;border:1px solid #DC3F3F33;background:#DC3F3F1A;padding:10px 12px;font-size:12px;line-height:1.45;color:#2C2C2C}
+.banner.info{border-color:rgba(72,98,238,.25);background:#F4F5FF}
+.banner svg{flex:none;margin-top:2px}
+/* guided pick card (new) */
+.guide{position:relative;margin:0 16px 4px;background:#fff;border:.67px solid #E8EAF0;border-radius:12px;padding:12px}
+.guide b{display:block;font-size:14px;font-weight:400;color:#192438}
+.guide p{margin:2px 0 10px;font-size:12px;line-height:1.45;color:#668091}
+.guide .btns{display:flex;gap:8px}
+.gbtn{flex:1;height:36px;border-radius:8px;border:0;background:#4862EE;color:#fff;font-size:13px;font-weight:400}
 .gbtn.ol{background:#fff;color:#4862EE;border:1px solid #4862EE}
-.gbtn:disabled{background:#D5DDE2;color:#fff;border-color:#D5DDE2;cursor:default}
-.fchip{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0 10px}
-.fchip button{flex:none;height:30px;border-radius:999px;padding:0 12px;border:1px solid #D5DDE2;background:#fff;color:#516778;font-size:12px;white-space:nowrap}
-.fchip button.on{border-color:#4862EE;background:#F4F5FF;color:#4862EE}
-.selline{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:#668091;padding:0 2px 8px}
-.selline button{border:0;background:none;color:#4862EE;font-size:12.5px;padding:0}
-.pcd{display:flex;gap:10px;width:100%;text-align:left;border:1px solid transparent;background:#fff;border-radius:14px;padding:10px;margin-bottom:8px;color:#192438;align-items:center}
-.pcd.sel{background:#F4F5FF;border-color:#b9c4fb}
-.pcd:disabled{opacity:.5;cursor:not-allowed}
-.pcd img{width:56px;height:66px;border-radius:8px;object-fit:cover;object-position:top;flex:none;background:#F5F5F5}
-.pcd .t{flex:1;min-width:0}
-.pcd .n{font-size:13px;line-height:17px;max-height:34px;overflow:hidden}
-.pcd .c{display:inline-block;font-size:9.5px;background:#ECEFF2;color:#21314A;padding:1px 6px;border-radius:6px;margin-top:4px}
-.pcd .pr{font-size:12px;margin-top:3px}
-.pcd .pr s{color:#8A97A6;margin-left:4px;font-size:11px}
-.pcb{width:20px;height:20px;border-radius:6px;border:2px solid #D5DDE2;background:#fff;display:grid;place-items:center;color:#fff;font-size:12px;flex:none}
-.pcb.on{background:#4862EE;border-color:#4862EE}
-.more{display:block;width:100%;height:38px;border-radius:10px;border:1px dashed #b0bfc9;background:transparent;color:#516778;font-size:12.5px}
-/* cluster picker */
-.clhead{display:flex;justify-content:space-between;align-items:center;padding:0 2px 10px;font-size:12.5px;color:#668091}
-.clhead b{font-size:14px;color:#192438;font-weight:500}
-.clhead b.full{color:#DC3F3F}
-.clgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.clc{position:relative;border:2px solid transparent;border-radius:14px;padding:0;background:#fff;overflow:hidden;text-align:left;color:#192438}
-.clc img{width:100%;height:112px;object-fit:cover;object-position:top}
-.clc .t{padding:7px 9px 9px}
-.clc b{display:block;font-size:13px;font-weight:500}
-.clc small{display:block;font-size:10.5px;color:#668091}
-.clc .ck{position:absolute;top:7px;right:7px;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.92);border:2px solid #D5DDE2;display:grid;place-items:center;font-size:12px;color:#fff}
-.clc.on{border-color:#4862EE}
-.clc.on .ck{background:#4862EE;border-color:#4862EE}
-.clc:disabled{opacity:.45;cursor:not-allowed}
-.clchips{display:flex;flex-wrap:wrap;gap:7px}
-.clchip{display:inline-flex;align-items:center;gap:6px;height:36px;border-radius:999px;padding:0 12px 0 4px;border:1.5px solid #D5DDE2;background:#fff;color:#192438;font-size:12.5px}
-.clchip img{width:28px;height:28px;border-radius:50%;object-fit:cover;object-position:top}
-.clchip.on{border-color:#4862EE;background:#F4F5FF;color:#4862EE;font-weight:500}
-.clchip:disabled{opacity:.45;cursor:not-allowed}
-.info{background:#FFF8E6;border:1px solid #F3DFA8;border-radius:12px;padding:10px 12px;font-size:12px;color:#5C4A12;line-height:1.45;margin-bottom:10px}
-.warnbox{background:#FDECEC;border:1px solid #F5C2C2;border-radius:12px;padding:10px 12px;font-size:12px;color:#8A1F1F;line-height:1.45;margin-bottom:10px}
-/* locked jewellery */
-.lockcard{background:#fff;border-radius:14px;padding:22px 18px;text-align:center}
-.lockcard .ic{width:52px;height:52px;border-radius:50%;background:#F3F4F6;display:grid;place-items:center;margin:0 auto 10px;font-size:22px}
-.lockcard h3{margin:0 0 6px;font-size:16px;font-weight:500}
-.lockcard p{margin:0 0 14px;font-size:13px;color:#668091;line-height:1.5}
-.bonus{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:500;color:#B7791F;background:#FFF6E0;border:1px solid #F3DFA8;border-radius:999px;padding:2px 8px}
-/* others */
-.otile{display:flex;align-items:center;gap:12px;background:#fff;border-radius:14px;padding:12px 14px;margin-bottom:8px}
-.otile img{width:46px;height:46px;border-radius:12px;object-fit:cover;flex:none;background:#F4F5FF}
-.otile .t{flex:1;min-width:0}
-.otile b{display:block;font-size:14px;font-weight:500}
-.otile small{display:block;font-size:11.5px;color:#668091}
-.unl{display:inline-block;font-size:10px;color:#17A34A;background:#E8F8EE;border-radius:999px;padding:1px 8px;margin-top:3px}
-.step{display:flex;align-items:center;border:1px solid #D5DDE2;border-radius:8px;overflow:hidden;flex:none}
-.step button{width:30px;height:30px;border:0;background:#fff;color:#4862EE;font-size:16px}
-.step span{min-width:34px;text-align:center;font-size:13px;font-variant-numeric:tabular-nums}
-/* auto-stock */
-.astk{background:#fff;border-radius:14px;padding:14px;margin-bottom:10px;border:1.5px solid #E5E7EB}
-.astk.on{border-color:#4862EE;background:#FBFBFF}
+.gbtn:disabled{background:#D5DDE2;color:#192438;border-color:#D5DDE2;cursor:not-allowed}
+/* CartCard.jsx (partner-card) */
+.plist{padding:12px 16px 0}
+.cc{display:block;width:100%;text-align:left;border:0;background:#fff;border-radius:14px;padding:12px;margin-bottom:8px;color:#192438;font:inherit}
+.cc:disabled{cursor:not-allowed}
+.cc .top{display:flex;gap:8px}
+.cc .ph{width:53px;height:70px;flex:none;object-fit:cover;object-position:top;background:#F5F5F5}
+.cc .t{flex:1;min-width:0}
+.cc .r{display:flex;justify-content:space-between;gap:8px}
+.cc .nm{font-size:14px;font-weight:400;line-height:21px;color:#192438}
+.cc .br{display:flex;align-items:center;flex-wrap:wrap;margin-top:4px;font-size:12px;font-weight:300;color:#111827}
+.cc .chip{margin-left:4px;font-size:9px;line-height:20px;background:#ECEFF2;color:#21314A;border-radius:6px;padding:0 6px}
+.cc .code{font-size:12px;line-height:18px;color:#668091}
+.cc .prow{display:flex;justify-content:space-around;margin-top:16px;text-align:center}
+.cc .prow small{display:block;font-size:11px;font-weight:300;color:#668091;line-height:14px}
+.cc .prow b{display:block;font-size:12px;font-weight:400;color:#192438;line-height:18px}
+.cbx{width:20px;height:20px;flex:none;border-radius:6px;border:2px solid #D4D4D8;background:#fff;display:grid;place-items:center}
+.cbx.on{background:#4862EE;border-color:#4862EE}
+.cbx.dis{background:#F4F4F5;border-color:#E4E4E7}
+.more{display:block;width:100%;height:40px;border:0;background:transparent;color:#4862EE;font-size:13px}
+/* bottom bar (SelectProduct.jsx) */
+.pbar{position:absolute;left:0;right:0;bottom:0;background:#fff;padding:12px 16px;z-index:5}
+.pbar .ttl{font-size:12px;font-weight:400;line-height:1.4;color:#668091;margin-bottom:8px;font-variant-numeric:tabular-nums}
+.pbar .ttl.warn{color:#DC3F3F}
+.pbtn{display:block;width:100%;height:44px;border:0;border-radius:8px;background:#4862EE;color:#fff;font-size:14px;font-weight:400}
+.pbtn:disabled{background:#D5DDE2;color:#192438;cursor:not-allowed}
+/* craft cluster step (new screen, built from the store's own craft cards and chips) */
+.clcount{position:relative;display:flex;justify-content:space-between;align-items:baseline;padding:16px 16px 10px}
+.clcount span{font-size:11px;font-weight:400;color:#668091}
+.clcount b{font-size:15px;font-weight:500;color:#192438}
+.clcount b.warn{color:#DC3F3F}
+.clgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px;padding:0 16px}
+.clgrid .c-craft{width:auto;height:200px}
+.clgrid .c-craft .cbx{position:absolute;top:8px;right:8px;border-color:#fff;background:rgba(255,255,255,.85)}
+.clgrid .c-craft .cbx.on{background:#4862EE;border-color:#4862EE}
+.clgrid .c-craft.on{box-shadow:0 0 0 3px #4862EE}
+.clgrid .c-craft:disabled{opacity:.4;cursor:not-allowed}
+.clchips{display:flex;flex-wrap:wrap;gap:8px;padding:0 16px}
+.clchips .l-chip{height:37px}
+.clchips .l-chip:disabled{opacity:.4;cursor:not-allowed}
+.clnote{margin:14px 16px 0;font-size:12px;line-height:1.5;color:#668091}
+/* Auto-Stock (new) */
+.astk{position:relative;margin:16px 16px 0;background:#fff;border:.67px solid #E8EAF0;border-radius:16px;padding:14px}
 .astk label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
-.astk input{width:20px;height:20px;margin:1px 0 0;accent-color:#4862EE;flex:none}
-.astk b{display:block;font-size:15px;font-weight:500}
-.astk .why{font-size:12.5px;color:#516778;line-height:1.55;margin:8px 0 0 30px}
-.astk ul{margin:8px 0 0 30px;padding-left:16px;font-size:12px;color:#516778;line-height:1.6}
-.astk .consent{margin:10px 0 0 30px;font-size:11px;color:#8A97A6;line-height:1.45}
-.ba{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.astk input{position:absolute;opacity:0;width:1px;height:1px}
+.astk input:focus-visible + .cbx{outline:2px solid #4862EE;outline-offset:2px}
+.astk .h{font-size:15px;font-weight:500;color:#192438;line-height:20px}
+.astk .why{margin:8px 0 0 30px;font-size:12.5px;line-height:1.55;color:#2C2C2C}
+.astk ul{margin:8px 0 0 30px;padding-left:16px;font-size:12px;line-height:1.6;color:#668091}
+.astk .consent{margin:10px 0 0 30px;font-size:11px;line-height:1.45;color:#859BAB}
+.astk.mini{margin:0 0 10px;padding:10px 12px;border-radius:12px}
+.astk.mini .why{margin:4px 0 0 30px;font-size:11.5px}
+.ba{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 0 30px}
 .ba div{border-radius:10px;padding:8px;font-size:10.5px;text-align:center;line-height:1.35}
-.ba .x{background:#FDECEC;color:#8A1F1F}
-.ba .y{background:#E8F8EE;color:#166534}
-.ba .mini{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin:6px 0}
-.ba .mini i{display:block;aspect-ratio:3/4;border-radius:3px;background:#C9D1E0}
-.ba .mini i.g{background:repeating-linear-gradient(45deg,#f3d3d3,#f3d3d3 3px,#fff 3px,#fff 6px)}
-.ba .mini i.n{background:#4862EE}
-/* launch */
-.sum{background:#fff;border-radius:14px;padding:6px 14px;margin-bottom:10px}
-.sum .r{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #F1F3F6;font-size:13px}
-.sum .r:last-child{border:0}
-.sum .r span{color:#668091}
-.sum .r b{font-weight:500}
-.chk{background:#fff;border-radius:14px;padding:6px 14px;margin-bottom:10px}
-.chk .r{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #F1F3F6;font-size:13px;line-height:1.4}
-.chk .r:last-child{border:0}
-.chk .r i{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:11px;flex:none;margin-top:1px}
-.chk .r i.y{background:#17A34A;color:#fff}
-.chk .r i.n{background:#FDECEC;color:#DC3F3F;border:1px solid #F5C2C2}
-.chk .r i.o{background:#ECEFF2;color:#668091}
-.chk .r small{display:block;font-size:11.5px;color:#668091}
-.chk .r a{color:#4862EE;font-size:12px;text-decoration:none;cursor:pointer;margin-left:auto;white-space:nowrap}
-.live{background:linear-gradient(135deg,#E8F8EE,#F4F5FF);border-radius:14px;padding:14px;margin-bottom:10px;display:flex;gap:10px;align-items:center}
-.live .ic{width:38px;height:38px;border-radius:50%;background:#17A34A;color:#fff;display:grid;place-items:center;font-size:18px;flex:none}
-.live b{display:block;font-size:15px;font-weight:500}
-.live small{font-size:12px;color:#516778}
-.swrow{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px}
-.asw{position:relative;width:38px;height:22px;border-radius:999px;border:0;background:#D5DDE2;padding:0;flex:none}
-.asw::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2);transition:left .15s}
-.asw[aria-checked=true]{background:#4862EE}
-.asw[aria-checked=true]::after{left:18px}
-.pbar{position:absolute;left:0;right:0;bottom:0;background:#fff;padding:10px 14px 12px;box-shadow:0 -4px 12px rgba(25,36,56,.08);z-index:3}
-.pbar .why{font-size:12px;color:#668091;margin-bottom:7px;line-height:1.4}
-.pbar .why.warn{color:#DC3F3F}
-.pbar .why.good{color:#17A34A}
-.pbar .row{display:flex;gap:8px}
-.pbtn{flex:1;height:44px;border-radius:8px;border:0;background:#4862EE;color:#fff;font-size:15px}
-.pbtn.back{flex:none;width:90px;background:#fff;color:#4862EE;border:1px solid #4862EE}
-.pbtn:disabled{background:#D5DDE2;color:#fff;cursor:not-allowed}
-.pbtn.lockd::before{content:"🔒 ";font-size:13px}
+.ba .x{background:#DC3F3F1A;color:#8A1F1F}
+.ba .y{background:#F4F5FF;color:#4862EE}
+.ba .g{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin:6px 0}
+.ba .g i{display:block;aspect-ratio:3/4;border-radius:3px;background:#D5DDE2}
+.ba .g i.s{background:#1F212E}
+.ba .g i.n{background:#4862EE}
+/* checklist bottom sheet (BottomSheet look) */
+.scrim{position:absolute;inset:0;background:rgba(0,0,0,.4);z-index:8;border:0;width:100%}
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:9;background:#fff;border-radius:20px 20px 0 0;padding:8px 16px 16px}
+.sheet .grip{width:40px;height:4px;border-radius:4px;background:#D5DDE2;margin:4px auto 12px}
+.sheet h3{margin:0 0 4px;font-size:17px;font-weight:500;line-height:1.15;color:#1F212E}
+.sheet p{margin:0 0 8px;font-size:13px;line-height:1.5;color:#2C2C2C}
+.ck{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #ECEFF2;font-size:13px;line-height:1.4}
+.ck:last-of-type{border:0}
+.ck i{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:11px;flex:none;margin-top:1px}
+.ck i.y{background:#4862EE;color:#fff}
+.ck i.n{background:#DC3F3F1A;color:#DC3F3F;border:1px solid #DC3F3F33}
+.ck i.o{background:#ECEFF2;color:#668091}
+.ck b{font-weight:400;color:#192438}
+.ck small{display:block;font-size:11.5px;color:#668091}
+.ck a{margin-left:auto;color:#4862EE;font-size:12px;cursor:pointer;white-space:nowrap}
+/* dashboard (PartnerDashboard) */
+.dh{display:flex;align-items:center;gap:12px;padding:12px 16px}
+.dh .lg{width:40px;height:40px;border-radius:50%;object-fit:cover;background:#1B1E33;flex:none}
+.dh .t{flex:1;min-width:0}
+.dh b{display:block;font-size:17px;font-weight:400;color:#192438;line-height:26px}
+.dh small{display:block;font-size:12px;color:#2C2C2C}
+.toast{display:flex;align-items:center;gap:8px;margin:4px 16px 12px;background:#fff;border-radius:12px;padding:10px 12px;box-shadow:0 4px 16px rgba(25,36,56,.08);font-size:13px;font-weight:400}
+.toast i{width:18px;height:18px;border-radius:50%;background:#17A34A;color:#fff;display:grid;place-items:center;font-style:normal;font-size:11px;flex:none}
+.dcard{position:relative;margin:0 16px 12px;background:#fff;border:.67px solid #E8EAF0;border-radius:16px;padding:12px 0 4px}
+.dcard h4{margin:0;padding:0 16px;font-size:14px;font-weight:400;color:#192438}
+.drow{display:flex;align-items:center;gap:12px;margin:0 16px 8px;background:#fff;border:.67px solid #E8EAF0;border-radius:12px;padding:10px 12px;min-height:55px}
+.drow .t{flex:1;min-width:0}
+.drow b{display:block;font-size:14px;font-weight:400;color:#192438}
+.drow small{display:block;font-size:12px;color:#668091}
+.sw{position:relative;width:44px;height:24px;border-radius:999px;border:0;background:#D4D4D8;padding:0;flex:none}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2);transition:left .15s}
+.sw[aria-checked=true]{background:#4862EE}
+.sw[aria-checked=true]::after{left:22px}
+.bnav{position:absolute;left:0;right:0;bottom:0;z-index:5;display:flex;justify-content:space-between;align-items:center;background:#fff;padding:16px}
+.bnav div{display:flex;flex-direction:column;align-items:center}
+.bnav span{width:56px;height:28px;border-radius:999px;display:flex;justify-content:center;align-items:center}
+.bnav span.on{background:#F0F3FE}
+.bnav img{width:24px;height:24px}
+.bnav p{margin:0;padding-top:8px;font-size:12px;font-weight:300;color:#668091}
+.bnav p.on{color:#192438}
 </style>
 
 <div class="intro">
   <h1>Free store: 100 products, launch at 50</h1>
-  <p>Live Crafts Archive data (24 Nov): the 14 clothing clusters, their photos and the first real saree names and prices. Other catalogue pieces are stand-ins built from those photos; jewellery prices are examples.</p>
+  <p>Phone = live Crafts Archive layout (24 Nov). Partner column = live partner app layout (dev, "Review Products"). Only the parts tagged <b style="color:var(--accent);font-weight:500">NEW</b> are new. Store photos and saree names are real; other catalogue pieces and prices are examples.</p>
 </div>
 
 <div class="stage">
   <div class="device">
-    <div class="switch" role="group" aria-label="Change screen">
+    <div class="switch" role="group" aria-label="Change shopper screen">
       <button type="button" id="s-prev" aria-label="Previous screen">‹</button>
       <div class="swlabel"><span>Shopper</span><b id="s-name"></b></div>
       <button type="button" id="s-next" aria-label="Next screen">›</button>
@@ -327,50 +346,58 @@ body.hidepanel .panel{display:none}
         <button data-pre="80">80<span>+ 60 jewel</span></button>
         <button data-pre="100">100<span>Full</span></button>
       </div>
-      <span class="note">Sets the Fashion count (guided fill from 5 clusters). Or pick by hand in the partner app.</span>
+      <span class="note">Sets the Fashion count (guided pick from 5 clusters). Or tick products by hand in the partner app.</span>
     </div>
     <div class="pcard">
-      <div class="eyebrow">Shopper sees (sir's goal: never scant)</div>
+      <div class="eyebrow">Shopper sees (goal: never scant)</div>
       <div class="pos g2" id="views">
         <button data-v="old">Today<span>Max 25 products</span></button>
         <button data-v="new">New rules<span>50–100 + bonus</span></button>
       </div>
     </div>
     <div class="pcard">
+      <div class="eyebrow">After sales (Auto-Stock)</div>
+      <div class="pos g2" id="sales">
+        <button data-sell="1">Sell a piece<span id="soldline">0 sold</span></button>
+        <button data-sell="0">Reset<span>All back</span></button>
+      </div>
+      <span class="note" id="salenote"></span>
+    </div>
+    <div class="pcard">
       <div class="eyebrow">Limit meter</div>
       <div class="pos g2" id="meters">
-        <button data-m="a">A · One bar<span>Line at 50 = launch</span></button>
-        <button data-m="b">B · Two bars<span>Fashion + Jewellery</span></button>
+        <button data-m="a">A · One bar<span>Fashion, line at 50</span></button>
+        <button data-m="b">B · Two bars<span>Fashion + Jewelry</span></button>
       </div>
-      <span class="note">Same strip as today's "Free Plan Limits" (FashionCapMeter).</span>
+      <span class="note">Today's "Free Plan Limits" strip, with a new line at 50.</span>
     </div>
     <div class="pcard">
       <div class="eyebrow">Launch lock</div>
       <div class="pos g2" id="gates">
-        <button data-g="a">A · Locked button<span>One reason line</span></button>
-        <button data-g="b">B · Checklist<span>✓ / ✗ per rule</span></button>
+        <button data-g="a">A · Locked button<span>Reason above it</span></button>
+        <button data-g="b">B · Checklist<span>Sheet on Launch</span></button>
       </div>
     </div>
     <div class="pcard">
       <div class="eyebrow">Craft cluster picker (max 5 of 14)</div>
       <div class="pos g2" id="pickers">
-        <button data-k="a">A · Photo cards<span>2 per row</span></button>
+        <button data-k="a">A · Photo cards<span>Store's craft cards</span></button>
         <button data-k="b">B · Chips<span>All 14 on one screen</span></button>
       </div>
     </div>
     <div class="pcard">
-      <div class="eyebrow">Jewellery with 1–49 pieces</div>
+      <div class="eyebrow">Jewelry with 1–49 pieces</div>
       <div class="pos g2" id="jrules">
         <button data-j="a">A · Blocks launch<span>0 or 50+ only</span></button>
         <button data-j="b">B · Hidden<span>Shows at 50+</span></button>
       </div>
-      <span class="note">Sir: jewellery min 50, max 100. Which way do we enforce the 50?</span>
+      <span class="note">Sir: jewelry min 50, max 100. Which way do we enforce the 50?</span>
     </div>
     <div class="pcard">
       <div class="eyebrow">Where we ask Auto-Stock</div>
       <div class="pos g2" id="autoats">
         <button data-a="a">A · Own step<span>Before Launch</span></button>
-        <button data-a="b">B · On Launch<span>Above the button</span></button>
+        <button data-a="b">B · On Review<span>Above Launch Store</span></button>
       </div>
     </div>
     <div class="pcard">
@@ -381,8 +408,8 @@ body.hidepanel .panel{display:none}
   </div>
 
   <div class="col3">
-    <div class="pctl" id="pctl" role="tablist" aria-label="Partner app screen"></div>
-    <section class="partner" id="partner"></section>
+    <div class="tabs" id="pctl" role="tablist" aria-label="Partner app screen"></div>
+    <section class="partner" id="partner" aria-label="Partner app"></section>
   </div>
 </div>
 
@@ -390,13 +417,14 @@ body.hidepanel .panel{display:none}
 (function () {
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
-  function money(n) { var r = Math.round(n * 100) / 100; return "₹" + r.toLocaleString("en-IN", { minimumFractionDigits: r % 1 ? 2 : 0, maximumFractionDigits: 2 }); }
+  function money(n, dec) { var r = Math.round(n * 100) / 100; return "₹" + r.toLocaleString("en-IN", { minimumFractionDigits: dec ? 2 : (r % 1 ? 2 : 0), maximumFractionDigits: 2 }); }
 
-  // ── Live data: thecraftsarchive.com (24 Nov 2026), photos served from the store's ImageKit ──
+  // ── Live data: thecraftsarchive.com (24 Nov 2026), photos from the store's ImageKit ──
   var IK = "https://ik.imagekit.io/3quk5czhx/";
   function img(path, w) { return IK + path + "?tr=w-" + (w || 300); }
   var LOGO = "store/0b571484-fe75-423f-8070-90bc4de4cb4c_TheCraftsArchive_profile_stacked_1080.png";
-  // "Shop Clothing by Craft" — the 14 clusters live today
+  var NAV = "https://dev-partner.wcommerce.store/images/";
+  // "Shop Clothing by Craft": the 14 clusters live today
   var CL = [
     ["Banarasi", "Varanasi, Uttar Pradesh", "d75448c2-acff-4046-94c8-5fb0431da9f0_9c6fe71a-72a8-41b8-80ba-dafd11c0ba83_AI%20Fashion%20Models-69a208a3-8049-4be2-95ec-4fc9f9ab9af6.webp"],
     ["Chikankari", "Lucknow, Uttar Pradesh", "40a99422-d3c1-4969-9d99-98856020165a_61c5269c-da1b-441b-a664-1668952c577f_b1a4a370-7717-40dc-ab8a-f0a96ea19920_8b7d4845-21b4-4d30-812a-2c8533fb0e2c_clean_mannequin_straight%20(1)%20(AI%20Fashion%20Models).webp"],
@@ -415,97 +443,111 @@ body.hidepanel .panel{display:none}
   ].map(function (c, i) { return { i: i, name: c[0], place: c[1], img: "temp/" + c[2] }; });
   // "Shop Jewelry by Craft"
   var JC = [
-    ["Dokra", "Mayurbhanj, Odisha", "88e721fd-045d-4a60-8a35-c9f501cb940e_Dokra.webp"],
-    ["Fabart", "Jaipur, Rajasthan", "e2395b0d-301f-4561-b078-10b96c6964b3_Fabart.webp"],
-    ["German Silver", "Udaipur, Rajasthan", "64c59178-cc82-4b8a-962e-1f17d985ae5a_German%20Silver.webp"],
-    ["Hasli", "Kutch, Gujarat", "e69390de-0b76-47db-a013-c4270fa1b1b3_Hasli.webp"],
-    ["Kutch Embroidery", "Kutch, Gujarat", "1a2f6688-4c21-4bf6-be36-8cfb3cb349f3_Kutch%20Embroidery.webp"],
-    ["Lambani", "Sandur, Karnataka", "aa200aba-8fdd-4d45-8715-8d21dd7ffc3e_Lambani.webp"],
-    ["Motibharat", "Saurashtra, Gujarat", "fe8a54f9-a286-4abc-b781-93d6e4c8d333_Motibharat.webp"],
-    ["Paka Meenakari", "Varanasi, Uttar Pradesh", "8e55e7c4-03f2-456e-951d-49bcc5e748ed_paka%20meenakari.webp"],
-    ["Patwa", "Kala Dera, Rajasthan", "3369579c-9c51-4ff9-b39a-241cff0df2cb_patwa.webp"],
-    ["Terracotta", "Asharikandi, Assam", "46d283c6-db9d-4360-b999-4aa2593b02c7_Terracotta.webp"]
-  ].map(function (c, i) { return { i: i, name: c[0], place: c[1], img: "temp/" + c[2] }; });
-  // Category icons from the live store (health_concerns/…)
-  var CAT = {
-    "Sarees": "f_sarees_v2_comp.webp", "Dress Materials": "f_dress_materials_v4_comp.webp", "Kurti Sets": "f_kurti_sets_v1_comp.webp",
-    "Dupattas": "icon_dupattas_512.webp", "Kurti Tops": "f_kurti_tops_v1_comp.webp", "Blouses": "icon_blouses_512.webp",
-    "Co-ord Sets": "f_coord_sets_v1_comp.webp", "Dresses": "icon_dresses_1024.webp",
-    "Earrings": "f_earrings_v2_comp.webp", "Necklaces": "f_necklaces_v2_comp.webp", "Bangles": "f_bangles_v2_comp.webp",
-    "Rings": "f_rings_v2_comp.webp", "Anklets": "f_anklets_v2_comp.webp", "Bracelets": "f_bracelets_v2_comp.webp"
+    ["Dokra", "88e721fd-045d-4a60-8a35-c9f501cb940e_Dokra.webp"], ["Fabart", "e2395b0d-301f-4561-b078-10b96c6964b3_Fabart.webp"],
+    ["German Silver", "64c59178-cc82-4b8a-962e-1f17d985ae5a_German%20Silver.webp"], ["Hasli", "e69390de-0b76-47db-a013-c4270fa1b1b3_Hasli.webp"],
+    ["Kutch Embroidery", "1a2f6688-4c21-4bf6-be36-8cfb3cb349f3_Kutch%20Embroidery.webp"], ["Lambani", "aa200aba-8fdd-4d45-8715-8d21dd7ffc3e_Lambani.webp"],
+    ["Motibharat", "fe8a54f9-a286-4abc-b781-93d6e4c8d333_Motibharat.webp"], ["Paka Meenakari", "8e55e7c4-03f2-456e-951d-49bcc5e748ed_paka%20meenakari.webp"],
+    ["Patwa", "3369579c-9c51-4ff9-b39a-241cff0df2cb_patwa.webp"], ["Terracotta", "46d283c6-db9d-4360-b999-4aa2593b02c7_Terracotta.webp"]
+  ].map(function (c, i) { return { i: i, name: c[0], img: "temp/" + c[1] }; });
+  // Store category icons (health_concerns/…), as on the live "Women's Fashion" and "Jewelry" grids
+  var CIMG = {
+    "Sarees": "f_sarees_v2_comp.webp", "Kurti Sets": "f_kurti_sets_v1_comp.webp", "Kurti Tops": "f_kurti_tops_v1_comp.webp",
+    "Co-ord Sets": "f_coord_sets_v1_comp.webp", "Dresses": "icon_dresses_1024.webp", "Dress Materials": "f_dress_materials_v4_comp.webp",
+    "Blouses": "icon_blouses_512.webp", "Earrings": "f_earrings_v2_comp.webp", "Necklaces": "f_necklaces_v2_comp.webp",
+    "Bangles": "f_bangles_v2_comp.webp", "Bracelets": "f_bracelets_v2_comp.webp", "Rings": "f_rings_v2_comp.webp", "Anklets": "f_anklets_v2_comp.webp"
   };
-  function catImg(c) { return "health_concerns/" + CAT[c]; }
-  // Real saree photos (Newly Arrived, Budget picks, Occasion tiles)
-  var SAREE_PHOTOS = [
-    "temp/6b0f33ec-80e0-41bd-ab61-2703dfed28b4_IMG_20261110_162417.webp",
-    "temp/eec314a9-a599-42de-a891-01ef44fdd0fb_IMG_20261110_133934.webp",
-    "temp/b1b71d49-7661-4be8-b723-5427a277cb95_IMG_20261110_133934.webp",
-    "temp/3df49228-630e-49c6-a4a6-6d11db6ab3cf_model_34turn%20(13).webp",
-    "temp/3890718e-d3b6-449f-8989-d9de2b8d14ed_model_34turn%20(13).webp"
+  function catImg(c) { return "health_concerns/" + CIMG[c]; }
+  // Live saree cards from /shop/womens-fashion/sarees (24 Nov)
+  var LIVE_SAREES = [
+    ["03285f28-d1eb-4f10-bc20-ab0363dfbc47_AI%20Fashion%20Models-84747e00-260d-58db-8778-edf89a579831.webp", "Dark Indigo Silk Saree", "Powerloom", 13250, 12587.5],
+    ["341676a6-8202-419c-a089-844674bdc393_AI%20Fashion%20Models-5f0bc71b-d674-53a0-8629-c1ee7f7eb3af%20(1).webp", "Off White Pure Silk Saree", "Powerloom", 13250, 12587.5],
+    ["6da2a110-b170-4be0-b218-e2da1c24100b_AI%20Fashion%20Models-071b7112-4fad-5482-bed2-f4d52ab2c959.webp", "Dust Rose Dharmavaram Silk Saree", "✓ Handloom", 15000, 14250],
+    ["789c8f7b-458e-476e-8702-7026251605c8_AI%20Fashion%20Models-88b38240-3bdd-535e-a624-495097a3c017.webp", "Rust Red Dharmavaram Silk Saree", "Powerloom", 15000, 14250],
+    ["ed8a2644-a8a3-4c06-b13b-885264e092ef_AI%20Fashion%20Models-00ee3fef-bdba-56e2-bbdd-6c1a3fbcd7cd.webp", "Green Dharmavaram Silk Saree", "✓ Handloom", 11500, 10925],
+    ["1d9e42c8-8bbd-42f6-a304-7120b15b748c_AI%20Fashion%20Models-14141d48-6cca-5754-8196-d886ffedeba2.webp", "Cerulean Pure Silk Saree", "Powerloom", 13250, 12587.5],
+    ["324ca1d5-ba09-4ccc-8962-7b901c293024_AI%20Fashion%20Models-74951abf-6ba2-55c5-b0e1-e612f2a958f3.webp", "Rose Red Dharmavaram Silk Saree", "Powerloom", 13250, 12587.5],
+    ["620830c8-5e01-48d6-a504-f3ae966f703c_AI%20Fashion%20Models-19b836ef-879c-57e4-b4f3-79ded63d26ff.webp", "Orange Pure Silk Saree", "Powerloom", 13250, 12587.5],
+    ["1cc64484-8354-44cb-b13a-b98c05b86e17_AI%20Fashion%20Models-272698cd-7fc9-5ad5-9fc7-ad73f7346f5d.webp", "Dharmavaram Merlot Silk Saree", "Powerloom", 13250, 12587.5],
+    ["d7b3a6fe-508e-476d-b39e-4454c92431df_AI%20Fashion%20Models-5eed755c-bfa1-562d-b9e2-f499c4f97260.webp", "Paithani Dharmavaram Silk Saree", "✓ Handloom", 22500, 21375],
+    ["7b8c1cd3-b5ca-42b5-a59f-f6ee937b57b9_AI%20Fashion%20Models-65646502-2095-5dfd-99e5-21861c6a3d77.webp", "Paithani Dharmavaram Silk Saree", "✓ Handloom", 21500, 20425],
+    ["66471b96-81a9-4ef8-81ed-b02e5095edff_AI%20Fashion%20Models-14a909d4-c0a9-5d01-adfb-0faa5ca09daf.webp", "Green Drown Dharmavaram Silk", "✓ Handloom", 21000, 19950]
   ];
+  // Partner-app category tiles: real labels, colours and icons (FilterTileRow on dev-partner, 24 Nov)
+  var SVG = {
+    All: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
+    Sarees: '<path d="M12 3c-2 0-3 1.5-3.5 3.5L4 21h16l-4.5-14.5C15 4.5 14 3 12 3z"/><path d="M8 9c1.2.6 2.6.6 4 0s2.8-.4 4 0"/><path d="M7 14c1.5.6 3 .6 5 0s3.5-.4 5 0"/>',
+    Kurtis: '<path d="M7 4l-3 3 2 2v12h12V9l2-2-3-3"/><path d="M9 4l3 3 3-3"/><path d="M12 7v4"/>',
+    "Co-ord Sets": '<path d="M8 4 5 6l1.5 2.5L6 10h12l-.5-1.5L19 6l-3-2"/><path d="M9 4c1.5 1.3 3.5 1.3 5 0"/><path d="M8 13h8l1.5 7h-11z"/>',
+    Dresses: '<path d="M9 4 5.5 8 8 11 5 20h14l-3-9 2.5-3L15 4"/><path d="M9 4c1.8 1.8 4.2 1.8 6 0"/><path d="M8.2 11.4c2.4.9 5.2.9 7.6 0"/>',
+    "Dress Materials": '<rect x="4" y="6" width="16" height="3.5" rx="1"/><rect x="4" y="11" width="16" height="3.5" rx="1"/><rect x="4" y="16" width="16" height="3.5" rx="1"/>',
+    Blouses: '<path d="M8 3 4.5 5 6 8.5l1.5-.9V16c3 1 6 1 9 0V7.6l1.5.9L19.5 5 16 3"/><path d="M8 3c1.1 2.4 2.6 3.6 4 3.6s2.9-1.2 4-3.6"/>',
+    Jewelry: '<path d="M7 4h10l-2 4H9z"/><path d="M9 8c-2 2-2 6 0 8s4 2 6 0 2-6 0-8"/><circle cx="12" cy="18.5" r="1.5"/>',
+    Beauty: '<rect x="9" y="3" width="6" height="6" rx="1"/><path d="M9 9l-1 12h8l-1-12"/><path d="M11 13h2"/>',
+    Others: '<rect x="4" y="6" width="16" height="14" rx="2"/><path d="M4 11h16"/><circle cx="9" cy="15" r="0.6" fill="currentColor"/><circle cx="12" cy="15" r="0.6" fill="currentColor"/><circle cx="15" cy="15" r="0.6" fill="currentColor"/>'
+  };
+  var TILE_BG = { Sarees: "#FEEFEB", Kurtis: "#FFEBB8", "Co-ord Sets": "#B8EAFF", Dresses: "#B8EAFF", "Dress Materials": "#FBD9D2", Blouses: "#E4D7F5", Jewelry: "#E9EDFB", Beauty: "#FCE0E9", Others: "#F5F5F5" };
+  var FASHION_TILES = ["Sarees", "Kurtis", "Co-ord Sets", "Dresses", "Dress Materials", "Blouses"];
+  function icon(name, size) { return '<svg viewBox="0 0 24 24" width="' + (size || 34) + '" height="' + (size || 34) + '" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" aria-hidden="true">' + SVG[name] + '</svg>'; }
+  var CHECK = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>';
+  var LOCK = '<svg width="13" height="13" viewBox="0 0 24 24" fill="#DC3F3F" aria-hidden="true"><path d="M18 8h-1V6a5 5 0 0 0-10 0v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2zM9 6a3 3 0 0 1 6 0v2H9V6z"/></svg>';
+  var BURGER = '<svg class="bg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h12M3 18h18"/></svg>';
+  var CART = '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6"/><circle cx="10" cy="20" r="1.2"/><circle cx="17" cy="20" r="1.2"/></svg>';
+  var HEART = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>';
 
-  // Fashion catalogue: 22 pieces per cluster. Real live pieces first; the rest are stand-ins (cluster + type + colour).
-  var TYPES = { "Saree": ["Sarees", 2950, 2802.5], "Dress Material": ["Dress Materials", 2400, 2280], "Kurta Set": ["Kurti Sets", 3200, 3040],
-    "Dupatta": ["Dupattas", 1450, 1377.5], "Kurti Top": ["Kurti Tops", 1650, 1567.5], "Blouse": ["Blouses", 950, 902.5],
-    "Co-ord Set": ["Co-ord Sets", 2900, 2755], "Dress": ["Dresses", 2600, 2470] };
-  var TSEQ = ["Saree", "Saree", "Dress Material", "Saree", "Kurta Set", "Dupatta", "Saree", "Kurti Top", "Saree", "Blouse", "Co-ord Set",
-    "Saree", "Dress", "Saree", "Dress Material", "Saree", "Kurta Set", "Saree", "Dupatta", "Saree", "Kurti Top", "Saree"];
+  // Fashion catalogue: 22 pieces per cluster. Dharmavaram starts with the 12 live saree cards; the rest are examples (colour + cluster + type).
+  // type → [partner tile, store category, MRP, price]
+  var TYPES = { "Saree": ["Sarees", "Sarees", 2950, 2802.5], "Dress Material": ["Dress Materials", "Dress Materials", 2400, 2280],
+    "Kurta Set": ["Kurtis", "Kurti Sets", 3200, 3040], "Kurti Top": ["Kurtis", "Kurti Tops", 1650, 1567.5], "Blouse": ["Blouses", "Blouses", 950, 902.5],
+    "Co-ord Set": ["Co-ord Sets", "Co-ord Sets", 2900, 2755], "Dress": ["Dresses", "Dresses", 2600, 2470] };
+  var TSEQ = ["Saree", "Saree", "Dress Material", "Saree", "Kurta Set", "Saree", "Saree", "Kurti Top", "Saree", "Blouse", "Co-ord Set",
+    "Saree", "Dress", "Saree", "Dress Material", "Saree", "Kurta Set", "Saree", "Saree", "Saree", "Kurti Top", "Saree"];
   var COLOURS = ["Indigo", "Mustard", "Rani Pink", "Bottle Green", "Ivory", "Maroon", "Peacock Blue", "Rust", "Mint", "Black", "Lavender",
     "Teal", "Coral", "Beige", "Wine", "Sky Blue", "Olive", "Off White", "Magenta", "Grey", "Saffron", "Navy"];
-  var REAL = {   // cluster index → live pieces (name, type, mrp, price, photo or null)
-    2: [["Dark Indigo Dharmavaram Pure Silk Saree with Peacock Jaal and Gold-Silver Zari", "Saree", 13250, 12587.5, "temp/1fc2f842-35b7-40e0-93ae-a0c75c87813b_AI%20Fashion%20Models-84747e00-260d-58db-8778-edf89a579831.webp"],
-        ["Off White Dharmavaram Pure Silk Saree with Kanchi Zari Border, Peacock Jaal", "Saree", 13250, 12587.5, "temp/8b827cdc-a459-409e-be19-bdf11ecb8e5e_AI%20Fashion%20Models-5f0bc71b-d674-53a0-8629-c1ee7f7eb3af%20(1).webp"],
-        ["Rose Red Dharmavaram Pure Silk Saree with Zari Buttis & Diamond Border", "Saree", 13250, 12587.5, "temp/f238692f-d040-4704-964f-20628b3a8637_AI%20Fashion%20Models-74951abf-6ba2-55c5-b0e1-e612f2a958f3.webp"]],
-    9: [["Nara Brahmani inspired Black Mangalagiri Handloom Sico Saree with Gold Zari", "Saree", 8750, 8312.5, "temp/da7b1beb-7fcc-4971-822c-fb2b9c496cd0_model_34turn.webp"],
-        ["Mangalagiri Cotton 3-Piece Kurta Set in Mehendi Green", "Kurta Set"]],
-    8: [["Handwoven Maheshwari Silk-Cotton Saree in Crimson with Fort Zari Border", "Saree", 6350, 6032.5, "temp/bcb904a6-42f8-4cec-af8d-f5224fb5a23e_AI%20Fashion%20Models-bd1e2ecc-5570-5558-ac2e-65a610f931ae.webp"],
-        ["Pale Mauve Maheshwari Silk-Cotton Saree with Fort Border", "Saree"]],
-    10: [["Narayanpet Handloom Cotton Saree in Rama Green, Chikki Paras Border", "Saree"]],
-    1: [["Lucknow Chikankari Mul Cotton Dress Material, Hand Embroidered", "Dress Material"]],
-    6: [["White Kota Doria Silk Cotton Dress Material with Dupatta", "Dress Material"], ["Kota Doria Cotton Dress Material with Hand Embroidery, White", "Dress Material"]]
+  var REAL_OTHER = {   // live names from the home page for other clusters (prices from the live page where shown)
+    9: [["Nara Brahmani Black Sico Saree", "Saree", 8750, 8312.5, "temp/da7b1beb-7fcc-4971-822c-fb2b9c496cd0_model_34turn.webp"]],
+    8: [["Handwoven Maheshwari Silk-Cotton Saree in Crimson", "Saree", 6350, 6032.5, "temp/bcb904a6-42f8-4cec-af8d-f5224fb5a23e_AI%20Fashion%20Models-bd1e2ecc-5570-5558-ac2e-65a610f931ae.webp"]]
   };
-  var ITEMS = {}, FASHION = [];
+  var ITEMS = {}, FASHION = [], JEWEL = [], OTHER = [];
   CL.forEach(function (c) {
-    var real = REAL[c.i] || [];
     for (var k = 0; k < 22; k++) {
-      var r = real[k], type = r ? r[1] : TSEQ[k], T = TYPES[type];
-      var photo = r && r[4] ? r[4] : (type === "Saree" ? (k % 3 === 0 ? SAREE_PHOTOS[(c.i + k) % SAREE_PHOTOS.length] : c.img) : catImg(T[0]));
-      var it = { id: "f" + c.i + "-" + k, kind: "f", g: c.i, cat: T[0], type: type, real: !!r,
-        name: r ? r[0] : COLOURS[(k + c.i * 3) % COLOURS.length] + " " + c.name + " " + type,
-        mrp: r && r[2] ? r[2] : T[1], price: r && r[3] ? r[3] : T[2], img: photo };
+      var live = c.i === 2 && LIVE_SAREES[k], ro = (REAL_OTHER[c.i] || [])[k];
+      var type = live ? "Saree" : ro ? ro[1] : TSEQ[k], T = TYPES[type];
+      var it = { id: "f" + c.i + "-" + k, kind: "f", g: c.i, tile: T[0], ccat: T[1], type: type, real: !!(live || ro),
+        name: live ? live[1] : ro ? ro[0] : COLOURS[(k + c.i * 3) % COLOURS.length] + " " + c.name + " " + type,
+        loom: live ? live[2] : (k % 3 === 1 ? "Powerloom" : "✓ Handloom"),
+        mrp: live ? live[3] : ro ? ro[2] : T[2], price: live ? live[4] : ro ? ro[3] : T[3],
+        img: live ? "temp/" + live[0] : ro ? ro[4] : (type === "Saree" ? c.img : catImg(T[1])) };
       ITEMS[it.id] = it; FASHION.push(it);
     }
   });
-  // Jewellery catalogue: 12 per craft. Live names first; prices are examples (not on the live home page).
   var JT = { "Earrings": ["Earrings", 650, 617.5], "Necklace Set": ["Necklaces", 1850, 1757.5], "Bangles": ["Bangles", 900, 855], "Choker": ["Necklaces", 1250, 1187.5],
     "Ring": ["Rings", 450, 427.5], "Anklets": ["Anklets", 750, 712.5], "Bracelet": ["Bracelets", 700, 665] };
   var JSEQ = ["Earrings", "Necklace Set", "Bangles", "Choker", "Ring", "Earrings", "Anklets", "Bracelet", "Necklace Set", "Earrings", "Ring", "Choker"];
-  var JREAL = {
-    4: [["Red Kutch Embroidered Shell Work Choker", "Choker"]],
-    1: [["Hand Embroidered Fabart Beadwork Ring", "Ring"], ["Red - Fabart Phool Kali Shell Choker Necklace Set 06", "Necklace Set"]],
-    2: [["German Silver Square Drop Earrings with Peacock and Floral Colour Work", "Earrings"], ["Multicolor - Handmade German Silver Shell Necklace Set 11", "Necklace Set"]]
-  };
   var JADJ = ["Handmade", "Classic", "Statement", "Everyday", "Festive", "Oxidised"];
-  var JEWEL = [];
   JC.forEach(function (c) {
-    var real = JREAL[c.i] || [];
     for (var k = 0; k < 12; k++) {
-      var r = real[k], type = r ? r[1] : JSEQ[k], T = JT[type];
-      var it = { id: "j" + c.i + "-" + k, kind: "j", g: c.i, cat: T[0], type: type, real: !!r,
-        name: r ? r[0] : JADJ[(k + c.i) % JADJ.length] + " " + c.name + " " + type,
-        mrp: T[1], price: T[2], img: k % 3 === 0 ? c.img : catImg(T[0]) };
+      var type = JSEQ[k], T = JT[type];
+      var it = { id: "j" + c.i + "-" + k, kind: "j", g: c.i, tile: "Jewelry", ccat: T[0], type: type, loom: "✓ Handmade",
+        name: JADJ[(k + c.i) % JADJ.length] + " " + c.name + " " + type, mrp: T[1], price: T[2], img: k % 3 === 0 ? c.img : catImg(T[0]) };
       ITEMS[it.id] = it; JEWEL.push(it);
     }
   });
-  var OTHERS_IMG = { beauty: "health_concerns/f_earrings_v2_comp.webp", others: "health_concerns/icon_dupattas_512.webp" };
+  ["Beauty", "Others"].forEach(function (t) {
+    for (var k = 0; k < 24; k++) {
+      var it = { id: "o" + t[0] + k, kind: "o", g: -1, tile: t, ccat: t, name: t + " sample " + (k < 9 ? "0" : "") + (k + 1), mrp: 499 + k * 50, price: 474 + k * 47.5, img: null };
+      ITEMS[it.id] = it; OTHER.push(it);
+    }
+  });
+
+  Object.keys(ITEMS).forEach(function (id, i) { ITEMS[id].code = "CUST0" + (1100 + i); });   // example SKU codes, same shape as live
 
   // ── Rules (sir, 24 Nov) ──
   var MAX_CL = 5, F_MIN = 50, F_MAX = 100, J_MIN = 50, J_MAX = 100, TODAY_CAP = 25;
 
   // ── State ──
-  var SCREENS = { home: "Store home", shop: "All products", sale: "After sales (Auto-Stock)" }, SORDER = ["home", "shop", "sale"];
+  var SCREENS = { home: "Store home", shop: "Women's Fashion list", sale: "List after sales" }, SORDER = ["home", "shop", "sale"];
   var st = { screen: "home", view: "new", meter: "a", gate: "a", pick: "a", jrule: "a", autoAt: "a", step: "clusters",
-    cl: [], sel: [], jsel: [], beauty: 0, others: 0, auto: false, live: false, sold: 0, ff: "all", jf: "all", showN: 20 };
+    cl: [], sel: [], jsel: [], osel: [], auto: false, live: false, sold: 0, tile: "All", showN: 20, sheet: false };
 
   function needF() { return Math.max(0, F_MIN - st.sel.length); }
   function jewelOpen() { return st.sel.length >= F_MIN; }
@@ -513,15 +555,15 @@ body.hidepanel .panel{display:none}
   function jewelShown() { return st.jrule === "b" ? st.jsel.length >= J_MIN : true; }
   function canLaunch() { return st.cl.length >= 1 && st.sel.length >= F_MIN && (st.jrule === "b" || jewelOk()); }
   function launchReason() {
-    if (!st.cl.length) return "Pick at least 1 craft cluster to start.";
+    if (!st.cl.length) return "Pick at least 1 craft cluster first.";
     if (needF()) return "Add " + needF() + " more Fashion product" + (needF() === 1 ? "" : "s") + " to launch (min " + F_MIN + ").";
-    if (st.jrule === "a" && !jewelOk()) return "Jewellery needs 0 or at least " + J_MIN + " pieces. Add " + (J_MIN - st.jsel.length) + " more, or remove them.";
+    if (st.jrule === "a" && !jewelOk()) return "Jewelry needs 0 or 50+. Add " + (J_MIN - st.jsel.length) + " more, or untick them.";
     return "";
   }
-  function steps() { return ["clusters", "fashion", "jewel", "others"].concat(st.autoAt === "a" ? ["auto"] : []).concat(["launch"]); }
-  var STEP_NAME = { clusters: "Clusters", fashion: "Fashion", jewel: "Jewellery", others: "Beauty & more", auto: "Auto-Stock", launch: "Launch", dash: "Dashboard" };
+  function steps() { return ["clusters", "products"].concat(st.autoAt === "a" ? ["auto"] : []); }
+  var STEP_NAME = { clusters: "Clusters", products: "Review Products", auto: "Auto-Stock", dash: "Dashboard" };
+  var PRE_STEPS = 2;   // Step 1 (profile) and Step 2 (store) are today's screens, unchanged
 
-  // Guided fill: spread picks evenly across the chosen clusters (round-robin), real pieces first.
   function fill(kind, target) {
     var list = kind === "f" ? st.sel : st.jsel, cap = kind === "f" ? F_MAX : J_MAX;
     target = Math.min(target, cap);
@@ -543,103 +585,110 @@ body.hidepanel .panel{display:none}
   var q = new URLSearchParams(location.search);
   if (SCREENS[q.get("screen")]) st.screen = q.get("screen");
   ["view", "meter", "gate", "pick", "jrule", "autoAt"].forEach(function (k) { if (q.get(k)) st[k] = q.get(k); });
-  if (q.get("step")) st.step = q.get("step");
+  if (STEP_NAME[q.get("step")]) st.step = q.get("step");
+  if (q.get("tile")) st.tile = q.get("tile");
   if (q.get("cl")) setClusters(q.get("cl").split(".").map(Number).filter(function (n) { return n >= 0 && n < CL.length; }));
   if (q.get("fc")) fill("f", +q.get("fc"));
   if (q.get("jc")) fill("j", +q.get("jc"));
-  st.beauty = +q.get("beauty") || 0; st.others = +q.get("others") || 0;
-  st.auto = q.get("auto") === "1"; st.live = q.get("live") === "1" && canLaunch();
+  st.auto = q.get("auto") === "1"; st.live = q.get("live") === "1" && canLaunch(); st.sold = Math.min(3, +q.get("sold") || 0);
   if (q.has("hidepanel")) document.body.classList.add("hidepanel");
   function syncUrl() {
-    var p = new URLSearchParams({ screen: st.screen, view: st.view, meter: st.meter, gate: st.gate, pick: st.pick, jrule: st.jrule, autoAt: st.autoAt, step: st.step,
-      cl: st.cl.join("."), fc: st.sel.length, jc: st.jsel.length, beauty: st.beauty, others: st.others, auto: st.auto ? 1 : 0, live: st.live ? 1 : 0 });
+    var p = new URLSearchParams({ screen: st.screen, view: st.view, meter: st.meter, gate: st.gate, pick: st.pick, jrule: st.jrule, autoAt: st.autoAt, step: st.step, tile: st.tile,
+      cl: st.cl.join("."), fc: st.sel.length, jc: st.jsel.length, auto: st.auto ? 1 : 0, live: st.live ? 1 : 0, sold: st.sold });
     if (document.body.classList.contains("hidepanel")) p.set("hidepanel", "");
     var url = location.pathname + "?" + p.toString().replace(/hidepanel=(&|$)/, "hidepanel$1");
     $("#link").value = location.origin + url;
     try { history.replaceState(null, "", url); } catch (e) {}
   }
 
-  // ── Shopper phone ──
+  // ══ Shopper phone (consumer-ui) ══
   function shopItems() {
     var all = st.sel.concat(jewelShown() ? st.jsel : []).map(function (id) { return ITEMS[id]; });
     return st.view === "old" ? all.slice(0, TODAY_CAP) : all;
   }
-  function card(it, extra) {
-    extra = extra || {};
-    return '<div class="pc' + (extra.cls ? " " + extra.cls : "") + '"><div class="img"><img loading="lazy" src="' + img(it.img, 340) + '" alt="' + esc(it.name) + '">' +
-      (extra.badge ? '<span class="badge' + (extra.auto ? " auto" : "") + '">' + extra.badge + '</span>' : "") +
-      (extra.cls === "sold" ? '<div class="so"><span>Sold out</span></div>' : "") + '</div>' +
-      '<span class="bd"><span class="o">5% OFF</span><span class="n">' + esc(it.name) + '</span><span class="p">' + money(it.price) + '<s>' + money(it.mrp) + '</s></span></span></div>';
+  function count(items, key) { var m = {}; items.forEach(function (x) { m[x[key]] = (m[x[key]] || 0) + 1; }); return m; }
+  function uniq(a) { return a.filter(function (x, i) { return a.indexOf(x) === i; }); }
+  function viewTag() {
+    var f = shopItems().filter(function (x) { return x.kind === "f"; }).length;
+    return '<span class="viewtag ' + (st.view === "old" ? 'old">TODAY · 25 MAX · ' + shopItems().length + ' SHOWN' : 'new">NEW RULES · ' + shopItems().length + ' PRODUCTS') + '</span>';
   }
-  function header() {
-    return '<div class="shd"><span class="burger" aria-hidden="true"><i></i><i></i><i></i></span><img class="logo" src="' + img(LOGO, 96) + '" alt="">' +
-      '<div class="nm"><b>The Crafts Archive</b><small>A brand by Satish Madiraju, Hyderabad</small></div><span class="cart" aria-hidden="true">🛒</span></div>';
+  function homeHeader() {
+    return '<div class="c-hd">' + BURGER + '<img class="lg" src="' + img(LOGO, 96) + '" alt=""><div class="nm"><b>The Crafts Archive</b><small>A brand by Satish Madiraju, Hyderabad</small></div><span class="c-ic">' + CART + '</span></div>' +
+      '<div class="c-trust"><div><b>7-day</b>easy returns</div><div><b>COD</b>available</div><div><b>100%</b>secure pay</div></div>' +
+      '<div class="c-ship"><span>🚚 Free shipping on prepaid orders over ₹499 · 🌍 Ships worldwide</span><i>ⓘ</i></div>';
   }
-  function viewTag() { return '<span class="viewtag ' + (st.view === "old" ? 'old">TODAY · 25 MAX' : 'new">NEW · ' + shopItems().length + ' PRODUCTS') + '</span>'; }
-  function catCounts(items) {
-    var m = {}; items.forEach(function (x) { m[x.cat] = (m[x.cat] || 0) + 1; }); return m;
-  }
+  function secHead(a, b, sub) { return '<div class="c-sh"><h2>' + a + (b ? ' <em>' + b + '</em>' : "") + '</h2><div>' + sub + '</div></div>'; }
   function phoneHome() {
     var items = shopItems(), f = items.filter(function (x) { return x.kind === "f"; }), j = items.filter(function (x) { return x.kind === "j"; });
-    var h = header() + '<div class="tbar"><div><b>7-day</b>easy returns</div><div><b>COD</b>available</div><div><b>100%</b>secure pay</div></div>' +
-      '<div class="ship">🚚 Free shipping on prepaid orders over ₹499 · 🌍 Ships worldwide</div>';
-    if (!items.length) return h + '<div class="empty"><b>No products yet</b>This is what a shopper sees on a store that launched empty. The new launch rule (50+) stops this.</div>';
-    var clusters = st.view === "old" ? uniq(f.map(function (x) { return x.g; })) : st.cl;
-    h += '<section class="hsec"><h2>Newly <em>Arrived</em></h2><p>Recently added by Satish</p><div class="rail">' +
-      f.slice(0, 6).map(function (x) { return '<div style="width:150px;flex:none">' + card(x, { badge: "New Arrival" }) + '</div>'; }).join("") + '</div></section>';
-    h += '<section class="hsec" id="ph-craft">' + (st.view === "new" ? '<span class="newtag" style="top:18px">' + st.cl.length + ' OF MAX 5</span>' : "") +
-      '<h2>Shop Clothing by Craft</h2><p>Weaves, prints &amp; embroidery from India\'s craft clusters</p><div class="rail">' +
-      clusters.map(function (g) { var c = CL[g]; return '<div class="ccard"><img loading="lazy" src="' + img(c.img, 240) + '" alt=""><b>' + esc(c.name) + '</b><small>' + esc(c.place) + '</small></div>'; }).join("") + '</div></section>';
-    var fc = catCounts(f);
-    h += '<section class="hsec" id="ph-cats"><h2>Women\'s Fashion</h2><p>' + f.length + ' pieces across ' + Object.keys(fc).length + ' categories</p><div class="tgrid">' +
-      Object.keys(TYPES).map(function (t) { var cat = TYPES[t][0], n = fc[cat] || 0;
-        return n ? '<div class="ttile' + (n < 3 ? " thin" : "") + '"><img loading="lazy" src="' + img(catImg(cat), 160) + '" alt="">' + cat + '<small>' + n + ' piece' + (n === 1 ? "" : "s") + '</small></div>' : ""; }).join("") + '</div></section>';
+    var h = homeHeader();
+    if (!items.length) return h + '<div class="c-empty"><b>No products yet</b>A store that launched empty looks like this. The new rule (50+ to launch) stops it.</div>';
+    h += '<section class="c-sec">' + secHead("Newly", "Arrived", "Recently added by Satish") + '<div class="c-rail">' +
+      f.slice(0, 6).map(function (x) { return '<div class="c-na"><div class="im"><img loading="lazy" src="' + img(x.img, 369) + '" alt=""><span class="c-badge">New Arrival</span></div><p>' + esc(x.name) + '</p><div class="pr">' + money(x.price) + '<s>' + money(x.mrp) + '</s></div></div>'; }).join("") + '</div></section>';
+    var fc = count(f, "ccat");
+    h += '<section class="c-sec">' + secHead("Women's Fashion", "", f.length + " pieces") + '<div class="c-tiles">' +
+      Object.keys(CIMG).filter(function (c) { return fc[c]; }).map(function (c) { return '<div class="c-tile"><div class="b"><img loading="lazy" src="' + img(catImg(c), 256) + '" alt=""></div><span>' + c + '</span></div>'; }).join("") + '</div></section>';
     if (j.length) {
-      var jc = catCounts(j);
-      h += '<section class="hsec" id="ph-jewel"><span class="newtag" style="top:18px">BONUS</span><h2>Jewelry</h2><p>' + j.length + ' pieces to pair</p><div class="tgrid">' +
-        Object.keys(jc).map(function (cat) { return '<div class="ttile"><img loading="lazy" src="' + img(catImg(cat), 160) + '" alt="">' + cat + '<small>' + jc[cat] + ' pieces</small></div>'; }).join("") + '</div></section>';
-    } else if (st.jsel.length && st.view === "new") {
-      h += '<p class="note" style="margin:6px 16px;font-size:11px;color:#707078">(' + st.jsel.length + ' jewellery pieces hidden until 50 — option B)</p>';
+      var jc = count(j, "ccat");
+      h += '<section class="c-sec"><span class="newtag" style="top:10px;right:16px">BONUS</span>' + secHead("Jewelry", "", j.length + " pieces to pair") + '<div class="c-tiles">' +
+        Object.keys(CIMG).filter(function (c) { return jc[c]; }).map(function (c) { return '<div class="c-tile"><div class="b"><img loading="lazy" src="' + img(catImg(c), 256) + '" alt=""></div><span>' + c + '</span></div>'; }).join("") + '</div></section>';
     }
-    h += '<section class="hsec"><h2>Today\'s Picks</h2><p>Handpicked by Satish</p></section><div class="grid">' + items.slice(6, 12).map(function (x) { return card(x); }).join("") + '</div>' +
-      '<button class="viewall" data-goto="shop">View all ' + items.length + ' products</button>';
+    var clusters = st.view === "old" ? uniq(f.map(function (x) { return x.g; })) : st.cl;
+    h += '<section class="c-sec">' + (st.view === "new" ? '<span class="newtag" style="top:10px;right:16px">' + st.cl.length + ' OF MAX 5</span>' : "") +
+      secHead("Shop Clothing by", "Craft", "Weaves, prints &amp; embroidery from India's craft clusters") + '<div class="c-rail">' +
+      clusters.map(function (g) { var c = CL[g]; return '<div class="c-craft"><img loading="lazy" src="' + img(c.img, 300) + '" alt=""><span class="t"><b>' + esc(c.name) + '</b><small>' + esc(c.place) + '</small></span></div>'; }).join("") + '</div></section>';
+    h += '<button class="c-more" data-goto="shop">See all ' + f.length + ' pieces</button>';
     return h;
   }
-  function uniq(a) { return a.filter(function (x, i) { return a.indexOf(x) === i; }); }
+  function listHeader(title) {
+    return '<div class="l-hd">' + BURGER.replace('class="bg"', 'class="bg" style="width:22px;height:22px;flex:none"') + '<img class="lg" src="' + img(LOGO, 96) + '" alt=""><span class="tt">' + title + '</span><span class="c-ic">' + CART + '</span></div>' +
+      '<div class="l-trust"><span>↩ 7-day returns</span><span>💵 COD available</span><span>🔒 Secure payment</span></div>';
+  }
+  function pcard(x, o) {
+    o = o || {};
+    var c = CL[x.g];
+    return '<div class="pc' + (o.cls ? " " + o.cls : "") + '"><div class="im"><img loading="lazy" src="' + img(x.img, 340) + '" alt="">' +
+      (o.oos ? '<span class="oos">Out of stock</span>' : "") + (o.badge ? '<span class="c-badge" style="top:7px">' + o.badge + '</span>' : "") + '<span class="hrt">' + HEART + '</span></div>' +
+      '<div class="bd"><div class="o">' + (x.loom === "Powerloom" ? "Woven in " : "Handwoven in ") + esc(c ? c.name : "") + '</div><span class="tg">' + x.loom + '</span>' +
+      '<div class="n">' + esc(x.name) + '</div><div class="p"><s>' + money(x.mrp) + '</s>' + money(x.price) + '</div>' + (o.oos ? "" : '<div class="cod">💵 COD</div>') + '</div></div>';
+  }
+  function listTop(f) {
+    var clusters = st.view === "old" ? uniq(f.map(function (x) { return x.g; })) : st.cl;
+    return '<div class="l-wrap"><div class="l-search">⌕ <span>Search in Women\'s Fashion…</span></div>' +
+      '<div class="l-chips"><span class="l-chip">☰ Filters</span><span class="l-chip">Price</span><span class="l-chip">Occasion</span><span class="l-chip">Fabric</span><span class="l-chip">Color</span></div>' +
+      '<div class="l-craft">' + (st.view === "new" ? '<span class="newtag" style="top:0;right:0">MAX 5</span>' : "") + '<div class="lb">SHOP BY CRAFT</div><div class="row"><span class="l-chip on">All crafts</span>' +
+      clusters.map(function (g) { return '<span class="l-chip">' + esc(CL[g].name) + '</span>'; }).join("") + '</div></div>';
+  }
   function phoneShop() {
-    var items = shopItems(), cc = catCounts(items);
-    var h = header() + '<div class="lhead"><h1>All products</h1><small>' + items.length + ' products</small></div>' +
-      '<div class="fchips"><span class="on">All ' + items.length + '</span>' + Object.keys(cc).map(function (c) { return '<span>' + c + ' ' + cc[c] + '</span>'; }).join("") + '</div>';
-    if (!items.length) return h + '<div class="empty"><b>Nothing here yet</b>Shoppers who land here leave.</div>';
-    h += '<div class="grid">' + items.map(function (x) { return card(x); }).join("") + '</div>';
-    h += '<div class="endnote"><b>That\'s everything — ' + items.length + ' products</b>' +
-      (items.length <= TODAY_CAP ? "A shopper scrolls to the end in seconds." : "Enough to browse, compare and come back to.") + '</div>';
+    var f = shopItems().filter(function (x) { return x.kind === "f"; });
+    var h = listHeader("Women's Fashion");
+    if (!f.length) return h + '<div class="c-empty"><b>Nothing here yet</b>Shoppers who land here leave.</div>';
+    h += listTop(f) + '<div class="l-count"><span><b>' + f.length + '</b> pieces</span><span><b>Sort:</b> Newest ⌄</span></div></div>';
+    h += '<div class="l-grid">' + f.map(function (x) { return pcard(x); }).join("") + '</div>';
     return h;
   }
-  // After sales: pieces 2, 4 and 5 of the store sell out. With Auto-Stock on, a similar unlisted piece from the same cluster fills the gap.
-  var SOLD_AT = [1, 3, 4];
+  // After sales: pieces 1, 3 and 4 of the list sell out. Pieces are one of a kind, so a sold piece stays "Out of stock".
+  // With Auto-Stock on, a similar unlisted piece from the same cluster and category takes its place.
+  var SOLD_AT = [0, 2, 3];
   function replacementFor(it, used) {
-    var pool = (it.kind === "f" ? FASHION : JEWEL).filter(function (x) { return x.g === it.g && x.cat === it.cat && st.sel.indexOf(x.id) < 0 && st.jsel.indexOf(x.id) < 0 && used.indexOf(x.id) < 0; });
-    if (!pool.length) pool = (it.kind === "f" ? FASHION : JEWEL).filter(function (x) { return x.g === it.g && st.sel.indexOf(x.id) < 0 && used.indexOf(x.id) < 0; });
+    var taken = function (x) { return st.sel.indexOf(x.id) >= 0 || used.indexOf(x.id) >= 0; };
+    var pool = FASHION.filter(function (x) { return x.g === it.g && x.ccat === it.ccat && !taken(x); });
+    if (!pool.length) pool = FASHION.filter(function (x) { return x.g === it.g && !taken(x); });
     return pool[0];
   }
   function phoneSale() {
-    var items = shopItems().slice(0, 8), used = [];
-    var h = header() + '<div class="lhead"><h1>After a few sales</h1><small>Sold pieces are one of a kind — they do not come back.</small></div>';
-    if (!items.length) return h + '<div class="empty"><b>No products</b>Add products in the partner app first.</div>';
-    var total = shopItems().length, left = total - st.sold;
-    h += st.auto
-      ? '<div class="salebar on"><b>Auto-Stock is ON.</b> ' + (st.sold ? st.sold + ' piece' + (st.sold > 1 ? "s" : "") + ' sold — each gap filled with a similar piece from the same craft cluster. Store still shows <b>' + total + '</b> products.' : 'Sell a piece to see the gap fill itself.') + '</div>'
-      : '<div class="salebar off"><b>Auto-Stock is OFF.</b> ' + (st.sold ? st.sold + ' sold out. The store shrinks to <b>' + left + '</b> live products' + (left < F_MIN ? " — below the 50 minimum" : "") + '.' : 'Sold pieces stay as "Sold out" until the owner adds new ones.') + '</div>';
-    h += '<div class="salebtns"><button class="prim" data-sell="1"' + (st.sold >= SOLD_AT.length ? " disabled" : "") + '>Sell a piece</button><button data-sell="0">Reset</button></div>';
-    h += '<div class="grid" style="margin-top:8px">' + items.map(function (x, i) {
+    var f = shopItems().filter(function (x) { return x.kind === "f"; }), used = [], live = f.length;
+    var h = listHeader("Women's Fashion");
+    if (!f.length) return h + '<div class="c-empty"><b>No products</b>Add products in the partner app first.</div>';
+    var cards = f.slice(0, 8).map(function (x, i) {
       var k = SOLD_AT.indexOf(i);
-      if (k < 0 || k >= st.sold) return card(x);
-      if (!st.auto) return card(x, { cls: "sold" });
-      var r = replacementFor(x, used); if (!r) return card(x, { cls: "sold" });
+      if (k < 0 || k >= st.sold) return pcard(x);
+      if (!st.auto) { live--; return pcard(x, { oos: true, cls: "gone" }); }
+      var r = replacementFor(x, used); if (!r) { live--; return pcard(x, { oos: true, cls: "gone" }); }
       used.push(r.id);
-      return card(r, { cls: "fresh", badge: "Just in · Auto-Stock", auto: true });
-    }).join("") + '</div>';
+      return '<div style="position:relative">' + pcard(r, { cls: "fresh", badge: "New Arrival" }) + '<span class="newtag" style="bottom:8px;right:8px">AUTO-STOCK</span></div>';
+    });
+    h += listTop(f) + '<div class="l-count"><span><b>' + live + '</b> pieces in stock</span><span><b>Sort:</b> Newest ⌄</span></div></div>';
+    h += '<div class="l-grid">' + cards.join("") + '</div>';
     return h;
   }
   function renderPhone() {
@@ -651,231 +700,250 @@ body.hidepanel .panel{display:none}
     $("#s-name").textContent = SCREENS[st.screen];
   }
 
-  // ── Partner app ──
-  function meterRow(label, n, max, min, locked, bonus) {
-    var pct = Math.min(100, n / max * 100), full = n >= max, ok = n >= min;
-    var sub;
-    if (locked) sub = '<div class="sub">🔒 Unlocks at ' + F_MIN + ' Fashion products</div>';
-    else if (full) sub = '<div class="sub warn"><b>Limit reached (' + max + '/' + max + ').</b> Uncheck one to swap it out.</div>';
-    else if (bonus && n === 0) sub = '<div class="sub">Optional. If you add jewellery, add <b>' + min + '–' + max + '</b> pieces.</div>';
-    else if (!ok) sub = '<div class="sub warn"><b>' + (min - n) + ' more</b> to reach the ' + min + ' minimum' + (bonus ? "" : " and unlock Launch") + '.</div>';
-    else sub = '<div class="sub good"><b>✓ ' + (bonus ? "Jewellery shown" : "Ready to launch") + '</b> · ' + (max - n) + ' more allowed</div>';
-    return '<div class="meter' + (locked ? " lock" : "") + '"><div class="r1"><span class="lbl">' + label + ' ⓘ</span><span class="num">' + n + ' <small>/ ' + max + '</small></span></div>' +
-      '<div class="bar"><i class="' + (full ? "full" : ok ? "ok" : "") + '" style="width:' + pct + '%"></i><span class="tick" style="left:' + (min / max * 100) + '%"></span><span class="tickl" style="left:' + (min / max * 100) + '%">min ' + min + '</span></div>' + sub + '</div>';
+  // ══ Partner app (partner-ui) ══
+  function progress(step, title) {
+    var S = steps(), idx = S.indexOf(step), total = PRE_STEPS + S.length, n = PRE_STEPS + idx + 1;
+    return '<div class="pb"><div class="st">Step ' + n + ' of ' + total + '</div><h1>' + title + '</h1><div class="bars">' +
+      Array.from({ length: total }).map(function (_, i) { return '<i class="' + (i < n ? "on" : "") + '"></i>'; }).join("") + '</div></div>';
   }
-  function meters(which) {
-    if (st.meter === "b" || which === "j") {
-      return meterRow("Free Plan · Fashion", st.sel.length, F_MAX, F_MIN) + meterRow("Free Plan · Jewellery (bonus)", st.jsel.length, J_MAX, J_MIN, !jewelOpen(), true);
-    }
-    return meterRow("Free Plan Limits · Fashion", st.sel.length, F_MAX, F_MIN);
+  // FashionCapMeter, with a new line at the 50 minimum
+  function meter(kind) {
+    var isF = kind === "f", n = isF ? st.sel.length : st.jsel.length, max = isF ? F_MAX : J_MAX, min = isF ? F_MIN : J_MIN;
+    var locked = !isF && !jewelOpen(), reached = n >= max, under = n < min;
+    var right = locked ? "Opens at 50 Fashion" : reached ? "Limit reached" : (under && (isF || n > 0)) ? (min - n) + " more to " + (isF ? "launch" : "show") : (max - n) + " left";
+    var warn = reached || (under && !locked && (isF || n > 0));
+    return '<div class="fcm withtick' + (locked ? " off" : "") + '"><span class="newtag" style="top:-4px;left:118px">NEW</span><div class="r1"><span class="lbl">Free Plan Limits · ' + (isF ? "Fashion" : "Jewelry") + ' <i>ⓘ</i></span>' +
+      '<span class="num' + (warn ? " warn" : "") + '">' + right + '</span></div>' +
+      '<div class="trk" role="progressbar" aria-valuemin="0" aria-valuemax="' + max + '" aria-valuenow="' + n + '" aria-label="' + (isF ? "Fashion" : "Jewelry") + ' products"><i class="' + (reached ? "warn" : "") + '" style="width:' + Math.min(100, n / max * 100) + '%"></i>' +
+      '<span class="tick" style="left:' + (min / max * 100) + '%"></span><span class="tickl" style="left:' + (min / max * 100) + '%">' + min + ' to ' + (isF ? "launch" : "show") + '</span><span class="tickl r" style="left:100%">' + n + ' / ' + max + '</span></div></div>';
   }
-  function top(step) {
-    var S = steps(), idx = S.indexOf(step);
-    var T = {
-      clusters: ["Pick your craft clusters", "Your store is built from these. Choose up to 5 of the 14 we source from."],
-      fashion: ["Add Fashion products", "Fashion comes first: add 50 to 100. We can pick them for you from your clusters."],
-      jewel: ["Add Jewellery (bonus)", "Optional. Unlocks once Fashion has 50. If you add jewellery, add 50 to 100."],
-      others: ["Beauty & Others", "No limits on the free plan. Add as many as you like, or skip."],
-      auto: ["Keep your store full", "Most pieces are one of a kind. Choose what happens when one sells out."],
-      launch: ["Launch your store", "Check everything, then go live."],
-      dash: ["Partner Dashboard", "Your store is live on the free plan."]
-    }[step];
-    return '<div class="ptop">' + (idx >= 0 ? '<div class="prog">' + S.map(function (s, i) { return '<i class="' + (i <= idx ? "on" : "") + '"></i>'; }).join("") + '</div><small>Step ' + (idx + 1) + ' of ' + S.length + ' · Free plan</small>' : '<small>Free plan · The Crafts Archive</small>') +
-      '<h1>' + T[0] + '</h1><p>' + T[1] + '</p></div>';
+  function meters() {
+    if (st.tile === "Jewelry") return meter("j");
+    if (st.tile === "Beauty" || st.tile === "Others") return "";
+    return st.meter === "b" ? meter("f") + meter("j") : meter("f");
   }
   function pClusters() {
     var n = st.cl.length, full = n >= MAX_CL;
-    var h = '<div class="clhead"><span>14 clusters available</span><b class="' + (full ? "full" : "") + '">' + n + ' / ' + MAX_CL + ' picked</b></div>';
-    if (full) h += '<div class="info">Max 5 reached. Unpick one to swap it for another.</div>';
+    var h = progress("clusters", "Pick craft clusters") + '<p class="subtx">Your products come from these. Choose up to 5 of the 14 we source from.</p>' +
+      '<div class="clcount"><span class="newtag" style="top:2px;right:16px">NEW SCREEN</span><span>Craft clusters</span><b class="' + (full ? "warn" : "") + '">' + n + ' of ' + MAX_CL + ' picked</b></div>';
+    if (full) h += '<div class="banner">' + LOCK + '<span>That\'s 5. Untick one to swap it out.</span></div>';
     if (st.pick === "a") {
       h += '<div class="clgrid">' + CL.map(function (c) { var on = st.cl.indexOf(c.i) >= 0;
-        return '<button class="clc' + (on ? " on" : "") + '" data-cl="' + c.i + '"' + (!on && full ? " disabled" : "") + ' aria-pressed="' + on + '"><img loading="lazy" src="' + img(c.img, 260) + '" alt=""><span class="ck">' + (on ? "✓" : "") + '</span><span class="t"><b>' + esc(c.name) + '</b><small>' + esc(c.place) + ' · 22 pieces</small></span></button>'; }).join("") + '</div>';
+        return '<button class="c-craft' + (on ? " on" : "") + '" data-cl="' + c.i + '"' + (!on && full ? " disabled" : "") + ' aria-pressed="' + on + '"><img loading="lazy" src="' + img(c.img, 300) + '" alt=""><span class="cbx' + (on ? " on" : "") + '">' + (on ? CHECK : "") + '</span><span class="t"><b>' + esc(c.name) + '</b><small>' + esc(c.place) + '</small></span></button>'; }).join("") + '</div>';
     } else {
       h += '<div class="clchips">' + CL.map(function (c) { var on = st.cl.indexOf(c.i) >= 0;
-        return '<button class="clchip' + (on ? " on" : "") + '" data-cl="' + c.i + '"' + (!on && full ? " disabled" : "") + ' aria-pressed="' + on + '"><img loading="lazy" src="' + img(c.img, 80) + '" alt="">' + esc(c.name) + (on ? " ✓" : "") + '</button>'; }).join("") + '</div>' +
-        '<p style="font-size:12px;color:#668091;margin:12px 2px 0">Each cluster has about 22 pieces ready to add.</p>';
+        return '<button class="l-chip' + (on ? " on" : "") + '" data-cl="' + c.i + '"' + (!on && full ? " disabled" : "") + ' aria-pressed="' + on + '">' + esc(c.name) + '</button>'; }).join("") + '</div>';
     }
-    h += '<div class="pcardw" style="margin-top:10px"><h3>Why only 5?</h3><p>A focused store reads like a brand. 5 clusters × ~22 pieces gives you more than enough to reach 100.</p></div>';
+    var avail = n * 22;
+    h += n && avail < F_MIN ? '<div class="banner" style="margin-top:14px">' + LOCK + '<span>' + n + ' cluster' + (n > 1 ? "s" : "") + ' = about ' + avail + ' pieces, not enough for the 50 you need to launch. Pick at least 3.</span></div>'
+      : '<p class="clnote">About 22 pieces in each cluster' + (n ? ': ' + n + ' give you about ' + avail + ' to pick from.' : '. Pick at least 3 to reach 50.') + '</p>';
     return h;
   }
-  function plist(kind) {
-    var isF = kind === "f", list = isF ? st.sel : st.jsel, cap = isF ? F_MAX : J_MAX, flt = isF ? st.ff : st.jf;
-    var pool = isF ? FASHION.filter(function (x) { return st.cl.indexOf(x.g) >= 0; }) : JEWEL;
-    if (flt !== "all") pool = pool.filter(function (x) { return x.g === +flt; });
-    var full = list.length >= cap, shown = pool.slice(0, st.showN);
-    var groups = isF ? st.cl.map(function (g) { return CL[g]; }) : JC;
-    var h = '<div class="fchip">' + '<button data-flt="all" class="' + (flt === "all" ? "on" : "") + '">All</button>' +
-      groups.map(function (c) { var n = list.filter(function (id) { return ITEMS[id].g === c.i; }).length;
-        return '<button data-flt="' + c.i + '" class="' + (String(flt) === String(c.i) ? "on" : "") + '">' + esc(c.name) + (n ? " · " + n : "") + '</button>'; }).join("") + '</div>';
-    h += '<div class="selline"><span>' + pool.filter(function (x) { return list.indexOf(x.id) >= 0; }).length + ' of ' + pool.length + ' selected</span>' + (list.length ? '<button data-clear="' + kind + '">Clear all</button>' : "") + '</div>';
-    h += shown.map(function (x) { var on = list.indexOf(x.id) >= 0, dis = !on && full;
-      return '<button class="pcd' + (on ? " sel" : "") + '" data-pick="' + x.id + '"' + (dis ? " disabled" : "") + ' aria-pressed="' + on + '"><img loading="lazy" src="' + img(x.img, 120) + '" alt=""><span class="t"><span class="n">' + esc(x.name) + '</span>' +
-        '<span class="c">' + esc((isF ? CL : JC)[x.g].name) + ' · ' + x.cat + '</span><span class="pr">' + money(x.price) + '<s>' + money(x.mrp) + '</s></span></span><span class="pcb' + (on ? " on" : "") + '">' + (on ? "✓" : "") + '</span></button>'; }).join("");
-    if (pool.length > shown.length) h += '<button class="more" data-more="1">Show ' + Math.min(20, pool.length - shown.length) + ' more (' + (pool.length - shown.length) + ' left)</button>';
+  function tileRow() {
+    var pool = poolFor;
+    var tiles = ["All"].concat(FASHION_TILES, ["Jewelry", "Beauty", "Others"]);
+    return '<div class="ftr"><div class="row" role="tablist">' + tiles.map(function (t) {
+      var n = pool(t).length; if (!n && t !== "Jewelry") return "";
+      var on = st.tile === t, locked = t === "Jewelry" && !jewelOpen();
+      return '<button class="tile' + (on ? " on" : "") + (locked ? " locked" : "") + '" role="tab" aria-selected="' + on + '" data-tile="' + t + '" style="background:' + (TILE_BG[t] || "#F5F5F5") + '">' +
+        '<span class="ct">' + (locked ? "🔒" : n) + '</span><span class="sv">' + icon(t) + '</span><span class="lb">' + t + '</span></button>';
+    }).join("") + '</div></div>';
+  }
+  function poolFor(t) {
+    var f = FASHION.filter(function (x) { return st.cl.indexOf(x.g) >= 0; });
+    if (t === "All") return f.concat(jewelOpen() ? JEWEL : [], OTHER);
+    if (t === "Jewelry") return jewelOpen() ? JEWEL : [];
+    if (t === "Beauty" || t === "Others") return OTHER.filter(function (x) { return x.tile === t; });
+    return f.filter(function (x) { return x.tile === t; });
+  }
+  function listOf(x) { return x.kind === "f" ? st.sel : x.kind === "j" ? st.jsel : st.osel; }
+  function blocked(x) {
+    if (listOf(x).indexOf(x.id) >= 0) return false;
+    if (x.kind === "f") return st.sel.length >= F_MAX;
+    if (x.kind === "j") return st.jsel.length >= J_MAX || !jewelOpen();
+    return false;
+  }
+  function ccard(x) {
+    var on = listOf(x).indexOf(x.id) >= 0, dis = blocked(x), b2b = x.price * 0.8;
+    var brand = x.kind === "f" ? CL[x.g].name : x.kind === "j" ? JC[x.g].name : "Wcommerce";
+    var ph = x.img ? '<img class="ph" loading="lazy" src="' + img(x.img, 120) + '" alt="">' : '<span class="ph" style="display:grid;place-items:center;background:' + TILE_BG[x.tile] + ';color:#1F212E">' + icon(x.tile, 24) + '</span>';
+    return '<button class="cc" data-pick="' + x.id + '"' + (dis ? ' disabled aria-disabled="true"' : "") + ' aria-pressed="' + on + '"><span class="top">' + ph + '<span class="t"><span class="r"><span class="nm">' + esc(x.name) + '</span><span class="cbx' + (on ? " on" : "") + (dis ? " dis" : "") + '">' + (on ? CHECK : "") + '</span></span>' +
+      '<span class="br">' + esc(brand) + '<span class="chip">' + x.tile + '</span></span><span class="code">' + x.code + '</span></span></span>' +
+      '<span class="prow"><span><small>MRP</small><b>' + money(x.mrp, 1) + '</b></span><span><small>B2B Price</small><b>' + money(b2b, 1) + '</b></span><span><small>Margin</small><b>20%</b></span><span><small>Margin Amount</small><b>' + money(x.mrp - b2b, 1) + '</b></span></span></button>';
+  }
+  function pProducts() {
+    if (!st.cl.length) return progress("products", "Review Products") + '<p class="subtx">Pick at least 1 craft cluster first.</p><div style="padding:16px"><button class="pbtn" data-step="clusters">Pick clusters</button></div>';
+    var h = progress("products", "Review Products") + '<p class="subtx">Browse products &amp; add them to your store.</p>' + tileRow() + meters();
+    var t = st.tile, pool = poolFor(t);
+    if (t === "Jewelry" && !jewelOpen()) {
+      return h + '<div class="banner" style="margin-top:12px">' + LOCK + '<span>Jewelry opens once you have 50 Fashion products. You have ' + st.sel.length + '. <b style="font-weight:500">Bonus category:</b> add 50 to 100, or skip it.</span></div>';
+    }
+    if (t === "Jewelry" && st.jsel.length > 0 && st.jsel.length < J_MIN) {
+      h += st.jrule === "a" ? '<div class="banner">' + LOCK + '<span>Add ' + (J_MIN - st.jsel.length) + ' more jewelry, or untick them all, to launch.</span></div>'
+        : '<div class="banner info"><span>Shoppers see jewelry once you have 50. You can still launch.</span></div>';
+    }
+    var isF = t !== "Jewelry" && t !== "Beauty" && t !== "Others";
+    if (t !== "Beauty" && t !== "Others") {
+      var k = t === "Jewelry" ? "j" : "f", n = k === "f" ? st.sel.length : st.jsel.length;
+      h += '<div class="guide"><span class="newtag" style="top:-6px;right:10px">NEW</span><b>Pick for me</b><p>' +
+        (k === "f" ? "We spread picks evenly across your " + st.cl.length + " cluster" + (st.cl.length > 1 ? "s" : "") + " and all categories. Untick anything you don't want."
+          : "Pieces that pair with your sarees and kurtas. Add 50 to 100.") + '</p><div class="btns">' +
+        '<button class="gbtn" data-fill="' + k + ':50"' + (n >= 50 ? " disabled" : "") + '>Fill to 50</button><button class="gbtn ol" data-fill="' + k + ':100"' + (n >= 100 ? " disabled" : "") + '>Fill to 100</button></div></div>';
+    }
+    var inList = pool.filter(function (x) { return listOf(x).indexOf(x.id) >= 0; }).length;
+    h += '<div class="selrow"><span class="' + (inList ? "has" : "") + '">' + inList + ' of ' + pool.length + ' selected</span>' +
+      (t === "Beauty" || t === "Others" ? '<label>Select All <span class="cbx' + (inList === pool.length ? " on" : "") + '" data-all="' + t + '" role="checkbox" aria-checked="' + (inList === pool.length) + '" tabindex="0">' + (inList === pool.length ? CHECK : "") + '</span></label>' : "") + '</div>';
+    h += '<div class="plist">' + pool.slice(0, st.showN).map(ccard).join("") +
+      (pool.length > st.showN ? '<button class="more" data-more="1">Load ' + Math.min(20, pool.length - st.showN) + ' more</button>' : "") + '</div>';
     return h;
   }
-  function pFashion() {
-    if (!st.cl.length) return '<div class="lockcard"><div class="ic">🧵</div><h3>Pick a craft cluster first</h3><p>Fashion products come from the clusters you choose.</p><button class="gbtn" data-step="clusters">Pick clusters</button></div>';
-    var n = st.sel.length;
-    var h = meters("f");
-    h += '<div class="ptiles"><button class="ptile on" data-step="fashion"><img src="' + img(catImg("Sarees"), 80) + '" alt="">Fashion<small>' + n + ' / 100</small></button>' +
-      '<button class="ptile' + (jewelOpen() ? "" : " locked") + '" data-step="jewel">' + (jewelOpen() ? "" : '<span class="lk">🔒</span>') + '<img src="' + img(catImg("Earrings"), 80) + '" alt="">Jewellery<small>' + (jewelOpen() ? st.jsel.length + " / 100" : "at 50") + '</small></button>' +
-      '<button class="ptile" data-step="others"><img src="' + img(OTHERS_IMG.beauty, 80) + '" alt="">Beauty &amp; more<small>Unlimited</small></button></div>';
-    h += '<div class="guide"><span class="ic">✨</span><div><b>Guided pick</b><p>We choose pieces evenly across your ' + st.cl.length + ' cluster' + (st.cl.length > 1 ? "s" : "") + ' and all categories, so shoppers get variety. Untick anything you don\'t want.</p><div class="btns">' +
-      '<button class="gbtn" data-fill="f:50"' + (n >= 50 ? " disabled" : "") + '>Fill to 50</button><button class="gbtn ol" data-fill="f:100"' + (n >= 100 ? " disabled" : "") + '>Fill to 100</button></div></div></div>';
-    return h + plist("f");
+  function autoBox(mini) {
+    return '<div class="astk' + (mini ? " mini" : "") + '"><span class="newtag" style="top:-6px;right:10px">NEW</span><label><input type="checkbox" id="auto"' + (st.auto ? " checked" : "") + '><span class="cbx' + (st.auto ? " on" : "") + '">' + (st.auto ? CHECK : "") + '</span><span class="h">Auto stock your storefront?</span></label>' +
+      '<p class="why">When a product sells out, we add a similar one from your craft clusters in its place, so your store never looks empty or broken.</p>' +
+      (mini ? "" : '<ul><li>Same cluster and category as the piece that sold</li><li>Counts within your 100</li><li>Remove any auto-added product anytime</li><li>Turn it off anytime from your dashboard</li></ul>' +
+        '<p class="consent">By ticking this, you allow Wcommerce to add products to your store on your behalf.</p>' +
+        '<div class="ba"><div class="x"><b style="font-weight:500">Off</b><span class="g"><i></i><i class="s"></i><i></i><i class="s"></i><i></i><i></i></span>Out of stock gaps</div>' +
+        '<div class="y"><b style="font-weight:500">On</b><span class="g"><i></i><i class="n"></i><i></i><i class="n"></i><i></i><i></i></span>Gaps filled</div></div>') + '</div>';
   }
-  function pJewel() {
-    if (!jewelOpen()) return meters("j") + '<div class="lockcard"><div class="ic">🔒</div><h3>Jewellery unlocks at 50 Fashion</h3><p>You have ' + st.sel.length + ' Fashion products. Add ' + needF() + ' more and Jewellery opens as a bonus category.</p><button class="gbtn" data-step="fashion">Add Fashion</button></div>';
-    var n = st.jsel.length;
-    var h = meters("j");
-    if (n > 0 && n < J_MIN) h += st.jrule === "a" ? '<div class="warnbox">Jewellery needs at least ' + J_MIN + ' pieces. With ' + n + ', you can\'t launch. Add ' + (J_MIN - n) + ' more, or clear them.</div>'
-      : '<div class="info">Shoppers won\'t see jewellery until you have ' + J_MIN + '. You can still launch.</div>';
-    h += '<div class="guide"><span class="ic">✨</span><div><b>Bonus category <span class="bonus">★ Free</span></b><p>Pieces that pair with your sarees and kurtas. Add 50 to 100, or skip.</p><div class="btns">' +
-      '<button class="gbtn" data-fill="j:50"' + (n >= 50 ? " disabled" : "") + '>Fill to 50</button><button class="gbtn ol" data-fill="j:100"' + (n >= 100 ? " disabled" : "") + '>Fill to 100</button></div></div></div>';
-    return h + plist("j");
+  function pAuto() {
+    return progress("auto", "Keep your store full") + '<p class="subtx">Most pieces are one of a kind. Choose what happens when one sells out.</p>' + autoBox(false);
   }
-  function pOthers() {
-    function row(key, title, sub, ic) {
-      return '<div class="otile"><img src="' + img(ic, 100) + '" alt=""><div class="t"><b>' + title + '</b><small>' + sub + '</small><span class="unl">Unlimited · no minimum</span></div>' +
-        '<div class="step"><button data-oth="' + key + ':-10" aria-label="Remove 10">−</button><span>' + st[key] + '</span><button data-oth="' + key + ':10" aria-label="Add 10">+</button></div></div>';
-    }
-    return '<div class="pcardw"><h3>No limits here</h3><p>Beauty and other categories don\'t count towards your 100. They never block launch.</p></div>' +
-      row("beauty", "Beauty", "Skincare, haircare, fragrance", catImg("Earrings")) + row("others", "Others", "Home, bags, gifting", catImg("Dupattas"));
-  }
-  function autoBlock() {
-    return '<div class="astk' + (st.auto ? " on" : "") + '" id="astk"><label><input type="checkbox" id="auto"' + (st.auto ? " checked" : "") + '><span><b>Auto stock your storefront?</b></span></label>' +
-      '<p class="why">When a product sells out, we automatically add a similar product from your craft clusters in its place — so your store never looks empty or broken.</p>' +
-      '<ul><li>Same cluster and category as the piece that sold</li><li>Counts within your 100 limit</li><li>You can remove any auto-added product anytime</li><li>Turn it off anytime in Settings</li></ul>' +
-      '<p class="consent">By ticking this, you allow Wcommerce to add products to your store on your behalf.</p>' +
-      '<div class="ba"><div class="x"><b>Off</b><span class="mini"><i></i><i class="g"></i><i></i><i class="g"></i><i></i><i></i></span>Sold out gaps</div>' +
-      '<div class="y"><b>On</b><span class="mini"><i></i><i class="n"></i><i></i><i class="n"></i><i></i><i></i></span>Gaps filled</div></div></div>';
-  }
-  function pLaunch() {
-    var h = "";
-    var rows = [
-      ["Craft clusters", st.cl.length + " / 5", "clusters"],
-      ["Fashion", st.sel.length + " / 100", "fashion"],
-      ["Jewellery (bonus)", st.jsel.length ? st.jsel.length + " / 100" + (jewelShown() ? "" : " · hidden") : "Skipped", "jewel"],
-      ["Beauty & Others", (st.beauty + st.others) || "Skipped", "others"],
-      ["Auto-Stock", st.auto ? "On" : "Off", st.autoAt === "a" ? "auto" : null]
-    ];
-    if (st.gate === "b") {
-      var ck = [
-        [st.cl.length >= 1 ? "y" : "n", "1 to 5 craft clusters", st.cl.length + " picked", "clusters"],
-        [st.sel.length >= F_MIN ? "y" : "n", "At least 50 Fashion products", st.sel.length + " added" + (needF() ? " · " + needF() + " to go" : ""), "fashion"]
-      ];
-      if (st.jrule === "a") ck.push([jewelOk() ? (st.jsel.length ? "y" : "o") : "n", "Jewellery: none, or 50+", st.jsel.length ? st.jsel.length + " added" : "Skipped (optional)", "jewel"]);
-      ck.push([st.auto ? "y" : "o", "Auto-Stock", st.auto ? "On" : "Off (optional)", st.autoAt === "a" ? "auto" : null]);
-      h += '<div class="chk">' + ck.map(function (r) { return '<div class="r"><i class="' + r[0] + '">' + (r[0] === "y" ? "✓" : r[0] === "n" ? "✕" : "–") + '</i><div><b style="font-weight:500">' + r[1] + '</b><small>' + r[2] + '</small></div>' + (r[0] !== "y" && r[3] ? '<a data-step="' + r[3] + '">' + (r[0] === "n" ? "Fix" : "Open") + '</a>' : "") + '</div>'; }).join("") + '</div>';
-    } else {
-      h += meters("f");
-      h += '<div class="sum">' + rows.map(function (r) { return '<div class="r"><span>' + r[0] + '</span><b>' + r[1] + '</b></div>'; }).join("") + '</div>';
-    }
-    if (st.autoAt === "b") h += autoBlock();
-    h += '<div class="pcardw"><h3>What shoppers get</h3><p>' + shopItemsNew() + ' products across ' + st.cl.length + ' craft cluster' + (st.cl.length === 1 ? "" : "s") + '. A free store never launches with fewer than 50.</p></div>';
-    return h;
-  }
-  function shopItemsNew() { return st.sel.length + (jewelShown() ? st.jsel.length : 0); }
   function pDash() {
-    var h = '<div class="live"><span class="ic">✓</span><div><b>Your store is live</b><small>thecraftsarchive.com · Free plan</small></div></div>';
-    h += meterRow("Free Plan · Fashion", st.sel.length, F_MAX, F_MIN) + meterRow("Free Plan · Jewellery (bonus)", st.jsel.length, J_MAX, J_MIN, !jewelOpen(), true);
-    h += '<div class="sum"><div class="r"><span>Craft clusters</span><b>' + st.cl.map(function (g) { return CL[g].name; }).join(", ") + '</b></div>' +
-      '<div class="r"><span>Beauty &amp; Others</span><b>' + (st.beauty + st.others) + ' · unlimited</b></div></div>';
-    h += '<div class="pcardw"><div class="swrow"><span><b style="font-weight:500;display:block">Auto-Stock</b><small style="color:#668091">' + (st.auto ? "On · sold-out pieces are replaced from your clusters" : "Off · sold-out pieces leave gaps") + '</small></span><button class="asw" id="dash-auto" role="switch" aria-checked="' + st.auto + '" aria-label="Auto-Stock"></button></div></div>';
-    h += '<div class="pcardw"><h3>Want more than 100?</h3><p>Go VIP for unlimited products and more clusters.</p></div>';
+    var h = '<div class="dh"><img class="lg" src="' + img(LOGO, 96) + '" alt=""><div class="t"><b>The Crafts Archive</b><small>By Satish Madiraju</small></div></div>';
+    h += '<div class="toast"><i>✓</i>Your store is live on the free plan</div>';
+    h += '<div class="dcard"><span class="newtag" style="top:-6px;right:12px">NEW</span><h4>Free Plan Limits</h4>' + meter("f") + meter("j") + '</div>';
+    h += '<div class="drow" style="position:relative"><span class="newtag" style="top:-6px;right:12px">NEW</span><div class="t"><b>Auto-Stock</b><small>' + (st.auto ? "On · sold-out pieces get replaced" : "Off · sold-out pieces leave gaps") + '</small></div><button class="sw" id="dash-auto" role="switch" aria-checked="' + st.auto + '" aria-label="Auto-Stock"></button></div>';
+    h += '<div class="drow" data-step="products" role="button" tabindex="0" style="cursor:pointer"><div class="t"><b>Craft clusters</b><small>' + st.cl.map(function (g) { return CL[g].name; }).join(", ") + '</small></div><span style="color:#668091">›</span></div>';
+    h += '<div class="drow"><div class="t"><b>Want more than 100?</b><small>Go VIP for unlimited products</small></div><span style="color:#668091">›</span></div>';
     return h;
+  }
+  function bnav() {
+    var I = [["Home", "active_home.png"], ["Products", "products.png"], ["Insights", "insights.svg"], ["Orders", "ordersicon.png"], ["Settings", "settings.png"]];
+    return '<div class="bnav">' + I.map(function (x, i) { return '<div><span class="' + (i ? "" : "on") + '"><img src="' + NAV + x[1] + '" alt=""></span><p class="' + (i ? "" : "on") + '">' + x[0] + '</p></div>'; }).join("") + '</div>';
   }
   function bar(step) {
-    var S = steps(), idx = S.indexOf(step), why = "", cls = "", next = S[idx + 1];
-    var back = idx > 0 ? '<button class="pbtn back" data-step="' + S[idx - 1] + '">Back</button>' : "";
-    if (step === "dash") return '<div class="pbar"><div class="row"><button class="pbtn" data-step="fashion">Add products</button></div></div>';
-    if (step === "launch") {
-      var ok = canLaunch(), r = launchReason();
-      if (st.gate === "a" || !ok) { why = ok ? "✓ All set. Your store goes live now." : r; cls = ok ? "good" : "warn"; }
-      return '<div class="pbar">' + (why ? '<div class="why ' + cls + '">' + why + '</div>' : "") + '<div class="row">' + back + '<button class="pbtn' + (ok ? "" : " lockd") + '" id="launch"' + (ok ? "" : " disabled") + '>Launch Store</button></div></div>';
+    if (step === "dash") return bnav();
+    if (step === "clusters") return '<div class="pbar"><div class="ttl">' + (st.cl.length ? st.cl.length + " of 5 clusters picked · about " + st.cl.length * 22 + " pieces" : "Pick at least 1 to continue") + '</div><button class="pbtn" data-step="products"' + (st.cl.length ? "" : " disabled") + '>Continue</button></div>';
+    var total = st.sel.length + st.jsel.length + st.osel.length, ok = canLaunch(), reason = launchReason();
+    var count = total ? total + " product" + (total === 1 ? "" : "s") + " in your store" : "";
+    var goesLive = step === "auto" || st.autoAt === "b";
+    if (step === "products" && !goesLive) {   // Auto-Stock asked on its own step next
+      return '<div class="pbar">' + (count || reason ? '<div class="ttl' + (ok ? "" : " warn") + '">' + (ok ? count : (count ? count + " · " : "") + reason) + '</div>' : "") +
+        '<button class="pbtn" data-step="auto"' + (ok ? "" : " disabled") + '>Continue</button></div>';
     }
-    if (step === "clusters") { why = st.cl.length ? st.cl.length + " cluster" + (st.cl.length > 1 ? "s" : "") + " picked" : "Pick at least 1 to continue"; cls = st.cl.length ? "good" : ""; }
-    if (step === "fashion") { why = needF() ? "Launch is locked · " + needF() + " more Fashion to go" : "✓ Launch and Jewellery unlocked"; cls = needF() ? "warn" : "good"; }
-    if (step === "jewel" && st.jsel.length && !jewelOk()) { why = st.jrule === "a" ? "Add " + (J_MIN - st.jsel.length) + " more, or clear jewellery, to launch" : "Hidden from shoppers until 50"; cls = st.jrule === "a" ? "warn" : ""; }
-    var dis = step === "clusters" && !st.cl.length;
-    return '<div class="pbar">' + (why ? '<div class="why ' + cls + '">' + why + '</div>' : "") + '<div class="row">' + back + '<button class="pbtn" data-step="' + next + '"' + (dis ? " disabled" : "") + '>Next: ' + STEP_NAME[next] + '</button></div></div>';
+    var mini = step === "products" && st.autoAt === "b" ? autoBox(true) : "";
+    if (st.gate === "b") return '<div class="pbar">' + mini + (count ? '<div class="ttl">' + count + '</div>' : "") + '<button class="pbtn" id="launch"' + (total ? "" : " disabled") + '>Launch Store</button></div>';
+    return '<div class="pbar">' + mini + (count || reason ? '<div class="ttl' + (ok ? "" : " warn") + '">' + (ok ? count : (count ? count + " · " : "") + reason) + '</div>' : "") +
+      '<button class="pbtn" id="launch"' + (ok ? "" : " disabled") + '>Launch Store</button></div>';
+  }
+  function sheet() {
+    if (!st.sheet) return "";
+    var ok = canLaunch();
+    var ck = [
+      [st.cl.length >= 1 ? "y" : "n", "1 to 5 craft clusters", st.cl.length + " picked", "clusters"],
+      [st.sel.length >= F_MIN ? "y" : "n", "At least 50 Fashion products", st.sel.length + " added" + (needF() ? " · " + needF() + " to go" : ""), "products:All"]
+    ];
+    if (st.jrule === "a") ck.push([jewelOk() ? (st.jsel.length ? "y" : "o") : "n", "Jewelry: none, or 50+", st.jsel.length ? st.jsel.length + " added" : "Skipped (optional)", "products:Jewelry"]);
+    else ck.push([st.jsel.length >= J_MIN ? "y" : "o", "Jewelry shows at 50+", st.jsel.length ? st.jsel.length + " added" + (st.jsel.length < J_MIN ? " · hidden for now" : "") : "Skipped (optional)", "products:Jewelry"]);
+    ck.push([st.auto ? "y" : "o", "Auto-Stock", st.auto ? "On" : "Off (optional)", st.autoAt === "a" ? "auto" : null]);
+    return '<button class="scrim" id="scrim" aria-label="Close"></button><div class="sheet" role="dialog" aria-label="Before you launch"><div class="grip"></div><span class="newtag" style="top:14px;right:16px">NEW</span>' +
+      '<h3>Before you launch</h3><p>A free store needs at least 50 Fashion products.</p>' +
+      ck.map(function (r) { return '<div class="ck"><i class="' + r[0] + '">' + (r[0] === "y" ? "✓" : r[0] === "n" ? "✕" : "–") + '</i><div><b>' + r[1] + '</b><small>' + r[2] + '</small></div>' + (r[0] !== "y" && r[3] ? '<a data-step="' + r[3] + '">' + (r[0] === "n" ? "Fix" : "Open") + '</a>' : "") + '</div>'; }).join("") +
+      '<button class="pbtn" id="golive" style="margin-top:12px"' + (ok ? "" : " disabled") + '>Launch Store</button></div>';
   }
   function renderPartner(keep) {
     var sc = $("#pscroll"), y = sc ? sc.scrollTop : 0;
-    if (st.step === "auto" && st.autoAt === "b") st.step = "launch";
-    if (st.step === "dash" && !st.live) st.step = "launch";
-    var body = { clusters: pClusters, fashion: pFashion, jewel: pJewel, others: pOthers, auto: function () { return autoBlock(); }, launch: pLaunch, dash: pDash }[st.step]();
-    $("#partner").innerHTML = '<div class="pscroll" id="pscroll">' + top(st.step) + '<div class="pbody">' + body + '</div></div>' + bar(st.step);
+    if (st.step === "auto" && st.autoAt === "b") st.step = "products";
+    if (st.step === "dash" && !st.live) st.step = "products";
+    if (st.tile !== "All" && st.tile !== "Jewelry" && !poolFor(st.tile).length) st.tile = "All";
+    var body = { clusters: pClusters, products: pProducts, auto: pAuto, dash: pDash }[st.step]();
+    $("#partner").innerHTML = '<div class="pscroll" id="pscroll">' + body + '</div>' + bar(st.step) + sheet();
+    var pad = ($(".pbar") || $(".bnav")).offsetHeight + 16;
+    $("#pscroll").style.paddingBottom = pad + "px";
     if (keep) $("#pscroll").scrollTop = y;
     var S = steps().concat(st.live ? ["dash"] : []);
     $("#pctl").innerHTML = S.map(function (s) {
-      var done = (s === "clusters" && st.cl.length) || (s === "fashion" && st.sel.length >= F_MIN) || (s === "jewel" && st.jsel.length >= J_MIN) || (s === "auto" && st.auto);
-      return '<button type="button" role="tab" data-step="' + s + '" class="' + (s === st.step ? "on" : "") + (done ? " done" : "") + '" aria-selected="' + (s === st.step) + '">' + STEP_NAME[s] + '</button>';
+      return '<button type="button" role="tab" data-step="' + s + '" aria-selected="' + (s === st.step) + '">' + STEP_NAME[s] + '</button>';
     }).join("");
   }
   function renderPanel() {
-    $("#counts").innerHTML = [["Clusters", st.cl.length + "/5"], ["Fashion", st.sel.length], ["Jewel", st.jsel.length], ["Shopper", shopItems().length]]
+    $("#counts").innerHTML = [["Clusters", st.cl.length + "/5"], ["Fashion", st.sel.length], ["Jewelry", st.jsel.length], ["Shopper", shopItems().length]]
       .map(function (c) { return '<div><b>' + c[1] + '</b><span>' + c[0] + '</span></div>'; }).join("");
     [["#views", "v", "view"], ["#meters", "m", "meter"], ["#gates", "g", "gate"], ["#pickers", "k", "pick"], ["#jrules", "j", "jrule"], ["#autoats", "a", "autoAt"]].forEach(function (x) {
       Array.prototype.forEach.call($(x[0]).children, function (b) { b.classList.toggle("on", b.dataset[x[1]] === st[x[2]]); });
     });
     Array.prototype.forEach.call($("#presets").children, function (b) { b.classList.toggle("on", +b.dataset.pre === st.sel.length); });
+    var has = shopItems().some(function (x) { return x.kind === "f"; });
+    $("#soldline").textContent = st.sold + " of " + SOLD_AT.length + " sold";
+    $('#sales [data-sell="1"]').disabled = !has || st.sold >= SOLD_AT.length;
+    $("#salenote").innerHTML = !has ? "Add products first." : st.auto ? "<b>Auto-Stock on:</b> each sold piece is replaced by a similar one." : "<b>Auto-Stock off:</b> sold pieces stay as \"Out of stock\". Turn it on in the partner app to compare.";
   }
   function all(keep) { renderPhone(); renderPartner(keep); renderPanel(); syncUrl(); }
-  function flash(sel) { var c = document.querySelector(sel); if (!c) return; c.scrollIntoView({ block: "nearest" }); c.classList.remove("flash"); void c.offsetWidth; c.classList.add("flash"); }
-  function go(step) { st.step = step; st.showN = 20; renderPartner(); renderPanel(); syncUrl(); }
+  function flash(sel) { var c = document.querySelector(sel); if (!c) return; c.classList.remove("flash"); void c.offsetWidth; c.classList.add("flash"); }
+  function go(step) {
+    var p = step.split(":");
+    st.step = p[0]; st.sheet = false; st.showN = 20; if (p[1]) st.tile = p[1];
+    renderPartner(); renderPanel(); syncUrl();
+  }
+  function launch() { st.live = true; st.sheet = false; st.step = "dash"; st.screen = "home"; all(); }
 
   // ── Events ──
-  function seg(id, key, attr, after) { $(id).addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; st[key] = b.dataset[attr]; if (after) after(); all(true); }); }
+  function seg(id, key, attr, after) { $(id).addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; st[key] = b.dataset[attr]; st.sheet = false; if (after) after(); all(true); }); }
   seg("#views", "view", "v", function () { if (st.screen === "sale") st.screen = "home"; });
-  seg("#meters", "meter", "m", function () { if (["fashion", "jewel", "launch", "dash"].indexOf(st.step) < 0) st.step = "fashion"; });
-  seg("#gates", "gate", "g", function () { st.step = "launch"; });
+  seg("#meters", "meter", "m", function () { st.step = "products"; st.tile = "All"; });
+  seg("#gates", "gate", "g", function () { st.step = st.autoAt === "a" ? "auto" : "products"; });
   seg("#pickers", "pick", "k", function () { st.step = "clusters"; });
-  seg("#jrules", "jrule", "j", function () { if (st.step !== "launch") st.step = "jewel"; });
-  seg("#autoats", "autoAt", "a", function () { st.step = st.autoAt === "a" ? "auto" : "launch"; });
+  seg("#jrules", "jrule", "j", function () { st.step = "products"; st.tile = "Jewelry"; });
+  seg("#autoats", "autoAt", "a", function () { st.step = st.autoAt === "a" ? "auto" : "products"; });
   $("#presets").addEventListener("click", function (e) {
     var b = e.target.closest("button"); if (!b) return;
     var n = +b.dataset.pre;
-    if (!st.cl.length) st.cl = [2, 9, 8, 6, 1];   // Dharmavaram, Mangalagiri, Maheshwari, Kota Doria, Chikankari — the clusters with live pieces
-    st.sel = []; st.jsel = []; st.live = false; st.sold = 0;
+    // Presets need enough pieces: top up to 5 clusters, starting with the ones that have live pieces.
+    [2, 9, 8, 6, 1].forEach(function (g) { if (st.cl.length < MAX_CL && st.cl.indexOf(g) < 0) st.cl.push(g); });
+    st.sel = []; st.jsel = []; st.live = false; st.sold = 0; st.sheet = false;
     fill("f", n); if (n === 80) fill("j", 60);
-    st.step = n >= F_MIN ? "launch" : "fashion"; st.showN = 20;
+    st.step = "products"; st.tile = "All"; st.showN = 20;
     all();
+  });
+  $("#sales").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b || b.disabled) return;
+    st.sold = b.dataset.sell === "0" ? 0 : Math.min(SOLD_AT.length, st.sold + 1);
+    st.screen = "sale"; all(true); $("#page").scrollTop = 0;
   });
   $("#s-prev").onclick = function () { st.screen = SORDER[(SORDER.indexOf(st.screen) + SORDER.length - 1) % SORDER.length]; all(true); };
   $("#s-next").onclick = function () { st.screen = SORDER[(SORDER.indexOf(st.screen) + 1) % SORDER.length]; all(true); };
   $("#copy").onclick = function () { var i = $("#link"); try { navigator.clipboard.writeText(i.value).then(function () { $("#copy").textContent = "Copied"; }, function () { i.select(); }); } catch (e) { i.select(); } };
   $("#pctl").addEventListener("click", function (e) { var b = e.target.closest("[data-step]"); if (b) go(b.dataset.step); });
-  $("#phone").addEventListener("click", function (e) {
-    var t = e.target.closest("[data-goto],[data-sell]"); if (!t) return;
-    if (t.dataset.goto) { st.screen = t.dataset.goto; all(); $("#page").scrollTop = 0; return; }
-    st.sold = t.dataset.sell === "0" ? 0 : Math.min(SOLD_AT.length, st.sold + 1); renderPhone();
-  });
+  $("#phone").addEventListener("click", function (e) { var t = e.target.closest("[data-goto]"); if (t) { st.screen = t.dataset.goto; all(); $("#page").scrollTop = 0; } });
   $("#partner").addEventListener("change", function (e) { if (e.target.id === "auto") { st.auto = e.target.checked; all(true); } });
+  $("#partner").addEventListener("keydown", function (e) { if ((e.key === "Enter" || e.key === " ") && e.target.matches("[data-all],[role=button][data-step]")) { e.preventDefault(); e.target.click(); } });
   $("#partner").addEventListener("click", function (e) {
-    var t = e.target.closest("[data-step],[data-cl],[data-pick],[data-fill],[data-flt],[data-clear],[data-more],[data-oth],#launch,#dash-auto");
+    var t = e.target.closest("[data-step],[data-cl],[data-pick],[data-fill],[data-tile],[data-all],[data-more],#launch,#golive,#scrim,#dash-auto");
     if (!t || t.disabled) return;
     if (t.dataset.step) { go(t.dataset.step); return; }
-    if (t.id === "launch") { if (canLaunch()) { st.live = true; st.step = "dash"; st.screen = "home"; all(); } return; }
+    if (t.id === "scrim") { st.sheet = false; renderPartner(true); return; }
+    if (t.id === "launch") { if (st.gate === "b") { st.sheet = true; renderPartner(true); } else if (canLaunch()) launch(); return; }
+    if (t.id === "golive") { if (canLaunch()) launch(); return; }
     if (t.id === "dash-auto") { st.auto = !st.auto; all(true); return; }
     if (t.dataset.cl) {
       var g = +t.dataset.cl, i = st.cl.indexOf(g);
       if (i >= 0) setClusters(st.cl.filter(function (x) { return x !== g; })); else if (st.cl.length < MAX_CL) setClusters(st.cl.concat([g]));
-      if (st.ff !== "all" && st.cl.indexOf(+st.ff) < 0) st.ff = "all";
       all(true); return;
     }
+    if (t.dataset.tile) { st.tile = t.dataset.tile; st.showN = 20; renderPartner(true); syncUrl(); return; }
     if (t.dataset.pick) {
-      var id = t.dataset.pick, list = ITEMS[id].kind === "f" ? st.sel : st.jsel, k = list.indexOf(id);
-      if (k >= 0) list.splice(k, 1); else list.push(id);
-      if (!jewelOpen() && st.step === "jewel") st.step = "fashion";
+      var it = ITEMS[t.dataset.pick], list = listOf(it), k = list.indexOf(it.id);
+      if (k >= 0) list.splice(k, 1); else list.push(it.id);
       all(true); return;
     }
-    if (t.dataset.fill) { var p = t.dataset.fill.split(":"); fill(p[0], +p[1]); all(true); flash(".meter"); return; }
-    if (t.dataset.flt) { if (st.step === "jewel") st.jf = t.dataset.flt; else st.ff = t.dataset.flt; st.showN = 20; renderPartner(true); return; }
-    if (t.dataset.clear) { if (t.dataset.clear === "f") st.sel = []; else st.jsel = []; all(true); return; }
-    if (t.dataset.more) { st.showN += 20; renderPartner(true); return; }
-    if (t.dataset.oth) { var o = t.dataset.oth.split(":"); st[o[0]] = Math.max(0, st[o[0]] + +o[1]); all(true); }
+    if (t.dataset.all) {
+      var pool = poolFor(t.dataset.all), allOn = pool.every(function (x) { return st.osel.indexOf(x.id) >= 0; });
+      st.osel = st.osel.filter(function (id) { return ITEMS[id].tile !== t.dataset.all; });
+      if (!allOn) pool.forEach(function (x) { st.osel.push(x.id); });
+      all(true); return;
+    }
+    if (t.dataset.fill) { var p = t.dataset.fill.split(":"); fill(p[0], +p[1]); all(true); flash(".fcm"); return; }
+    if (t.dataset.more) { st.showN += 20; renderPartner(true); }
   });
 
   all();
