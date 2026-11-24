@@ -203,6 +203,7 @@ body.hidepanel .panel{display:none}
 .fcm.withtick{padding-bottom:22px}
 .fcm + .fcm{padding-top:0}
 .fcm.off{opacity:.55}
+.dcard .fcm .newtag{display:none}
 .selrow{display:flex;align-items:center;justify-content:space-between;padding:8px 16px}
 .selrow span{font-size:13px;font-weight:400;line-height:1.4;color:#668091;font-variant-numeric:tabular-nums}
 .selrow span.has{color:#192438}
@@ -725,7 +726,7 @@ body.hidepanel .panel{display:none}
   function pClusters() {
     var n = st.cl.length, full = n >= MAX_CL;
     var h = progress("clusters", "Pick craft clusters") + '<p class="subtx">Your products come from these. Choose up to 5 of the 14 we source from.</p>' +
-      '<div class="clcount"><span class="newtag" style="top:2px;right:16px">NEW SCREEN</span><span>Craft clusters</span><b class="' + (full ? "warn" : "") + '">' + n + ' of ' + MAX_CL + ' picked</b></div>';
+      '<div class="clcount"><span class="newtag" style="top:2px;left:96px">NEW SCREEN</span><span>Craft clusters</span><b class="' + (full ? "warn" : "") + '">' + n + ' of ' + MAX_CL + ' picked</b></div>';
     if (full) h += '<div class="banner">' + LOCK + '<span>That\'s 5. Untick one to swap it out.</span></div>';
     if (st.pick === "a") {
       h += '<div class="clgrid">' + CL.map(function (c) { var on = st.cl.indexOf(c.i) >= 0;
@@ -826,6 +827,8 @@ body.hidepanel .panel{display:none}
     if (step === "clusters") return '<div class="pbar"><div class="ttl">' + (st.cl.length ? st.cl.length + " of 5 clusters picked · about " + st.cl.length * 22 + " pieces" : "Pick at least 1 to continue") + '</div><button class="pbtn" data-step="products"' + (st.cl.length ? "" : " disabled") + '>Continue</button></div>';
     var total = st.sel.length + st.jsel.length + st.osel.length, ok = canLaunch(), reason = launchReason();
     var count = total ? total + " product" + (total === 1 ? "" : "s") + " in your store" : "";
+    if (st.live) return '<div class="pbar">' + (count ? '<div class="ttl' + (ok ? "" : " warn") + '">' + (ok ? count : count + " · " + reason) + '</div>' : "") +
+      '<button class="pbtn" data-step="dash"' + (ok ? "" : " disabled") + '>Update Store</button></div>';   // launched store: same as today's Products tab
     var goesLive = step === "auto" || st.autoAt === "b";
     if (step === "products" && !goesLive) {   // Auto-Stock asked on its own step next
       return '<div class="pbar">' + (count || reason ? '<div class="ttl' + (ok ? "" : " warn") + '">' + (ok ? count : (count ? count + " · " : "") + reason) + '</div>' : "") +
