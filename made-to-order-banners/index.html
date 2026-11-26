@@ -1,0 +1,421 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Made to Order Banners</title>
+<style>
+@font-face{font-family:"Geomanist";src:url("Geomanist-Light.woff2") format("woff2");font-weight:300}
+@font-face{font-family:"Geomanist";src:url("Geomanist-Regular.woff2") format("woff2");font-weight:400}
+@font-face{font-family:"Geomanist";src:url("Geomanist-Medium.woff2") format("woff2");font-weight:500}
+
+/* Same frame as the other demos in vip-demo-repo: stage tokens follow the viewer's theme; the phone and the
+   desktop page are the real (light) storefront, so they use consumer-ui's colours directly. */
+:root{
+  --stage:#ECEFF2; --card:#FFFFFF; --text:#1F212E; --muted:#707078; --line:#D5DDE2; --accent:#4862EE; --accent-tint:#F4F5FF;
+  --font:Geomanist,Manrope,system-ui,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --stage:#14161F; --card:#1E2130; --text:#E9EAF0; --muted:#A0A3B1; --line:#343850; --accent:#8A9BFF; --accent-tint:#262B45; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --stage:#14161F; --card:#1E2130; --text:#E9EAF0; --muted:#A0A3B1; --line:#343850; --accent:#8A9BFF; --accent-tint:#262B45; color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--stage);color:var(--text);font-family:var(--font);padding:14px max(16px,env(safe-area-inset-left,0px));overflow-x:hidden}
+button{font-family:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+.intro{max-width:1240px;margin:0 auto 12px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+.intro h1{font-size:18px;font-weight:500;margin:0}
+.intro p{margin:0;color:var(--muted);font-size:13px;line-height:1.4}
+
+/* design switcher */
+.bar{max-width:1240px;margin:0 auto 14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:8px 14px;font-size:13.5px;line-height:1.2}
+.chip span{color:var(--muted);margin-right:4px}
+.chip.on{border-color:var(--accent);background:var(--accent-tint);color:var(--accent)}
+.chip.on span{color:var(--accent)}
+.view{margin-left:auto;display:flex;background:var(--card);border-radius:999px;padding:3px}
+.view button{border:0;background:transparent;color:var(--muted);border-radius:999px;padding:6px 12px;font-size:13px}
+.view button.on{background:var(--accent);color:#fff}
+
+.stage{max-width:1240px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;justify-content:center}
+.col{display:flex;flex-direction:column;gap:8px;min-width:0}
+.lbl{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
+
+/* phone */
+.phone{width:375px;max-width:100%;height:min(780px,calc(100vh - 150px));min-height:560px;background:#fff;border-radius:28px;box-shadow:0 10px 40px rgba(31,33,46,.18);overflow:hidden;position:relative;color:#1F212E}
+.phone .scroll{position:absolute;inset:0;overflow-y:auto;scrollbar-width:none}
+.phone .scroll::-webkit-scrollbar{display:none}
+
+/* desktop browser */
+.desk{width:820px;max-width:100%;background:#fff;border-radius:14px;box-shadow:0 10px 40px rgba(31,33,46,.18);overflow:hidden;color:#1F212E}
+.chrome{height:30px;background:#F1F3F5;display:flex;align-items:center;gap:6px;padding:0 12px;border-bottom:1px solid #E5E8EC}
+.chrome i{width:9px;height:9px;border-radius:50%;background:#D5DDE2;display:block}
+.chrome b{margin-left:10px;font-weight:400;font-size:11px;color:#707078;background:#fff;border-radius:6px;padding:3px 10px}
+.desk .scroll{height:min(560px,calc(100vh - 190px));min-height:420px;overflow-y:auto}
+
+/* storefront chrome inside the frames (simplified, for context) */
+.sf{background:#fff}
+.sf-top{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid #F0F1F4}
+.sf-logo{width:30px;height:30px;border-radius:50%;background:#F3E3C3;display:grid;place-items:center;font-size:10px;color:#8A5A12}
+.sf-name{font-size:14px;font-weight:500}
+.ctx{margin:14px 16px 0}
+.ctx h4{margin:0 0 8px;font-size:15px;font-weight:500}
+.ghost{display:flex;gap:8px;overflow:hidden}
+.ghost span{flex:none;width:96px;height:120px;border-radius:10px;background:#F1F3F5}
+.desk .ghost span{width:150px;height:170px}
+.ctxnote{display:inline-block;margin-top:6px;font-size:11px;color:#A0A3B1}
+.wrap{margin:34px 16px 0}
+.desk .wrap,.desk .ctx{margin-left:28px;margin-right:28px}
+.desk .inner{max-width:1100px;margin:0 auto}
+.here{position:relative}
+.here::before{content:"Made to Order banner";position:absolute;top:-16px;left:0;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#4862EE;font-weight:500}
+
+/* ── banner shared ── (container queries: the SAME markup is mobile in the phone and desktop in the browser) */
+.bn{container-type:inline-size;width:100%}
+.b{position:relative;border-radius:16px;overflow:hidden;color:#1F212E;text-decoration:none;display:block}
+.eye{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:500}
+.h{font-weight:500;line-height:1.18;margin:6px 0 0;letter-spacing:-.01em}
+.sub{font-size:12.5px;line-height:1.45;margin:6px 0 0}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;border-radius:999px;padding:4px 9px;white-space:nowrap}
+.pill .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.cta{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;margin-top:12px;border-radius:999px;padding:9px 15px;font-size:13px;font-weight:500;white-space:nowrap}
+img.cv{display:block;width:100%;height:100%;object-fit:cover}
+
+/* 1 · Award story — photo of the weaver, cream panel */
+.d1{background:#FBF6EC}
+.d1 .ph{aspect-ratio:4/3}
+.d1 .ph img{object-position:56% 30%}
+.d1 .txt{padding:14px 14px 16px}
+.d1 .eye{color:#B07F1E}
+.d1 .h{font-size:19px}
+.d1 .sub{color:#545454}
+.d1 .pill.po{background:#FDECE8;color:#C2410C}
+.d1 .pill.pp{background:#E8F5EE;color:#1E6B45}
+.d1 .pill.dy{background:#fff;color:#545454;border:1px solid #EAD8A8}
+.d1 .cta{background:#1F212E;color:#fff}
+.d1 .thumbs{display:none}
+@container (min-width:640px){
+  .d1{display:grid;grid-template-columns:44% 1fr}
+  .d1 .ph{aspect-ratio:auto;min-height:300px}
+  .d1 .txt{padding:28px 30px;display:flex;flex-direction:column;justify-content:center}
+  .d1 .h{font-size:28px}
+  .d1 .sub{font-size:14px}
+  .d1 .thumbs{display:flex;gap:8px;margin-top:16px}
+  .d1 .thumbs img{width:64px;height:80px;border-radius:8px;object-fit:cover}
+}
+
+/* 2 · Saree mosaic — the pieces lead, copy on a dark card */
+.d2{background:#1F212E;color:#fff}
+.d2 .grid{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+.d2 .grid img{aspect-ratio:1/1}
+.d2 .grid .wide{display:none}
+.d2 .txt{padding:14px 14px 16px}
+.d2 .eye{color:#F2B544}
+.d2 .h{font-size:19px}
+.d2 .sub{color:rgba(255,255,255,.8)}
+.d2 .pill{background:rgba(255,255,255,.12);color:#fff}
+.d2 .cta{background:#fff;color:#1F212E}
+@container (min-width:640px){
+  .d2{display:grid;grid-template-columns:1fr 1.15fr}
+  .d2 .txt{order:-1;padding:30px;display:flex;flex-direction:column;justify-content:center}
+  .d2 .h{font-size:28px}
+  .d2 .sub{font-size:14px}
+  .d2 .grid{grid-template-columns:repeat(3,1fr)}
+  .d2 .grid img{aspect-ratio:3/4}
+  .d2 .grid .wide{display:block}
+}
+
+/* 3 · Weaver + piece — square weaver photo with award ribbon, next to one saree */
+.d3{background:linear-gradient(135deg,#FFF8E7,#FBEFC8);border:1px solid #F1E2BC;padding:14px}
+.d3 .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.d3 .sq{position:relative;aspect-ratio:1/1;border-radius:12px;overflow:hidden}
+.d3 .sq img{object-position:56% 25%}
+.d3 .rib{position:absolute;left:8px;bottom:8px;background:#B07F1E;color:#fff;font-size:10px;font-weight:500;border-radius:6px;padding:4px 7px;line-height:1.2}
+.d3 .pc{aspect-ratio:1/1;border-radius:12px;overflow:hidden}
+.d3 .eye{color:#7A5A12;margin-top:12px}
+.d3 .h{font-size:18px}
+.d3 .sub{color:#545454}
+.d3 .pill.po{background:#fff;color:#C2410C}
+.d3 .pill.pp{background:#fff;color:#1E6B45}
+.d3 .pill.dy{background:#fff;color:#545454}
+.d5 .pill.dy{background:rgba(255,255,255,.14);color:#fff}
+.d2 .pill.po{background:#F2B544;color:#1F212E}
+.d3 .cta{background:#4862EE;color:#fff}
+@container (min-width:640px){
+  .d3{display:grid;grid-template-columns:1fr 1.2fr;gap:28px;padding:24px;align-items:center}
+  .d3 .eye{margin-top:0}
+  .d3 .h{font-size:26px}
+  .d3 .sub{font-size:14px}
+  .d3 .row{order:2}
+}
+
+/* 4 · Home-card style — same card language as Bundle offers / Newly arrived (header + View all + cards) */
+.d4{border:1px solid #E8EAF0;background:#fff;padding:14px 0 16px}
+.d4 .hd{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:0 14px}
+.d4 .eye{color:#C2410C}
+.d4 .h{font-size:17px}
+.d4 .all{flex:none;border:1px solid #D5DDE2;border-radius:999px;padding:6px 11px;font-size:12px;font-weight:500;color:#1F212E;white-space:nowrap}
+.d4 .strip{display:flex;gap:8px;align-items:center;margin:10px 14px 0;padding:8px 10px;border-radius:10px;background:#FBF6EC;font-size:11.5px;color:#545454}
+.d4 .strip img{width:30px;height:30px;border-radius:6px;object-fit:cover;flex:none}
+.d4 .strip b{font-weight:500;color:#1F212E}
+.d4 .cards{display:flex;gap:10px;overflow-x:auto;padding:12px 14px 2px;scrollbar-width:none}
+.d4 .cards::-webkit-scrollbar{display:none}
+.d4 .card{flex:none;width:44%}
+.d4 .card .im{position:relative;aspect-ratio:3/4;border-radius:10px;overflow:hidden}
+.d4 .card .tag{position:absolute;left:6px;top:6px;background:#FDECE8;color:#C2410C;font-size:10px;font-weight:500;border-radius:6px;padding:3px 6px}
+.d4 .card .nm{font-size:12.5px;margin-top:6px;line-height:1.3}
+.d4 .card .pr{font-size:13px;font-weight:500;margin-top:2px}
+.d4 .pills{padding:0 14px}
+.d4 .pill{background:#F1F3F5;color:#545454}
+@container (min-width:640px){
+  .d4{padding:20px 0}
+  .d4 .hd,.d4 .pills{padding:0 22px}
+  .d4 .strip{margin:12px 22px 0}
+  .d4 .h{font-size:22px}
+  .d4 .cards{padding:14px 22px 2px;overflow:visible}
+  .d4 .card{width:auto;flex:1}
+}
+
+/* 5 · Journey band — how it reaches you, on a dark band with one piece */
+.d5{background:#2A1E3A;color:#fff}
+.d5 .ph{aspect-ratio:16/10}
+.d5 .ph img{object-position:50% 70%}
+.d5 .txt{padding:14px 14px 16px}
+.d5 .eye{color:#F2B544}
+.d5 .h{font-size:19px}
+.d5 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:12px;position:relative}
+.d5 .steps::before{content:"";position:absolute;left:12%;right:12%;top:13px;height:1px;background:rgba(255,255,255,.3)}
+.d5 .st{text-align:center;font-size:10px;line-height:1.25;color:rgba(255,255,255,.85);position:relative}
+.d5 .st i{display:grid;place-items:center;width:26px;height:26px;margin:0 auto 5px;border-radius:50%;background:#3D2D55;border:1px solid rgba(255,255,255,.25);font-style:normal;font-size:12px}
+.d5 .pill.po{background:#F2B544;color:#2A1E3A}
+.d5 .pill.pp{background:rgba(255,255,255,.14);color:#fff}
+.d5 .cta{background:#fff;color:#2A1E3A}
+@container (min-width:640px){
+  .d5{display:grid;grid-template-columns:1.4fr 1fr}
+  .d5 .ph{order:2;aspect-ratio:auto;min-height:300px}
+  .d5 .txt{padding:28px 30px;display:flex;flex-direction:column;justify-content:center}
+  .d5 .h{font-size:27px}
+  .d5 .st{font-size:11.5px}
+}
+
+/* panel */
+.panel{width:100%;max-width:1240px;margin:20px auto 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.pcard{background:var(--card);border-radius:16px;padding:14px 16px;font-size:14px;line-height:1.5;min-width:0}
+.pcard h2{margin:0 0 8px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.pcard ul,.pcard ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.pcard b{font-weight:500}
+.pcard .note{font-size:12.5px;color:var(--muted);margin:8px 0 0}
+</style>
+
+<div class="intro">
+  <h1>Made to Order banner</h1>
+  <p>5 designs, each shown on the phone and on desktop (same banner, it adapts to the width). Placed where we recommend on the home page.</p>
+</div>
+
+<div class="bar" role="toolbar" aria-label="Designs">
+  <div id="chips" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+  <div class="view" role="group" aria-label="View">
+    <button data-v="both" class="on">Both</button>
+    <button data-v="m">Mobile</button>
+    <button data-v="d">Desktop</button>
+  </div>
+</div>
+
+<div class="stage">
+  <div class="col" id="mcol">
+    <div class="lbl">Mobile · 375px</div>
+    <div class="phone"><div class="scroll"><div class="sf" id="m"></div></div></div>
+  </div>
+  <div class="col" id="dcol" style="flex:1 1 560px;max-width:820px">
+    <div class="lbl">Desktop</div>
+    <div class="desk"><div class="chrome"><i></i><i></i><i></i><b>yourstore.wcommerce.store</b></div><div class="scroll"><div class="sf" id="d"></div></div></div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="pcard">
+    <h2>Where it goes</h2>
+    <ul>
+      <li><b>Home page, after the two "Shop by craft" rows, before "Bought &amp; loved".</b> Today the Made to Order row sits 3rd, right after Bundle offers.</li>
+      <li>By then the shopper has seen everything in stock: Newly arrived, Bundles, Occasions, Under ₹2,000, Pinboard, Categories, Crafts.</li>
+      <li>The craft rows prime "handmade, heritage", so a weaver story lands best right after them.</li>
+      <li><b>One banner, not a product row.</b> Tap opens /made-to-order (already built, with filters).</li>
+      <li>Not in saree/category listings or search filters as cards (already hidden there).</li>
+    </ul>
+  </div>
+  <div class="pcard">
+    <h2>Why this protects normal sales</h2>
+    <ul>
+      <li>In-stock pieces get the first screens; made-to-order is an extra option for shoppers who kept scrolling (higher intent, browsing for something special).</li>
+      <li>A banner asks for one tap into a separate page, so a made-to-order piece never sits next to a "ships tomorrow" saree in the same grid.</li>
+      <li>Pre-order, prepaid and the wait are said up front, so nobody is surprised at checkout.</li>
+    </ul>
+  </div>
+  <div class="pcard">
+    <h2>How others handle it</h2>
+    <ul>
+      <li>Marketplaces (e.g. Etsy) label made-to-order items and show the making time before purchase.</li>
+      <li>Indian handloom and craft brands usually keep made-to-order / pre-order in a <b>separate collection</b> with its lead time, promoted with a banner or campaign, not mixed into in-stock grids.</li>
+      <li>Common rules: lead time shown everywhere, payment terms clear, the maker's story as the reason to wait.</li>
+    </ul>
+    <p class="note">From general e-commerce practice, not a fresh site-by-site check. I can do a proper competitor check if sir wants examples.</p>
+  </div>
+  <div class="pcard">
+    <h2>Copy on the banner</h2>
+    <ul>
+      <li>Eyebrow: <b>Made to order</b></li>
+      <li>Headline: <b>Handwoven for you by award-winning weavers across the country</b></li>
+      <li>Pills: <b>Pre-order · 100% prepaid · Woven only for you</b></li>
+      <li>Making time is shown on each product (it differs per piece), not on the banner.</li>
+      <li>Button: <b>Explore made to order</b></li>
+    </ul>
+    <p class="note">The award photo shows public officials. For the live banner, crop to the weaver and check we have consent to use it.</p>
+  </div>
+</div>
+
+<script>
+const IMG = (n) => `saree-${String(n).padStart(2, "0")}.jpg`;
+const COPY = {
+  eye: "Made to order",
+  h: "Handwoven for you by award-winning weavers across the country",
+  sub: "The loom starts only after you order, so your saree is woven for you and no one else.",
+  cta: "Explore made to order →",
+};
+const pills = (cls = true) => `
+  <div class="pills">
+    <span class="pill po"><span class="dot"></span>Pre-order</span>
+    <span class="pill pp">100% prepaid</span>
+    <span class="pill dy">Woven only for you</span>
+  </div>`;
+
+const DESIGNS = [
+  {
+    name: "Award story",
+    html: () => `
+      <a class="b d1" href="#">
+        <div class="ph"><img class="cv" src="weaver-award.jpg" alt="Our weaver receiving a national handloom award"></div>
+        <div class="txt">
+          <div class="eye">${COPY.eye}</div>
+          <p class="h">${COPY.h}</p>
+          <p class="sub">${COPY.sub}</p>
+          ${pills()}
+          <div class="thumbs"><img src="${IMG(5)}" alt=""><img src="${IMG(7)}" alt=""><img src="${IMG(12)}" alt=""><img src="${IMG(4)}" alt=""></div>
+          <span class="cta">${COPY.cta}</span>
+        </div>
+      </a>`,
+  },
+  {
+    name: "Saree mosaic",
+    html: () => `
+      <a class="b d2" href="#">
+        <div class="grid">
+          <img class="cv" src="${IMG(5)}" alt=""><img class="cv" src="${IMG(7)}" alt="">
+          <img class="cv" src="${IMG(12)}" alt=""><img class="cv" src="${IMG(4)}" alt="">
+          <img class="cv wide" src="${IMG(8)}" alt=""><img class="cv wide" src="${IMG(11)}" alt="">
+        </div>
+        <div class="txt">
+          <div class="eye">${COPY.eye}</div>
+          <p class="h">${COPY.h}</p>
+          <p class="sub">${COPY.sub}</p>
+          ${pills()}
+          <span class="cta">${COPY.cta}</span>
+        </div>
+      </a>`,
+  },
+  {
+    name: "Weaver + piece",
+    html: () => `
+      <a class="b d3" href="#">
+        <div class="row">
+          <div class="sq"><img class="cv" src="weaver-award.jpg" alt="Award-winning weaver"><span class="rib">Award-winning weaver</span></div>
+          <div class="pc"><img class="cv" src="${IMG(5)}" alt="A handwoven saree"></div>
+        </div>
+        <div>
+          <div class="eye">${COPY.eye}</div>
+          <p class="h">${COPY.h}</p>
+          <p class="sub">${COPY.sub}</p>
+          ${pills()}
+          <span class="cta">${COPY.cta}</span>
+        </div>
+      </a>`,
+  },
+  {
+    name: "Home card (like Bundle offers)",
+    html: () => `
+      <div class="b d4">
+        <div class="hd">
+          <div><div class="eye">${COPY.eye}</div><p class="h">Handwoven for you by award-winning weavers</p></div>
+          <a class="all" href="#">View all</a>
+        </div>
+        <div class="strip"><img src="weaver-award.jpg" alt=""><span><b>Woven after you order.</b> By award-winning weavers across the country, one piece at a time.</span></div>
+        ${pills()}
+        <div class="cards">
+          ${[[5, "Purple silk, deer border", "6,460"], [7, "Midnight blue, lotus pallu", "7,200"], [12, "Rust & indigo, forest motifs", "5,850"], [8, "Olive gold, deer pallu", "6,900"]]
+            .map(([n, nm, pr]) => `<div class="card"><div class="im"><img class="cv" src="${IMG(n)}" alt=""><span class="tag">Made to order</span></div><div class="nm">${nm}</div><div class="pr">₹${pr}</div></div>`).join("")}
+        </div>
+      </div>`,
+  },
+  {
+    name: "Journey band",
+    html: () => `
+      <a class="b d5" href="#">
+        <div class="ph"><img class="cv" src="${IMG(5)}" alt="A handwoven saree"></div>
+        <div class="txt">
+          <div class="eye">${COPY.eye}</div>
+          <p class="h">${COPY.h}</p>
+          <div class="steps">
+            <div class="st"><i>1</i>You order &amp; prepay</div>
+            <div class="st"><i>2</i>Hand-woven<br>for you</div>
+            <div class="st"><i>3</i>Quality checked</div>
+            <div class="st"><i>4</i>Delivered to you</div>
+          </div>
+          <div class="pills"><span class="pill po"><span class="dot"></span>Pre-order</span><span class="pill pp">100% prepaid</span></div>
+          <span class="cta">${COPY.cta}</span>
+        </div>
+      </a>`,
+  },
+];
+
+// The storefront around the banner, so its position reads at a glance.
+const page = (banner) => `
+  <div class="inner">
+    <div class="sf-top"><div class="sf-logo">Store</div><div class="sf-name">Your store</div></div>
+    <div class="ctx"><h4>Shop by craft</h4><div class="ghost"><span></span><span></span><span></span><span></span><span></span></div><span class="ctxnote">↑ Newly arrived, Bundles, Occasions, Under ₹2,000, Categories above</span></div>
+    <div class="wrap here"><div class="bn">${banner}</div></div>
+    <div class="ctx"><h4>Bought &amp; loved</h4><div class="ghost"><span></span><span></span><span></span><span></span><span></span></div><span class="ctxnote">↓ Philosophy, Know your craft, Behind the scenes, footer below</span></div>
+    <div style="height:40px"></div>
+  </div>`;
+
+let cur = 0;
+function render() {
+  const html = DESIGNS[cur].html();
+  document.getElementById("m").innerHTML = page(html);
+  document.getElementById("d").innerHTML = page(html);
+  document.querySelectorAll("#m a, #d a").forEach((a) => a.addEventListener("click", (e) => e.preventDefault()));
+  // open each frame scrolled to the banner
+  for (const id of ["m", "d"]) {
+    const sc = document.getElementById(id).parentElement;
+    const here = sc.querySelector(".here");
+    sc.scrollTop = Math.max(0, here.offsetTop - 110);
+  }
+  document.querySelectorAll("#chips .chip").forEach((c, i) => {
+    c.classList.toggle("on", i === cur);
+    c.setAttribute("aria-pressed", i === cur);
+  });
+}
+document.getElementById("chips").innerHTML = DESIGNS.map(
+  (d, i) => `<button class="chip" aria-pressed="false"><span>${i + 1}</span>${d.name}</button>`,
+).join("");
+document.querySelectorAll("#chips .chip").forEach((c, i) => c.addEventListener("click", () => { cur = i; render(); }));
+document.querySelectorAll(".view button").forEach((b) =>
+  b.addEventListener("click", () => {
+    document.querySelectorAll(".view button").forEach((x) => x.classList.toggle("on", x === b));
+    const v = b.dataset.v;
+    document.getElementById("mcol").hidden = v === "d";
+    document.getElementById("dcol").hidden = v === "m";
+  }),
+);
+render();
+</script>
